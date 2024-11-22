@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import Lot from "@/components/lot/page";
 import Panel from "@/components/panel/page";
+import BlocksList from "@/components/blocksList/page";
 export type Room = {
   length: number;
   width: number;
@@ -42,8 +43,8 @@ export default function Home() {
   }
 
   return (
-    <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
-      {/* Painel de Entrada */}
+    <div style={{ width: "100vw", height: "100vh", display:"flex" }}>
+      <div style={{width:"77vw"}}>
       {panelVisible && (
         <Panel
           createLot={() =>
@@ -105,6 +106,11 @@ export default function Home() {
         <ambientLight intensity={0.1} />
         <directionalLight position={[5, -50, 5]} color="blue" />
       </Canvas>
+      </div>
+   <div style={{width:"23vw"}}>
+    <BlocksList blockList={lot} />
+   </div>
+
     </div>
   );
 }
