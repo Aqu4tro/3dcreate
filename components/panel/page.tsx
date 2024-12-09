@@ -99,7 +99,6 @@ export default function Panel({
               onChange={(e) => setThick(e.target.checked ? true : false)} // Exemplo de uso
             />
           </ListItem>
-
           <List sx={{ display: thick ? "block" : "none" }}>
             <ListItem>
               <TextField
