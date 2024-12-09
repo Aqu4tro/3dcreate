@@ -31,6 +31,8 @@ export default function Home() {
   const [lot, setLot] = useState<Room[]>([]);
   const [objects, setObjects] = useState<Room[]>([]);
   const [tickLot, setTickLot] = useState<number>(0);
+  const [floor, setFloor] = useState<boolean>(false);
+  const [top, setTop] = useState<boolean>(false);
 
   function createLot({ length, width, size, height, name, tickLot }: Room) {
     setLot([{ length, width, size, height, name, tickLot }]);
@@ -108,7 +110,7 @@ export default function Home() {
       </Canvas>
       </div>
    <div style={{width:"23vw"}}>
-    <BlocksList blockList={lot} />
+    <BlocksList top={top} floor={floor} setFloor={setFloor} setTop={setTop}  blockList={lot} />
    </div>
 
     </div>
