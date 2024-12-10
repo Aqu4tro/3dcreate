@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Canvas } from "@react-three/fiber";
 import Floor from "@/components/floor/page";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Add, ArrowBack } from "@mui/icons-material";
 import {
   Button,
@@ -18,6 +18,11 @@ export type Room = {
   height?: number;
   name: string;
   tickLot?: number;
+  setWidth?: Dispatch<SetStateAction<number>>;
+  setLength?: Dispatch<SetStateAction<number>>;
+  setSize?: Dispatch<SetStateAction<number>>;
+  setHeight?: Dispatch<SetStateAction<number>>;
+  setTick?: Dispatch<SetStateAction<number>>;
 };
 
 export default function Home() {
@@ -34,11 +39,12 @@ export default function Home() {
   const [floor, setFloor] = useState<boolean>(false);
   const [top, setTop] = useState<boolean>(false);
 
+  //criar novo terreno
   function createLot({ length, width, size, height, name, tickLot }: Room) {
     setLot([{ length, width, size, height, name, tickLot }]);
-    setObjects([{ length, width, size, height, name, tickLot }]);
+    //setObjects([{ length, width, size, height, name, tickLot }]);
   }
-
+  //mostrar/ocultar painel de terreno
   function togglePanel() {
     setPanelVisible(!panelVisible);
     setThick(false);
