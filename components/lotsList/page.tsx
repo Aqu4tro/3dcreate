@@ -3,18 +3,18 @@ import { Box } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import BlockItem from "../blockItem/page"; // Importa o novo componente
 
-export default function BlocksList({
+export default function LotList({
   top,
   floor,
   blockList,
-  countBlock,
+  countLot,
   setObjects,
 }: {
-  countBlock: number,
+    countLot:number,
   top: boolean;
   floor: boolean;
   blockList: Room[];
-  setObjects:Dispatch<SetStateAction<Room[]>>;
+  setObjects: Dispatch<SetStateAction<Room[]>>;
 }) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
@@ -23,7 +23,7 @@ export default function BlocksList({
       {blockList.map((e) => (
         <BlockItem
         setObjects={setObjects}
-        id={countBlock}
+        id={countLot}
           disable={disable}
           setDisable={setDisable}
           block={e}
@@ -31,8 +31,7 @@ export default function BlocksList({
           setShowModal={setShowModal}
           top={top}
           floor={floor}
-          byLot={true}
-          
+          byLot={false}
         />
       ))}
     </Box>

@@ -11,18 +11,16 @@ import {
 import Lot from "@/components/lot/page";
 import Panel from "@/components/panel/page";
 import BlocksList from "@/components/blocksList/page";
+import LotList from "@/components/lotsList/page";
 export type Room = {
+  byLot?: number;
   length: number;
   width: number;
   size?: number;
   height?: number;
   name: string;
   tickLot?: number;
-  setWidth?: Dispatch<SetStateAction<number>>;
-  setLength?: Dispatch<SetStateAction<number>>;
-  setSize?: Dispatch<SetStateAction<number>>;
-  setHeight?: Dispatch<SetStateAction<number>>;
-  setTick?: Dispatch<SetStateAction<number>>;
+  
 };
 
 export default function Home() {
@@ -38,21 +36,29 @@ export default function Home() {
   const [tickLot, setTickLot] = useState<number>(0);
   const [floor, setFloor] = useState<boolean>(false);
   const [top, setTop] = useState<boolean>(false);
+  const [countLot, setCountLot] = useState<number>(0);
+  const [countBlock, setCountBlock] = useState<number>(0);
 
   //criar novo terreno
   function createLot({ length, width, size, height, name, tickLot }: Room) {
     setLot([{ length, width, size, height, name, tickLot }]);
+    setCountLot(countLot + 1);
     //setObjects([{ length, width, size, height, name, tickLot }]);
+    
   }
+  
   //mostrar/ocultar painel de terreno
   function togglePanel() {
+    
+    console.log(lot);  
     setPanelVisible(!panelVisible);
     setThick(false);
+    
   }
 
   return (
     <div style={{ width: "100vw", height: "100vh", display:"flex" }}>
-      <div style={{width:"77vw"}}>
+      <div style={{width:"75vw"}}>
       {panelVisible && (
         <Panel
           createLot={() =>
@@ -63,6 +69,7 @@ export default function Home() {
               height: height,
               name: nameObject,
               tickLot: tickLot,
+              
             })
           }
           setHeight={setHeight}
@@ -108,6 +115,8 @@ export default function Home() {
             size={item.size}
             name={item.name}
             height={item.height}
+            
+        
           />
         ))}
         <OrbitControls rotateSpeed={0.2} />
@@ -115,8 +124,8 @@ export default function Home() {
         <directionalLight position={[5, -50, 5]} color="blue" />
       </Canvas>
       </div>
-   <div style={{width:"23vw"}}>
-    <BlocksList top={top} floor={floor} setFloor={setFloor} setTop={setTop}  blockList={lot} />
+   <div style={{width:"25vw", overflowY:"auto"}} >
+    <LotList setObjects={setObjects} countLot={countLot} top={top} floor={floor} blockList={lot} />
    </div>
 
     </div>
