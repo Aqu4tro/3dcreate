@@ -4,20 +4,20 @@ import { Dispatch, SetStateAction, useState } from "react";
 import BlockItem from "../blockItem/page"; // Importa o novo componente
 
 export default function BlocksList({
-  top,
-  floor,
+  
   blockList,
   countBlock,
   setObjects,
 }: {
   countBlock: number,
-  top: boolean;
-  floor: boolean;
-  blockList: Room[];
-  setObjects:Dispatch<SetStateAction<Room[]>>;
+  
+  blockList: Room[] ;
+  setObjects:Dispatch<SetStateAction<Room[]>> | undefined;
 }) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
+  const [top, setTop] = useState<boolean>(true);
+  const [floor, setFloor] = useState<boolean>(true);
   return (
     <Box padding={1}>
       {blockList.map((e) => (

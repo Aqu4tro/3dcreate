@@ -13,6 +13,7 @@ import Panel from "@/components/panel/page";
 import BlocksList from "@/components/blocksList/page";
 import LotList from "@/components/lotsList/page";
 export type Room = {
+  id:number;
   byLot?: number;
   length: number;
   width: number;
@@ -20,7 +21,7 @@ export type Room = {
   height?: number;
   name: string;
   tickLot?: number;
-  
+  objects?: Room[];
 };
 
 export default function Home() {
@@ -32,16 +33,16 @@ export default function Home() {
   const [thick, setThick] = useState<boolean>(false);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
   const [lot, setLot] = useState<Room[]>([]);
-  const [objects, setObjects] = useState<Room[]>([]);
+  //const [objects, setObjects] = useState<Room[]>([]);
   const [tickLot, setTickLot] = useState<number>(0);
   const [floor, setFloor] = useState<boolean>(false);
   const [top, setTop] = useState<boolean>(false);
   const [countLot, setCountLot] = useState<number>(0);
-  const [countBlock, setCountBlock] = useState<number>(0);
+  
 
   //criar novo terreno
-  function createLot({ length, width, size, height, name, tickLot }: Room) {
-    setLot([{ length, width, size, height, name, tickLot }]);
+  function createLot({id, length, width, size, height, name, tickLot }: Room) {
+    setLot([{ id,length, width, size, height, name, tickLot }]);
     setCountLot(countLot + 1);
     //setObjects([{ length, width, size, height, name, tickLot }]);
     
@@ -63,6 +64,7 @@ export default function Home() {
         <Panel
           createLot={() =>
             createLot({
+              id:countLot,
               length: length,
               width: width,
               size: size,
@@ -110,12 +112,13 @@ export default function Home() {
         <PerspectiveCamera position={[0, 0, -20]} />
         {lot.map((item) => (
           <Lot
+            id={item.id}
             length={item.length}
             width={item.width}
             size={item.size}
             name={item.name}
             height={item.height}
-            
+           
         
           />
         ))}
@@ -125,7 +128,7 @@ export default function Home() {
       </Canvas>
       </div>
    <div style={{width:"25vw", overflowY:"auto"}} >
-    <LotList setObjects={setObjects} countLot={countLot} top={top} floor={floor} blockList={lot} />
+    <LotList  countLot={countLot} top={top} floor={floor} blockList={lot} />
    </div>
 
     </div>

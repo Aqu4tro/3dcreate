@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { Add, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { Dispatch, SetStateAction, useState } from "react";
+import BlocksList from "../blocksList/page";
+
 
 interface BlockItemProps {
   id: number;
@@ -24,7 +26,8 @@ interface BlockItemProps {
   _byLot?: number;
   countBlock?: number;
   setCountBlock?: Dispatch<SetStateAction<number>>;
-  setObjects:Dispatch<SetStateAction<Room[]>>;
+  setObjects?: Dispatch<SetStateAction<Room[]>>;
+  objects?:Room[] | undefined;
 }
 
 export default function BlockItem({
@@ -41,6 +44,7 @@ export default function BlockItem({
   countBlock,
   setCountBlock,
   setObjects,
+  objects,
 }: BlockItemProps) {
   const [width, setWidth] = useState<number>(block.width);
   const [height, setHeight] = useState<number>(block.height || 0);
@@ -49,12 +53,14 @@ export default function BlockItem({
   const [tickLot, setTickLot] = useState<number>(0);
   const [_floor, _setFloor] = useState<boolean>(floor);
   const [_top, _setTop] = useState<boolean>(top);
-
+  const [_objects, _setObjects] = useState<Room[]>([]);
+  const [_countBlock, _setCountBlock] = useState<number>(0);
   function createBlock({ length, width, size, height, name, tickLot }: Room) {
-    if (countBlock && setCountBlock){
-    setCountBlock(Number(countBlock + 1));
-    setObjects([{ length, width, size, height, name, tickLot }]);
-    }
+     
+    
+    _setObjects((prevObjects) => [...prevObjects, {id: _countBlock, length, width, size, height, name, tickLot }]);
+    _setCountBlock(Number(_countBlock + 1));
+    console.log(_objects);
   }
 
   return (
@@ -265,9 +271,24 @@ export default function BlockItem({
       {byLot ? (
         <></>
       ) : (
-        <Button sx={{ alignItems: "center", width: "100%", color: "white" }}>
+        
+        <Box>
+          {
+          _objects && _countBlock ? (
+           
+        <BlocksList blockList={_objects} setObjects={_setObjects} countBlock={_countBlock} />
+      
+          ) : (
+            <></>
+          )
+        }
+         
+            <Button sx={{ alignItems: "center", width: "100%", color: "white" }} onClick={() => createBlock({id:_countBlock,length:length, width:width, size:size, height:height, name:"novo", tickLot:tickLot})}>
           <Add fontSize="medium" />
         </Button>
+        
+        
+        </Box>
       )}
       <Button
         sx={{ alignItems: "center", width: "100%" }}
