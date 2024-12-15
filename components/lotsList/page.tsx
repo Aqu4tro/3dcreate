@@ -8,23 +8,20 @@ export default function LotList({
   floor,
   blockList,
   countLot,
-  
 }: {
-    countLot:number,
+  countLot: number;
   top: boolean;
   floor: boolean;
   blockList: Room[];
-  
 }) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
-  
+  const [objects, setObjects] = useState<Room[]>([]);
+
   return (
     <Box padding={1}>
       {blockList.map((e) => (
         <BlockItem
-        
-        id={countLot}
           disable={disable}
           setDisable={setDisable}
           block={e}
@@ -33,6 +30,8 @@ export default function LotList({
           top={top}
           floor={floor}
           byLot={false}
+          objects={objects}
+          setObjects={setObjects}
         />
       ))}
     </Box>

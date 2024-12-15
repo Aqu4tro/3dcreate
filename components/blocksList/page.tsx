@@ -4,13 +4,10 @@ import { Dispatch, SetStateAction, useState } from "react";
 import BlockItem from "../blockItem/page"; // Importa o novo componente
 
 export default function BlocksList({
-  
   blockList,
-  countBlock,
   setObjects,
 }: {
   countBlock: number,
-  
   blockList: Room[] ;
   setObjects:Dispatch<SetStateAction<Room[]>> | undefined;
 }) {
@@ -22,8 +19,7 @@ export default function BlocksList({
     <Box padding={1}>
       {blockList.map((e) => (
         <BlockItem
-        setObjects={setObjects}
-        id={countBlock}
+          setObjects={setObjects}
           disable={disable}
           setDisable={setDisable}
           block={e}
@@ -32,7 +28,6 @@ export default function BlocksList({
           top={top}
           floor={floor}
           byLot={true}
-          
         />
       ))}
     </Box>

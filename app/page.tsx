@@ -8,10 +8,11 @@ import { Add, ArrowBack } from "@mui/icons-material";
 import {
   Button,
 } from "@mui/material";
-import Lot from "@/components/lot/page";
+import Lot from "@/components/lotCreate/page";
 import Panel from "@/components/panel/page";
 import BlocksList from "@/components/blocksList/page";
 import LotList from "@/components/lotsList/page";
+import Block from "@/components/blockCreate/page";
 export type Room = {
   id:number;
   byLot?: number;
@@ -22,6 +23,7 @@ export type Room = {
   name: string;
   tickLot?: number;
   objects?: Room[];
+  setObjects?: Dispatch<SetStateAction<Room[]>>;
 };
 
 export default function Home() {
@@ -41,10 +43,10 @@ export default function Home() {
   
 
   //criar novo terreno
-  function createLot({id, length, width, size, height, name, tickLot }: Room) {
-    setLot([{ id,length, width, size, height, name, tickLot }]);
+  function createLot({id, length, width, size, height, name, tickLot, setObjects, objects }: Room) {
+    setLot((preview) => [...preview, { id: countLot,length, width, size, height, name, tickLot, objects: objects }]);
     setCountLot(countLot + 1);
-    //setObjects([{ length, width, size, height, name, tickLot }]);
+    
     
   }
   
@@ -64,7 +66,7 @@ export default function Home() {
         <Panel
           createLot={() =>
             createLot({
-              id:countLot,
+              id: countLot,
               length: length,
               width: width,
               size: size,
@@ -110,18 +112,25 @@ export default function Home() {
       </Button>
       <Canvas>
         <PerspectiveCamera position={[0, 0, -20]} />
-        {lot.map((item) => (
-          <Lot
+        {lot.map((item) => {
+
+          return(
+            <>
+             <Lot
             id={item.id}
             length={item.length}
             width={item.width}
             size={item.size}
             name={item.name}
             height={item.height}
-           
-        
           />
-        ))}
+          {item.objects?.map((e) => (
+            <Block width={e.width} id={e.id} size={e.size} height={e.height} tickLot={e.tickLot} name={e.name} length={e.length} byLot={item.id}/>
+          ))}
+            </>
+         
+          )          
+})}
         <OrbitControls rotateSpeed={0.2} />
         <ambientLight intensity={0.1} />
         <directionalLight position={[5, -50, 5]} color="blue" />

@@ -14,7 +14,7 @@ import BlocksList from "../blocksList/page";
 
 
 interface BlockItemProps {
-  id: number;
+  
   block: Room;
   showModal: boolean;
   setShowModal: (show: boolean) => void;
@@ -26,12 +26,12 @@ interface BlockItemProps {
   _byLot?: number;
   countBlock?: number;
   setCountBlock?: Dispatch<SetStateAction<number>>;
-  setObjects?: Dispatch<SetStateAction<Room[]>>;
+  setObjects?: Dispatch<SetStateAction<Room[]>> | undefined;
   objects?:Room[] | undefined;
 }
 
 export default function BlockItem({
-    id,
+ 
   block,
   byLot,
   showModal,
@@ -53,14 +53,17 @@ export default function BlockItem({
   const [tickLot, setTickLot] = useState<number>(0);
   const [_floor, _setFloor] = useState<boolean>(floor);
   const [_top, _setTop] = useState<boolean>(top);
-  const [_objects, _setObjects] = useState<Room[]>([]);
+  
   const [_countBlock, _setCountBlock] = useState<number>(0);
   function createBlock({ length, width, size, height, name, tickLot }: Room) {
      
+    if(setObjects){
+      setObjects((prevObjects) => [...prevObjects, {id: _countBlock, length, width, size, height, name, tickLot }]);
+      _setCountBlock(Number(_countBlock + 1));
+    }
     
-    _setObjects((prevObjects) => [...prevObjects, {id: _countBlock, length, width, size, height, name, tickLot }]);
-    _setCountBlock(Number(_countBlock + 1));
-    console.log(_objects);
+   
+   
   }
 
   return (
@@ -78,7 +81,7 @@ export default function BlockItem({
     top="20%"
    
   >
-    <Typography fontSize={15}>{id}</Typography>
+    <Typography fontSize={15}>{block.id + 1}</Typography>
   </Box>
   <Box justifyContent={"center"}>
   <Typography fontSize={20}>
@@ -274,9 +277,9 @@ export default function BlockItem({
         
         <Box>
           {
-          _objects && _countBlock ? (
+          objects && _countBlock ? (
            
-        <BlocksList blockList={_objects} setObjects={_setObjects} countBlock={_countBlock} />
+        <BlocksList blockList={objects} setObjects={setObjects} countBlock={_countBlock} />
       
           ) : (
             <></>
