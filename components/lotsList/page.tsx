@@ -20,20 +20,7 @@ export default function LotList({
 
   return (
     <Box padding={1}>
-      {blockList.map((e) => (
-        <BlockItem
-          disable={disable}
-          setDisable={setDisable}
-          block={e}
-          showModal={showModal}
-          setShowModal={setShowModal}
-          top={top}
-          floor={floor}
-          byLot={false}
-          objects={objects}
-          setObjects={setObjects}
-        />
-      ))}
+      
     </Box>
   );
 }

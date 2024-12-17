@@ -12,54 +12,64 @@ import { Add, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { Dispatch, SetStateAction, useState } from "react";
 import BlocksList from "../blocksList/page";
 
-
 interface BlockItemProps {
   
   block: Room;
-  showModal: boolean;
-  setShowModal: (show: boolean) => void;
-  top: boolean;
+  
+
+  top?: boolean;
   byLot?: boolean;
-  floor: boolean;
-  disable: boolean;
-  setDisable: Dispatch<SetStateAction<boolean>>;
+  floor?: boolean;
+
   _byLot?: number;
-  countBlock?: number;
-  setCountBlock?: Dispatch<SetStateAction<number>>;
-  setObjects?: Dispatch<SetStateAction<Room[]>> | undefined;
-  objects?:Room[] | undefined;
+  updateLot: (updatedBlock: Room) => void; // Adiciona a função de 
 }
 
 export default function BlockItem({
  
   block,
   byLot,
-  showModal,
-  setShowModal,
+ 
   top,
   floor,
-  disable,
-  setDisable,
+ 
   _byLot,
-  countBlock,
-  setCountBlock,
-  setObjects,
-  objects,
+  updateLot
+  
+  
 }: BlockItemProps) {
   const [width, setWidth] = useState<number>(block.width);
   const [height, setHeight] = useState<number>(block.height || 0);
   const [size, setSize] = useState<number>(block.size || 0);
   const [length, setLength] = useState<number>(block.length || 0);
-  const [tickLot, setTickLot] = useState<number>(0);
-  const [_floor, _setFloor] = useState<boolean>(floor);
-  const [_top, _setTop] = useState<boolean>(top);
+  const [tickLot, setTickLot] = useState<number | undefined>(block.tickLot);
+  const [_floor, _setFloor] = useState<boolean>(floor || false);
+  const [_top, _setTop] = useState<boolean>(top || false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [disable, setDisable] = useState<boolean>(false);
+  const [countBlock, setCountBlock] = useState<number>(0);
+  block.width = width;
+  block.height = height;
+  block.length = length;
+  block.tickLot = tickLot;
+  block.size = size;
   
-  const [_countBlock, _setCountBlock] = useState<number>(0);
-  function createBlock({ length, width, size, height, name, tickLot }: Room) {
-     
-    if(setObjects){
-      setObjects((prevObjects) => [...prevObjects, {id: _countBlock, length, width, size, height, name, tickLot }]);
-      _setCountBlock(Number(_countBlock + 1));
+  const updateBlock = () => {
+    updateLot({
+      ...block,
+      width,
+      height,
+      size,
+      length,
+      tickLot,
+    });
+  };
+  function createBlock({id, length, width, size, height, name, tickLot,objects }: Room) {
+    console.log(countBlock)
+    if (objects && countBlock == 0 && setCountBlock || countBlock && objects && setCountBlock) {
+      
+      objects.push({id, length, width, size, height, name, tickLot });
+      setCountBlock(Number(countBlock + 1));
     }
     
    
@@ -108,7 +118,7 @@ export default function BlockItem({
               <Typography>Width</Typography>
               <Stack spacing={-1}>
                 <Slider
-                  onChange={(event, newValue) => setWidth(Number(newValue))}
+                  onChange={(event, newValue) => {setWidth(Number(newValue)); updateBlock();}}
                   value={width}
                   sx={{ color: "white" }}
                   min={0}
@@ -116,7 +126,7 @@ export default function BlockItem({
                 />
                 <TextField
                   value={width}
-                  onChange={(event) => setWidth(Number(event.target.value))}
+                  onChange={(event) => {setWidth(Number(event.target.value)); updateBlock(); }}
                   sx={{
                     alignSelf: "end",
                     width: "5vw",
@@ -133,13 +143,13 @@ export default function BlockItem({
               <Typography>Length</Typography>
               <Stack spacing={-1}>
                 <Slider
-                  onChange={(event, newValue) => setLength(Number(newValue))}
+                  onChange={(event, newValue) => {setLength(Number(newValue)); updateBlock();}}
                   value={length}
                   sx={{ color: "white" }}
                 />
                 <TextField
                   value={length}
-                  onChange={(event) => setLength(Number(event.target.value))}
+                  onChange={(event) => {setLength(Number(event.target.value)); updateBlock();}}
                   sx={{
                     alignSelf: "end",
                     width: "5vw",
@@ -155,7 +165,7 @@ export default function BlockItem({
               <Typography>Wall Size</Typography>
               <Stack spacing={-1}>
                 <Slider
-                  onChange={(event, newValue) => setSize(Number(newValue))}
+                  onChange={(event, newValue) => {setSize(Number(newValue)); updateBlock(); }}
                   value={size}
                   sx={{ color: "white" }}
                   min={0}
@@ -163,7 +173,7 @@ export default function BlockItem({
                 />
                 <TextField
                   value={size}
-                  onChange={(event) => setSize(Number(event.target.value))}
+                  onChange={(event) => {setSize(Number(event.target.value)); updateBlock();}}
                   sx={{
                     alignSelf: "end",
                     width: "5vw",
@@ -179,7 +189,7 @@ export default function BlockItem({
               <Typography>Wall Height</Typography>
               <Stack spacing={-1}>
                 <Slider
-                  onChange={(event, newValue) => setHeight(Number(newValue))}
+                  onChange={(event, newValue) => {setHeight(Number(newValue)); updateBlock();}}
                   value={height}
                   sx={{ color: "white" }}
                   min={0}
@@ -187,7 +197,7 @@ export default function BlockItem({
                 />
                 <TextField
                   value={height}
-                  onChange={(event) => setHeight(Number(event.target.value))}
+                  onChange={(event) => {setHeight(Number(event.target.value)); updateBlock();}}
                   sx={{
                     alignSelf: "end",
                     width: "5vw",
@@ -203,7 +213,7 @@ export default function BlockItem({
               <Typography>Lot Thick</Typography>
               <Stack spacing={-1}>
                 <Slider
-                  onChange={(event, newValue) => setTickLot(Number(newValue))}
+                  onChange={(event, newValue) => {setTickLot(Number(newValue)); updateBlock();}}
                   value={tickLot}
                   sx={{ color: "white" }}
                   min={0}
@@ -211,7 +221,7 @@ export default function BlockItem({
                 />
                 <TextField
                   value={tickLot}
-                  onChange={(event) => setTickLot(Number(event.target.value))}
+                  onChange={(event) => {setTickLot(Number(event.target.value)); updateBlock();}}
                   sx={{
                     alignSelf: "end",
                     width: "5vw",
@@ -258,7 +268,7 @@ export default function BlockItem({
           <Typography>Show Top</Typography>
           <Checkbox
             value={top}
-            onChange={(e) => _setTop(e.target.checked)}
+            onChange={(e) => {_setTop(e.target.checked); updateBlock();}}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
         </Box>
@@ -266,7 +276,7 @@ export default function BlockItem({
           <Typography>Show Floor</Typography>
           <Checkbox
             value={floor}
-            onChange={(e) => _setFloor(e.target.checked)}
+            onChange={(e) => {_setFloor(e.target.checked); updateBlock(); }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
         </Box>
@@ -277,16 +287,27 @@ export default function BlockItem({
         
         <Box>
           {
-          objects && _countBlock ? (
+          block.objects && countBlock ? (
            
-        <BlocksList blockList={objects} setObjects={setObjects} countBlock={_countBlock} />
-      
+            block.objects.map((e) => (
+          
+        <BlockItem
+          
+          updateLot={updateBlock}
+          block={e}
+                 
+          top={top}
+          floor={floor}
+          byLot={true}
+        />
+
+            ))
           ) : (
             <></>
           )
         }
          
-            <Button sx={{ alignItems: "center", width: "100%", color: "white" }} onClick={() => createBlock({id:_countBlock,length:length, width:width, size:size, height:height, name:"novo", tickLot:tickLot})}>
+            <Button sx={{ alignItems: "center", width: "100%", color: "white" }} onClick={() => createBlock({id: 0,length:length, width:width, size:size, height:height, name:"novo", tickLot:tickLot, objects: block.objects})}>
           <Add fontSize="medium" />
         </Button>
         

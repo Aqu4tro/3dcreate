@@ -3,9 +3,10 @@ import Image from "next/image";
 import { Canvas } from "@react-three/fiber";
 import Floor from "@/components/floor/page";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 import { Add, ArrowBack } from "@mui/icons-material";
 import {
+  Box,
   Button,
 } from "@mui/material";
 import Lot from "@/components/lotCreate/page";
@@ -13,6 +14,7 @@ import Panel from "@/components/panel/page";
 import BlocksList from "@/components/blocksList/page";
 import LotList from "@/components/lotsList/page";
 import Block from "@/components/blockCreate/page";
+import BlockItem from "@/components/blockItem/page";
 export type Room = {
   id:number;
   byLot?: number;
@@ -40,14 +42,30 @@ export default function Home() {
   const [floor, setFloor] = useState<boolean>(false);
   const [top, setTop] = useState<boolean>(false);
   const [countLot, setCountLot] = useState<number>(0);
-  
-
+  const prevLotRef = useRef<Room[]>([]);
+  const updateLot = (updatedBlock: Room) => {
+    setLot((prevLot) =>
+        prevLot.map((item) =>
+            item.id === updatedBlock.id ? updatedBlock : item
+        )
+    );
+};
   //criar novo terreno
-  function createLot({id, length, width, size, height, name, tickLot, setObjects, objects }: Room) {
-    setLot((preview) => [...preview, { id: countLot,length, width, size, height, name, tickLot, objects: objects }]);
+  function createLot({ id, length, width, size, height, name, tickLot }: Room) {
+    setLot((preview) => [
+      ...preview,
+      {
+        id,
+        length,
+        width,
+        size,
+        height,
+        name,
+        tickLot,
+        objects: [],
+      },
+    ]);
     setCountLot(countLot + 1);
-    
-    
   }
   
   //mostrar/ocultar painel de terreno
@@ -55,7 +73,7 @@ export default function Home() {
     
     console.log(lot);  
     setPanelVisible(!panelVisible);
-    setThick(false);
+    //setThick(false);
     
   }
 
@@ -111,35 +129,57 @@ export default function Home() {
         )}
       </Button>
       <Canvas>
-        <PerspectiveCamera position={[0, 0, -20]} />
-        {lot.map((item) => {
-
-          return(
-            <>
-             <Lot
-            id={item.id}
-            length={item.length}
-            width={item.width}
-            size={item.size}
-            name={item.name}
-            height={item.height}
-          />
+      <PerspectiveCamera position={[0, 0, -20]} />
+      {/* Key the Lot components for efficient updates */}
+      {lot.map((item, index) => (
+        <Lot
+        
+          key={index} // Add a unique key for each Lot
+          id={item.id}
+          length={item.length}
+          width={item.width}
+          size={item.size}
+          name={item.name}
+          height={item.height}
+          objects={item.objects}
+        />
+      ))}
+      {/* {lot.map((item) => (
+        <>
           {item.objects?.map((e) => (
-            <Block width={e.width} id={e.id} size={e.size} height={e.height} tickLot={e.tickLot} name={e.name} length={e.length} byLot={item.id}/>
+            <Block
+              width={e.width}
+              id={e.id}
+              size={e.size}
+              height={e.height}
+              tickLot={e.tickLot}
+              name={e.name}
+              length={e.length}
+              byLot={item.id}
+            />
           ))}
-            </>
-         
-          )          
-})}
-        <OrbitControls rotateSpeed={0.2} />
-        <ambientLight intensity={0.1} />
-        <directionalLight position={[5, -50, 5]} color="blue" />
-      </Canvas>
+        </>
+      ))} */}
+      <OrbitControls rotateSpeed={0.2} />
+      <ambientLight intensity={0.1} />
+      <directionalLight position={[5, -50, 5]} color="blue" />
+    </Canvas>
       </div>
    <div style={{width:"25vw", overflowY:"auto"}} >
-    <LotList  countLot={countLot} top={top} floor={floor} blockList={lot} />
+   <Box padding={1}>
+      {lot.map((e) => (
+        <BlockItem
+          updateLot={updateLot}   
+          block={e}
+          top={top}
+          floor={floor}
+          
+        />
+      ))}
+    </Box>
    </div>
 
     </div>
   );
 }
+
