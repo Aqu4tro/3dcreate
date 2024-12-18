@@ -13,7 +13,7 @@ import {
 } from "react";
 import { Add, ArrowBack } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
-import Lot from "@/components/lotCreate/page";
+import Lot from "@/renderers/lotCreate/page";
 import Panel from "@/components/panel/page";
 import BlockItem from "@/components/blockItem/page";
 export type Room = {
@@ -27,6 +27,9 @@ export type Room = {
   tickLot?: number;
   objects?: Room[];
   setObjects?: Dispatch<SetStateAction<Room[]>>;
+  top?:boolean;
+  floor?:boolean;
+  disable?:boolean; 
 };
 
 export default function Home() {
@@ -43,7 +46,7 @@ export default function Home() {
   const [floor, setFloor] = useState<boolean>(false);
   const [top, setTop] = useState<boolean>(false);
   const [countLot, setCountLot] = useState<number>(0);
-  const prevLotRef = useRef<Room[]>([]);
+  
   const updateLot = (updatedBlock: Room) => {
     setLot((prevLot) =>
       prevLot.map((item) => (item.id === updatedBlock.id ? updatedBlock : item))
@@ -62,6 +65,9 @@ export default function Home() {
         name,
         tickLot,
         objects: [],
+        top: true,
+        floor: true,
+
       },
     ]);
     setCountLot(countLot + 1);
@@ -88,6 +94,9 @@ export default function Home() {
                 height: height,
                 name: nameObject,
                 tickLot: tickLot,
+                floor: true,
+                disable: false,
+                top:true
               })
             }
             setHeight={setHeight}
@@ -138,6 +147,9 @@ export default function Home() {
               height={item.height}
               objects={item.objects}
               tickLot={item.tickLot}
+              disable={false}
+              top={item.top}
+              floor={item.floor}
             />
           ))}
   

@@ -7,28 +7,28 @@ import { BlockController, SmallBlockController } from "../blockController/page";
 
 interface BlockItemProps {
   block: Room;
-  top?: boolean;
   byLot?: boolean;
-  floor?: boolean;
   _byLot?: number;
+  floor?:boolean;
+  top?:boolean;
   updateLot: (updatedBlock: Room) => void; // Adiciona a função de
 }
 
 export default function BlockItem({
   block,
   byLot,
-  top,
-  floor,
   _byLot,
   updateLot,
+  top,
+  floor,
 }: BlockItemProps) {
   const [width, setWidth] = useState<number>(block.width);
   const [height, setHeight] = useState<number>(block.height || 0);
   const [size, setSize] = useState<number>(block.size || 0);
   const [length, setLength] = useState<number>(block.length || 0);
   const [tickLot, setTickLot] = useState<number>(block.tickLot || 0);
-  const [_floor, _setFloor] = useState<boolean>(floor || false);
-  const [_top, _setTop] = useState<boolean>(top || false);
+  const [_floor, _setFloor] = useState<boolean>(block.floor || false);
+  const [_top, _setTop] = useState<boolean>(block.top || false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
   const [countBlock, setCountBlock] = useState<number>(0);
@@ -37,6 +37,8 @@ export default function BlockItem({
   block.length = length;
   block.tickLot = tickLot;
   block.size = size;
+  block.floor = _floor;
+  block.top = _top;
   //função de update da rendenização
   const updateBlock = () => {
     updateLot({
@@ -46,7 +48,10 @@ export default function BlockItem({
       size,
       length,
       tickLot,
+      top: block.top,
+      floor: block.floor
     });
+    console.log("pu");  
   };
   //criação de blocos
   function createBlock({
@@ -58,13 +63,15 @@ export default function BlockItem({
     name,
     tickLot,
     objects,
+    top,
+    floor
   }: Room) {
-    updateBlock();
+    // updateBlock();
     if (
       (objects && countBlock == 0 && setCountBlock) ||
       (countBlock && objects && setCountBlock)
     ) {
-      objects.push({ id, length, width, size, height, name, tickLot });
+      objects.push({ id, length, width, size, height, name, tickLot, top, floor });
       setCountBlock(Number(countBlock + 1));
     }
   }
@@ -90,7 +97,7 @@ export default function BlockItem({
               name="Width"
               value={width}
               setValue={setWidth}
-              update={updateBlock}
+              update={() => updateBlock()}
             />
             <BlockController
               name="Length"
@@ -140,7 +147,7 @@ export default function BlockItem({
         <Box display={"flex"} alignItems={"center"}>
           <Typography>Show Top</Typography>
           <Checkbox
-            value={top}
+            value={_top}
             onChange={(e) => {
               _setTop(e.target.checked);
               updateBlock();
@@ -151,7 +158,7 @@ export default function BlockItem({
         <Box display={"flex"} alignItems={"center"}>
           <Typography>Show Floor</Typography>
           <Checkbox
-            value={floor}
+            value={_floor}
             onChange={(e) => {
               _setFloor(e.target.checked);
               updateBlock();
@@ -169,9 +176,9 @@ export default function BlockItem({
               <BlockItem
                 updateLot={updateBlock}
                 block={e}
-                top={top}
-                floor={floor}
                 byLot={true}
+                floor={_floor}
+                top={_top}
               />
             ))
           ) : (
@@ -190,6 +197,8 @@ export default function BlockItem({
                 name: "novo",
                 tickLot: tickLot,
                 objects: block.objects,
+                floor: _floor,
+                top: _top
               })
             }
           >
