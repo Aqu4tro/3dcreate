@@ -1,7 +1,7 @@
 import { Room } from "@/app/page";
 import { Box, Button, Checkbox, Typography } from "@mui/material";
 import { Add, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
 
@@ -9,8 +9,8 @@ interface BlockItemProps {
   block: Room;
   byLot?: boolean;
   _byLot?: number;
-  floor?:boolean;
-  top?:boolean;
+  floor?: boolean;
+  top?: boolean;
   updateLot: (updatedBlock: Room) => void; // Adiciona a função de
 }
 
@@ -27,11 +27,13 @@ export default function BlockItem({
   const [size, setSize] = useState<number>(block.size || 0);
   const [length, setLength] = useState<number>(block.length || 0);
   const [tickLot, setTickLot] = useState<number>(block.tickLot || 0);
-  const [_floor, _setFloor] = useState<boolean>(block.floor || false);
-  const [_top, _setTop] = useState<boolean>(block.top || false);
+  const [_floor, _setFloor] = useState<boolean>(false);
+  const [_top, _setTop] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [disable, setDisable] = useState<boolean>(false);
   const [countBlock, setCountBlock] = useState<number>(0);
+
+  const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
   block.width = width;
   block.height = height;
   block.length = length;
@@ -39,20 +41,24 @@ export default function BlockItem({
   block.size = size;
   block.floor = _floor;
   block.top = _top;
+
   //função de update da rendenização
   const updateBlock = () => {
     updateLot({
       ...block,
-      width,
-      height,
+      width: width,
+      height: height,
       size,
       length,
       tickLot,
-      top: block.top,
-      floor: block.floor
+      top: _top,
+      floor: _floor,
     });
-    console.log("pu");  
   };
+
+  useEffect(() => {
+    updateBlock(); // Chama a função sempre que _top ou _floor mudar
+  }, [_top, _floor, width, height, size, length, tickLot]);
   //criação de blocos
   function createBlock({
     id,
@@ -64,14 +70,24 @@ export default function BlockItem({
     tickLot,
     objects,
     top,
-    floor
+    floor,
   }: Room) {
-    // updateBlock();
+    updateBlock();
     if (
       (objects && countBlock == 0 && setCountBlock) ||
       (countBlock && objects && setCountBlock)
     ) {
-      objects.push({ id, length, width, size, height, name, tickLot, top, floor });
+      objects.push({
+        id,
+        length,
+        width,
+        size,
+        height,
+        name,
+        tickLot,
+        top,
+        floor,
+      });
       setCountBlock(Number(countBlock + 1));
     }
   }
@@ -93,35 +109,22 @@ export default function BlockItem({
       {showModal ? (
         <>
           <Box display={"flex"} flexDirection={"column"}>
-            <BlockController
-              name="Width"
-              value={width}
-              setValue={setWidth}
-              update={() => updateBlock()}
-            />
+            <BlockController name="Width" value={width} setValue={setWidth} />
             <BlockController
               name="Length"
               value={length}
               setValue={setLength}
-              update={updateBlock}
             />
-            <BlockController
-              name="Wall Size"
-              value={size}
-              setValue={setSize}
-              update={updateBlock}
-            />
+            <BlockController name="Wall Size" value={size} setValue={setSize} />
             <BlockController
               name="Wall Height"
               value={height}
               setValue={setHeight}
-              update={updateBlock}
             />
             <BlockController
               name="Lot Thick"
               value={tickLot}
               setValue={setTickLot}
-              update={updateBlock}
             />
           </Box>
         </>
@@ -131,13 +134,11 @@ export default function BlockItem({
             <SmallBlockController
               value={width}
               setValue={setWidth}
-              update={updateBlock}
               name="width"
             />
             <SmallBlockController
               value={length}
               setValue={setLength}
-              update={updateBlock}
               name="length"
             />
           </Box>
@@ -150,7 +151,6 @@ export default function BlockItem({
             value={_top}
             onChange={(e) => {
               _setTop(e.target.checked);
-              updateBlock();
             }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
@@ -161,7 +161,6 @@ export default function BlockItem({
             value={_floor}
             onChange={(e) => {
               _setFloor(e.target.checked);
-              updateBlock();
             }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
@@ -174,6 +173,7 @@ export default function BlockItem({
           {block.objects && countBlock ? (
             block.objects.map((e) => (
               <BlockItem
+                key={e.id} // Adicione uma chave única para cada item
                 updateLot={updateBlock}
                 block={e}
                 byLot={true}
@@ -198,7 +198,7 @@ export default function BlockItem({
                 tickLot: tickLot,
                 objects: block.objects,
                 floor: _floor,
-                top: _top
+                top: _top,
               })
             }
           >

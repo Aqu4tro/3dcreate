@@ -27,9 +27,9 @@ export type Room = {
   tickLot?: number;
   objects?: Room[];
   setObjects?: Dispatch<SetStateAction<Room[]>>;
-  top?:boolean;
-  floor?:boolean;
-  disable?:boolean; 
+  top?: boolean;
+  floor?: boolean;
+  disable?: boolean;
 };
 
 export default function Home() {
@@ -46,7 +46,7 @@ export default function Home() {
   const [floor, setFloor] = useState<boolean>(false);
   const [top, setTop] = useState<boolean>(false);
   const [countLot, setCountLot] = useState<number>(0);
-  
+
   const updateLot = (updatedBlock: Room) => {
     setLot((prevLot) =>
       prevLot.map((item) => (item.id === updatedBlock.id ? updatedBlock : item))
@@ -67,7 +67,6 @@ export default function Home() {
         objects: [],
         top: true,
         floor: true,
-
       },
     ]);
     setCountLot(countLot + 1);
@@ -96,7 +95,7 @@ export default function Home() {
                 tickLot: tickLot,
                 floor: true,
                 disable: false,
-                top:true
+                top: true,
               })
             }
             setHeight={setHeight}
@@ -135,7 +134,7 @@ export default function Home() {
         </Button>
         <Canvas>
           <PerspectiveCamera position={[0, 0, -20]} />
-         
+
           {lot.map((item, index) => (
             <Lot
               key={index} // Add a unique key for each Lot
@@ -152,7 +151,7 @@ export default function Home() {
               floor={item.floor}
             />
           ))}
-  
+
           <OrbitControls rotateSpeed={0.2} />
           <ambientLight intensity={0.1} />
           <directionalLight position={[5, -50, 5]} color="blue" />
@@ -161,12 +160,7 @@ export default function Home() {
       <div style={{ width: "25vw", overflowY: "auto" }}>
         <Box padding={1}>
           {lot.map((e) => (
-            <BlockItem
-              updateLot={updateLot}
-              block={e}
-              top={top}
-              floor={floor}
-            />
+            <BlockItem updateLot={updateLot} block={e} />
           ))}
         </Box>
       </div>
