@@ -16,6 +16,7 @@ import { Box, Button } from "@mui/material";
 import Lot from "@/renderers/lotCreate/page";
 import Panel from "@/components/panel/page";
 import BlockItem from "@/components/blockItem/page";
+import BlockSmall from "@/components/blockSmall/page";
 export type Room = {
   id: number;
   byLot?: number;
@@ -26,10 +27,12 @@ export type Room = {
   name: string;
   tickLot?: number;
   objects?: Room[];
-  setObjects?: Dispatch<SetStateAction<Room[]>>;
+  //setObjects?: Dispatch<SetStateAction<Room[]>>;
   top?: boolean;
   floor?: boolean;
-  disable?: boolean;
+  disable: boolean;
+  selected?:boolean;
+  setSelected?:Dispatch<SetStateAction<boolean>>;
 };
 
 export default function Home() {
@@ -43,8 +46,6 @@ export default function Home() {
   const [lot, setLot] = useState<Room[]>([]);
   //const [objects, setObjects] = useState<Room[]>([]);
   const [tickLot, setTickLot] = useState<number>(0);
-  const [floor, setFloor] = useState<boolean>(false);
-  const [top, setTop] = useState<boolean>(false);
   const [countLot, setCountLot] = useState<number>(0);
 
   const updateLot = (updatedBlock: Room) => {
@@ -52,6 +53,19 @@ export default function Home() {
       prevLot.map((item) => (item.id === updatedBlock.id ? updatedBlock : item))
     );
   };
+  const toggleSelectLot = (id: number, t: "D" | "S") => {
+    
+    setLot((prevLot) =>
+      prevLot.map((item) =>
+        t === "D" ? item.id === id ? { ...item, disable: !item.disable } : item :
+        item.id === id ? { ...item, selected: !item.selected } : item
+        
+      )
+      
+    );
+    
+  };
+  
   //criar novo terreno
   function createLot({ id, length, width, size, height, name, tickLot }: Room) {
     setLot((preview) => [
@@ -67,6 +81,9 @@ export default function Home() {
         objects: [],
         top: true,
         floor: true,
+        disable: false,
+        selected: false,
+        
       },
     ]);
     setCountLot(countLot + 1);
@@ -93,9 +110,8 @@ export default function Home() {
                 height: height,
                 name: nameObject,
                 tickLot: tickLot,
-                floor: true,
                 disable: false,
-                top: true,
+               
               })
             }
             setHeight={setHeight}
@@ -146,8 +162,10 @@ export default function Home() {
               height={item.height}
               objects={item.objects}
               tickLot={item.tickLot}
-              disable={false}
+              disable={item.disable}
               top={item.top}
+              selected={item.selected}
+              setSelected={() => toggleSelectLot(item.id, "S")}
               floor={item.floor}
             />
           ))}
@@ -160,8 +178,15 @@ export default function Home() {
       <div style={{ width: "25vw", overflowY: "auto" }}>
         <Box padding={1}>
           {lot.map((e) => (
-            <BlockItem updateLot={updateLot} block={e} />
-          ))}
+            e.selected ? (
+            <BlockItem updateLot={updateLot} block={e} disable={e.disable} setDisable={() => toggleSelectLot(e.id, "D")}/>
+          ):( <BlockSmall 
+            key={e.id} // Adicione uma chave única para cada item
+            name={e.name} 
+            disable={e.disable} 
+            select={e.selected} 
+            setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
+          />)))}
         </Box>
       </div>
     </div>

@@ -11,6 +11,8 @@ interface BlockItemProps {
   _byLot?: number;
   floor?: boolean;
   top?: boolean;
+  disable: boolean;
+  setDisable: () => void;
   updateLot: (updatedBlock: Room) => void; // Adiciona a função de
 }
 
@@ -19,18 +21,17 @@ export default function BlockItem({
   byLot,
   _byLot,
   updateLot,
-  top,
-  floor,
+  disable,
+  setDisable,
 }: BlockItemProps) {
   const [width, setWidth] = useState<number>(block.width);
   const [height, setHeight] = useState<number>(block.height || 0);
   const [size, setSize] = useState<number>(block.size || 0);
   const [length, setLength] = useState<number>(block.length || 0);
   const [tickLot, setTickLot] = useState<number>(block.tickLot || 0);
-  const [_floor, _setFloor] = useState<boolean>(false);
-  const [_top, _setTop] = useState<boolean>(false);
+  const [_floor, _setFloor] = useState<boolean>(true);
+  const [_top, _setTop] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [disable, setDisable] = useState<boolean>(false);
   const [countBlock, setCountBlock] = useState<number>(0);
 
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
@@ -41,6 +42,7 @@ export default function BlockItem({
   block.size = size;
   block.floor = _floor;
   block.top = _top;
+  block.objects = blocks;
 
   //função de update da rendenização
   const updateBlock = () => {
@@ -55,7 +57,15 @@ export default function BlockItem({
       floor: _floor,
     });
   };
-
+  const toggleSelectLot = (id: number, t: "D" | "S") => {
+    setBlocks((prevLot) =>
+      prevLot.map((item) =>
+        t == "D" ? item.id === id ? { ...item, disable: !item.disable } : item :
+        item.id === id ? { ...item, selected: !item.selected } : item
+        
+      )
+    );
+  };
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
   }, [_top, _floor, width, height, size, length, tickLot]);
@@ -87,12 +97,14 @@ export default function BlockItem({
         tickLot,
         top,
         floor,
+        disable:false,
       });
       setCountBlock(Number(countBlock + 1));
     }
   }
 
   return (
+    
     <Box
       width={"100%"}
       padding={showModal ? 1 : 2}
@@ -179,6 +191,8 @@ export default function BlockItem({
                 byLot={true}
                 floor={_floor}
                 top={_top}
+                disable={disable}
+                setDisable={() => toggleSelectLot(e.id, "D")}
               />
             ))
           ) : (
@@ -199,6 +213,7 @@ export default function BlockItem({
                 objects: block.objects,
                 floor: _floor,
                 top: _top,
+                disable: false,
               })
             }
           >

@@ -2,7 +2,7 @@ import { Box, Checkbox, Typography } from "@mui/material";
 import { Room } from "@/app/page";
 import { Dispatch, SetStateAction } from "react";
 
-const BlockHeader = ({ name, id, disable, setDisable }: { name:string, id:number, disable:boolean, setDisable:Dispatch<SetStateAction<boolean>> }) => {
+const BlockHeader = ({ name, id, disable, setDisable }: { name:string, id:number, disable:boolean, setDisable: () => void; }) => {
     return (
        <Box>
         <Box display={"flex"} position="relative" justifyContent={"center"}>
@@ -19,7 +19,7 @@ const BlockHeader = ({ name, id, disable, setDisable }: { name:string, id:number
                   <Typography>Disable</Typography>
                   <Checkbox
                     value={disable}
-                    onChange={(e) => setDisable(e.target.checked)}
+                    onChange={setDisable}
                     sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
                   />
                 </Box>
