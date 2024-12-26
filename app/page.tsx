@@ -1,16 +1,8 @@
 "use client";
-import Image from "next/image";
+
 import { Canvas } from "@react-three/fiber";
-import Floor from "@/components/floor/page";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Add, ArrowBack } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
 import Lot from "@/renderers/lotCreate/page";
@@ -27,12 +19,15 @@ export type Room = {
   name: string;
   tickLot?: number;
   objects?: Room[];
-  //setObjects?: Dispatch<SetStateAction<Room[]>>;
   top?: boolean;
   floor?: boolean;
   disable: boolean;
-  selected?:boolean;
-  setSelected?:Dispatch<SetStateAction<boolean>>;
+  selected?: boolean;
+  setSelected?: Dispatch<SetStateAction<boolean>>;
+  position: { x: number; y: number; z: number };
+  rotation: { x: number; y: number; z: number };
+  angle_Top:{x: number; y: number; z: number};
+  texture?: string;
 };
 
 export default function Home() {
@@ -44,7 +39,6 @@ export default function Home() {
   const [thick, setThick] = useState<boolean>(false);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
   const [lot, setLot] = useState<Room[]>([]);
-  //const [objects, setObjects] = useState<Room[]>([]);
   const [tickLot, setTickLot] = useState<number>(0);
   const [countLot, setCountLot] = useState<number>(0);
 
@@ -54,18 +48,20 @@ export default function Home() {
     );
   };
   const toggleSelectLot = (id: number, t: "D" | "S") => {
-    
     setLot((prevLot) =>
       prevLot.map((item) =>
-        t === "D" ? item.id === id ? { ...item, disable: !item.disable } : item :
-        item.id === id ? { ...item, selected: !item.selected } : item
-        
+        t === "D"
+          ? item.id === id
+            ? { ...item, disable: !item.disable }
+            : item
+          : item.id === id
+          ? { ...item, selected: !item.selected }
+          : item
       )
-      
     );
     
   };
-  
+
   //criar novo terreno
   function createLot({ id, length, width, size, height, name, tickLot }: Room) {
     setLot((preview) => [
@@ -83,7 +79,10 @@ export default function Home() {
         floor: true,
         disable: false,
         selected: false,
-        
+        texture: "",
+        position: { x: 0, y: 0, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 },
+        angle_Top: {x: 0, y: 0, z: 0},
       },
     ]);
     setCountLot(countLot + 1);
@@ -111,7 +110,11 @@ export default function Home() {
                 name: nameObject,
                 tickLot: tickLot,
                 disable: false,
-               
+                floor: true,
+                top: true,
+                position: { x: 0, y: 0, z: 0 },
+                angle_Top: {x: 0, y: 0, z: 0},
+                rotation: { x: 0, y: 0, z: 0 },
               })
             }
             setHeight={setHeight}
@@ -167,6 +170,9 @@ export default function Home() {
               selected={item.selected}
               setSelected={() => toggleSelectLot(item.id, "S")}
               floor={item.floor}
+              position={item.position}
+              rotation={item.rotation}
+              angle_Top={item.angle_Top}
             />
           ))}
 
@@ -177,16 +183,24 @@ export default function Home() {
       </div>
       <div style={{ width: "25vw", overflowY: "auto" }}>
         <Box padding={1}>
-          {lot.map((e) => (
+          {lot.map((e) =>
             e.selected ? (
-            <BlockItem updateLot={updateLot} block={e} disable={e.disable} setDisable={() => toggleSelectLot(e.id, "D")}/>
-          ):( <BlockSmall 
-            key={e.id} // Adicione uma chave única para cada item
-            name={e.name} 
-            disable={e.disable} 
-            select={e.selected} 
-            setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
-          />)))}
+              <BlockItem
+                updateLot={updateLot}
+                block={e}
+                disable={e.disable}
+                setDisable={() => toggleSelectLot(e.id, "D")}
+              />
+            ) : (
+              <BlockSmall
+                key={e.id} // Adicione uma chave única para cada item
+                name={e.name}
+                disable={e.disable}
+                select={e.selected}
+                setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
+              />
+            )
+          )}
         </Box>
       </div>
     </div>

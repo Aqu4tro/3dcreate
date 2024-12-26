@@ -33,6 +33,17 @@ export default function BlockItem({
   const [_top, _setTop] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [countBlock, setCountBlock] = useState<number>(0);
+  const [position, setPosition] = useState<{ x: number; y: number; z: number }>(
+    block.position
+  );
+  const [rotation, setRotation] = useState<{ x: number; y: number; z: number }>(
+    block.rotation
+  );
+  const [angle_Top, setAngle_Top] = useState<{
+    x: number;
+    y: number;
+    z: number;
+  }>(block.angle_Top);
 
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
   block.width = width;
@@ -43,6 +54,9 @@ export default function BlockItem({
   block.floor = _floor;
   block.top = _top;
   block.objects = blocks;
+  block.position = position;
+  block.rotation = rotation;
+  block.angle_Top = angle_Top;
 
   //função de update da rendenização
   const updateBlock = () => {
@@ -60,15 +74,30 @@ export default function BlockItem({
   const toggleSelectLot = (id: number, t: "D" | "S") => {
     setBlocks((prevLot) =>
       prevLot.map((item) =>
-        t == "D" ? item.id === id ? { ...item, disable: !item.disable } : item :
-        item.id === id ? { ...item, selected: !item.selected } : item
-        
+        t == "D"
+          ? item.id === id
+            ? { ...item, disable: !item.disable }
+            : item
+          : item.id === id
+          ? { ...item, selected: !item.selected }
+          : item
       )
     );
   };
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
-  }, [_top, _floor, width, height, size, length, tickLot]);
+  }, [
+    _top,
+    _floor,
+    width,
+    height,
+    size,
+    length,
+    tickLot,
+    position,
+    rotation,
+    angle_Top,
+  ]);
   //criação de blocos
   function createBlock({
     id,
@@ -81,6 +110,9 @@ export default function BlockItem({
     objects,
     top,
     floor,
+    position,
+    rotation,
+    angle_Top,
   }: Room) {
     updateBlock();
     if (
@@ -97,14 +129,21 @@ export default function BlockItem({
         tickLot,
         top,
         floor,
-        disable:false,
+        disable: disable,
+        position: { x: 0, y: 0, z: 0 },
+        rotation: { x: 0, y: 0, z: 0 },
+        angle_Top: { x: 0, y: 0, z: 0 },
       });
       setCountBlock(Number(countBlock + 1));
     }
   }
-
+  const updateXPosition = (newX: number) => {
+    setPosition((prevPosition) => ({
+      ...prevPosition, // Spread operator to keep y and z unchanged
+      x: newX, // Update only x
+    }));
+  };
   return (
-    
     <Box
       width={"100%"}
       padding={showModal ? 1 : 2}
@@ -138,6 +177,16 @@ export default function BlockItem({
               value={tickLot}
               setValue={setTickLot}
             />
+            <Box>
+              <Typography>Position</Typography>
+              <BlockController
+                name="X"
+                value={position.x}
+                setValue={(newX) =>
+                  setPosition((prev) => ({ ...prev, x: newX as number }))
+                }
+              />
+            </Box>
           </Box>
         </>
       ) : (
@@ -178,26 +227,20 @@ export default function BlockItem({
           />
         </Box>
       </Box>
-      {byLot ? (
-        <></>
-      ) : (
+      {!byLot && (
         <Box>
-          {block.objects && countBlock ? (
-            block.objects.map((e) => (
-              <BlockItem
-                key={e.id} // Adicione uma chave única para cada item
-                updateLot={updateBlock}
-                block={e}
-                byLot={true}
-                floor={_floor}
-                top={_top}
-                disable={disable}
-                setDisable={() => toggleSelectLot(e.id, "D")}
-              />
-            ))
-          ) : (
-            <></>
-          )}
+          {blocks.map((e) => (
+            <BlockItem
+              key={e.id}
+              updateLot={updateBlock}
+              block={e}
+              byLot={true}
+              floor={e.floor}
+              top={e.top}
+              disable={e.disable}
+              setDisable={() => toggleSelectLot(e.id, "D")}
+            />
+          ))}
 
           <Button
             sx={{ alignItems: "center", width: "100%", color: "white" }}
@@ -213,7 +256,10 @@ export default function BlockItem({
                 objects: block.objects,
                 floor: _floor,
                 top: _top,
-                disable: false,
+                disable: block.disable,
+                position: { x: 0, y: 0, z: 0 },
+                rotation: { x: 0, y: 0, z: 0 },
+                angle_Top: { x: 0, y: 0, z: 0 },
               })
             }
           >

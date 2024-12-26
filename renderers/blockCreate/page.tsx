@@ -2,6 +2,7 @@ import { Room } from "@/app/page";
 import { Text } from "@react-three/drei";
 import * as THREE from  "three";
 import { walls } from "../lotCreate/page";
+import { useEffect, useState } from "react";
 
 export default function Block({id,
   width,
@@ -14,6 +15,13 @@ export default function Block({id,
   top,
   floor,
 byLot}:Room){
+
+    const [isDisabled, setIsDisabled] = useState(disable);
+
+    useEffect(() => {
+      setIsDisabled(disable);
+      console.log("disable", disable);
+    }, [disable]);
     return (
         !disable && tickLot && (
       <>

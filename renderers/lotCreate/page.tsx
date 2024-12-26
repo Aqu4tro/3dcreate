@@ -4,6 +4,7 @@ import * as THREE from "three";
 import Block from "../blockCreate/page";
 import { ClickAwayListener } from "@mui/material";
 import { ThreeEvent } from "@react-three/fiber";
+import { Vector3 } from "three";
 
 interface LotProps extends Room {
   selected: boolean | undefined;
@@ -35,21 +36,22 @@ export default function Lot({
   setSelected,
   disable,
   top,
-  floor
+  floor,
+  position,
 }: LotProps) {
 
   // Function to toggle selection state
-  const switchSelect = (event: ThreeEvent<MouseEvent>) => {
+  function switchSelect(event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent) {
     event.stopPropagation(); // Prevent click event from bubbling up
     setSelected(); // Call the setSelected function
-    console.log(`Lot ${name} selected!`); // Optional logging for debugging
+    
   };
 
   return (
     !disable && tickLot && (
       <>
         
-          <mesh onClick={(event) => switchSelect(event)}>
+          <mesh onClick={(event) => switchSelect(event)} position={[position.x, position.y, position.z]}>
             {/* Render floor */}
             {floor && (
               <mesh
@@ -93,10 +95,13 @@ export default function Lot({
                 disable={e.disable}
                 top={e.top}
                 floor={e.floor}
+                position={e.position}
+                rotation={e.rotation}
+                angle_Top={e.angle_Top}
               />
             ))}
           </mesh>
-        
+     
       </>
     )
   );
