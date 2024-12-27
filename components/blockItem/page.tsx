@@ -13,6 +13,8 @@ interface BlockItemProps {
   top?: boolean;
   disable: boolean;
   setDisable: () => void;
+  setSelect: () => void;
+  select: boolean | undefined;
   updateLot: (updatedBlock: Room) => void; // Adiciona a função de
 }
 
@@ -23,14 +25,16 @@ export default function BlockItem({
   updateLot,
   disable,
   setDisable,
+  setSelect,
+  select,
 }: BlockItemProps) {
   const [width, setWidth] = useState<number>(block.width);
   const [height, setHeight] = useState<number>(block.height || 0);
   const [size, setSize] = useState<number>(block.size || 0);
   const [length, setLength] = useState<number>(block.length || 0);
   const [tickLot, setTickLot] = useState<number>(block.tickLot || 0);
-  const [_floor, _setFloor] = useState<boolean>(true);
-  const [_top, _setTop] = useState<boolean>(true);
+  const [_floor, _setFloor] = useState<boolean>(block.floor);
+  const [_top, _setTop] = useState<boolean>(block.top);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [countBlock, setCountBlock] = useState<number>(0);
   const [position, setPosition] = useState<{ x: number; y: number; z: number }>(
@@ -59,7 +63,7 @@ export default function BlockItem({
   block.angle_Top = angle_Top;
 
   //função de update da rendenização
-  const updateBlock = () => {
+  function updateBlock() {
     updateLot({
       ...block,
       width: width,
@@ -70,10 +74,10 @@ export default function BlockItem({
       top: _top,
       floor: _floor,
     });
-  };
+  }
   const toggleSelectLot = (id: number, t: "D" | "S") => {
-    setBlocks((prevLot) =>
-      prevLot.map((item) =>
+    setBlocks((prevLot) => {
+      return prevLot.map((item) =>
         t == "D"
           ? item.id === id
             ? { ...item, disable: !item.disable }
@@ -81,9 +85,10 @@ export default function BlockItem({
           : item.id === id
           ? { ...item, selected: !item.selected }
           : item
-      )
-    );
+      );
+    });
   };
+
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
   }, [
@@ -97,7 +102,10 @@ export default function BlockItem({
     position,
     rotation,
     angle_Top,
+    disable,
+    select,
   ]);
+
   //criação de blocos
   function createBlock({
     id,
@@ -130,9 +138,9 @@ export default function BlockItem({
         top,
         floor,
         disable: disable,
-        position: { x: 0, y: 0, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 },
-        angle_Top: { x: 0, y: 0, z: 0 },
+        position,
+        rotation,
+        angle_Top,
       });
       setCountBlock(Number(countBlock + 1));
     }
@@ -156,6 +164,9 @@ export default function BlockItem({
         id={block.id}
         disable={disable}
         setDisable={setDisable}
+        select={block.selected}
+        setSelect={setSelect}
+        byLot={byLot}
       />
       {showModal ? (
         <>
@@ -186,6 +197,20 @@ export default function BlockItem({
                   setPosition((prev) => ({ ...prev, x: newX as number }))
                 }
               />
+              <BlockController
+                name="Y"
+                value={position.y}
+                setValue={(newY) =>
+                  setPosition((prev) => ({ ...prev, y: newY as number }))
+                }
+              />
+              <BlockController
+                name="Z"
+                value={position.z}
+                setValue={(newZ) =>
+                  setPosition((prev) => ({ ...prev, z: newZ as number }))
+                }
+              />
             </Box>
           </Box>
         </>
@@ -209,7 +234,7 @@ export default function BlockItem({
         <Box display={"flex"} alignItems={"center"}>
           <Typography>Show Top</Typography>
           <Checkbox
-            value={_top}
+            checked={_top}
             onChange={(e) => {
               _setTop(e.target.checked);
             }}
@@ -219,7 +244,7 @@ export default function BlockItem({
         <Box display={"flex"} alignItems={"center"}>
           <Typography>Show Floor</Typography>
           <Checkbox
-            value={_floor}
+            checked={_floor}
             onChange={(e) => {
               _setFloor(e.target.checked);
             }}
@@ -239,6 +264,8 @@ export default function BlockItem({
               top={e.top}
               disable={e.disable}
               setDisable={() => toggleSelectLot(e.id, "D")}
+              select={e.selected}
+              setSelect={() => toggleSelectLot(e.id, "S")}
             />
           ))}
 
@@ -257,9 +284,10 @@ export default function BlockItem({
                 floor: _floor,
                 top: _top,
                 disable: block.disable,
-                position: { x: 0, y: 0, z: 0 },
-                rotation: { x: 0, y: 0, z: 0 },
-                angle_Top: { x: 0, y: 0, z: 0 },
+                selected: block.selected,
+                position: position,
+                rotation: rotation,
+                angle_Top: angle_Top,
               })
             }
           >

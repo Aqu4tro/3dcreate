@@ -19,14 +19,14 @@ export type Room = {
   name: string;
   tickLot?: number;
   objects?: Room[];
-  top?: boolean;
-  floor?: boolean;
+  top: boolean;
+  floor: boolean;
   disable: boolean;
   selected?: boolean;
   setSelected?: Dispatch<SetStateAction<boolean>>;
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
-  angle_Top:{x: number; y: number; z: number};
+  angle_Top: { x: number; y: number; z: number };
   texture?: string;
 };
 
@@ -59,11 +59,20 @@ export default function Home() {
           : item
       )
     );
-    
   };
 
   //criar novo terreno
-  function createLot({ id, length, width, size, height, name, tickLot }: Room) {
+  function createLot({
+    id,
+    length,
+    width,
+    size,
+    height,
+    name,
+    tickLot,
+    top,
+    floor,
+  }: Room) {
     setLot((preview) => [
       ...preview,
       {
@@ -75,14 +84,14 @@ export default function Home() {
         name,
         tickLot,
         objects: [],
-        top: true,
-        floor: true,
+        top,
+        floor,
         disable: false,
         selected: false,
         texture: "",
         position: { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
-        angle_Top: {x: 0, y: 0, z: 0},
+        angle_Top: { x: 0, y: 0, z: 0 },
       },
     ]);
     setCountLot(countLot + 1);
@@ -113,7 +122,7 @@ export default function Home() {
                 floor: true,
                 top: true,
                 position: { x: 0, y: 0, z: 0 },
-                angle_Top: {x: 0, y: 0, z: 0},
+                angle_Top: { x: 0, y: 0, z: 0 },
                 rotation: { x: 0, y: 0, z: 0 },
               })
             }
@@ -154,9 +163,9 @@ export default function Home() {
         <Canvas>
           <PerspectiveCamera position={[0, 0, -20]} />
 
-          {lot.map((item, index) => (
+          {lot.map((item) => (
             <Lot
-              key={index} // Add a unique key for each Lot
+            
               id={item.id}
               length={item.length}
               width={item.width}
@@ -190,13 +199,14 @@ export default function Home() {
                 block={e}
                 disable={e.disable}
                 setDisable={() => toggleSelectLot(e.id, "D")}
+                setSelect={() => toggleSelectLot(e.id, "S")}
+                select={e.selected}
               />
             ) : (
               <BlockSmall
                 key={e.id} // Adicione uma chave única para cada item
                 name={e.name}
                 disable={e.disable}
-                select={e.selected}
                 setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
               />
             )
