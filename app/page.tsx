@@ -26,7 +26,7 @@ export type Room = {
   setSelected?: Dispatch<SetStateAction<boolean>>;
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
-  angle_Top: { x: number; y: number; z: number };
+  angle_Top: { f: number; l: number; r: number; b: number };
   texture?: string;
 };
 
@@ -91,7 +91,7 @@ export default function Home() {
         texture: "",
         position: { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
-        angle_Top: { x: 0, y: 0, z: 0 },
+        angle_Top: { f: 0, l: 0, r: 0 , b: 0},
       },
     ]);
     setCountLot(countLot + 1);
@@ -122,7 +122,7 @@ export default function Home() {
                 floor: true,
                 top: true,
                 position: { x: 0, y: 0, z: 0 },
-                angle_Top: { x: 0, y: 0, z: 0 },
+                angle_Top: { f: 0, l: 0, r: 0, b: 0 },
                 rotation: { x: 0, y: 0, z: 0 },
               })
             }

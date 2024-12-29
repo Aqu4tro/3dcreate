@@ -14,6 +14,8 @@ export default function Block({
   disable,
   top,
   position,
+  rotation,
+  angle_Top,
   floor,
   byLot,
 }: Room) {
@@ -26,7 +28,7 @@ export default function Block({
 
   return !disable && tickLot ? (
     <>
-    <mesh position={[position.x, position.y, position.z]}>
+    <mesh position={[position.x, position.y, position.z]} rotation={new THREE.Euler(rotation.x, rotation.y, rotation.z)}>
 
     
       {/* Render floor */}
@@ -57,7 +59,7 @@ export default function Block({
       {height &&
         size &&
         tickLot &&
-        walls({ width, height, size, length, tickLot, topSize: 0.1 }).map(
+        walls({ width, height, size, length, tickLot, topSize: 0.1, angle_Top }).map(
           (e, index) => (
             <mesh
               key={index}

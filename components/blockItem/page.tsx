@@ -44,9 +44,10 @@ export default function BlockItem({
     block.rotation
   );
   const [angle_Top, setAngle_Top] = useState<{
-    x: number;
-    y: number;
-    z: number;
+    f: number;
+    l: number;
+    r: number;
+    b: number;
   }>(block.angle_Top);
 
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
@@ -145,12 +146,6 @@ export default function BlockItem({
       setCountBlock(Number(countBlock + 1));
     }
   }
-  const updateXPosition = (newX: number) => {
-    setPosition((prevPosition) => ({
-      ...prevPosition, // Spread operator to keep y and z unchanged
-      x: newX, // Update only x
-    }));
-  };
   return (
     <Box
       width={"100%"}
@@ -190,6 +185,7 @@ export default function BlockItem({
             />
             <Box>
               <Typography>Position</Typography>
+              <br />
               <BlockController
                 name="X"
                 value={position.x}
@@ -211,6 +207,64 @@ export default function BlockItem({
                   setPosition((prev) => ({ ...prev, z: newZ as number }))
                 }
               />
+            </Box>
+            <Box>
+              <Typography>Rotation</Typography>
+              <br />
+              <BlockController
+                name="X"
+                value={rotation.x}
+                setValue={(newX) =>
+                  setRotation((prev) => ({ ...prev, x: newX as number }))
+                }
+              />
+              <BlockController
+                name="Y"
+                value={rotation.y}
+                setValue={(newY) =>
+                  setRotation((prev) => ({ ...prev, y: newY as number }))
+                }
+              />
+              <BlockController
+                name="Z"
+                value={rotation.z}
+                setValue={(newZ) =>
+                  setRotation((prev) => ({ ...prev, z: newZ as number }))
+                }
+              />
+            </Box>
+            <Box>
+              <Typography>Angle Top</Typography>
+              <Box display={"flex"} gap={".5vw"} padding={".1vw"}>
+              <SmallBlockController
+                name="Front"
+                value={angle_Top.f}
+                setValue={(newF) =>
+                  setAngle_Top((prev) => ({ ...prev, f: newF as number }))
+                }
+              />
+              <SmallBlockController
+                name="Left"
+                value={angle_Top.l}
+                setValue={(newL) =>
+                  setAngle_Top((prev) => ({ ...prev, l: newL as number }))
+                }
+              />
+              <SmallBlockController
+                name="Right"
+                value={angle_Top.r}
+                setValue={(newR) =>
+                  setAngle_Top((prev) => ({ ...prev, r: newR as number }))
+                }
+              />
+              <SmallBlockController
+                name="Back"
+                value={angle_Top.b}
+                setValue={(newB) =>
+                  setAngle_Top((prev) => ({ ...prev, b: newB as number }))
+                }
+              />
+              </Box>
             </Box>
           </Box>
         </>
