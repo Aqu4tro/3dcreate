@@ -16,8 +16,8 @@ export function walls({ width, length, tickLot, topSize, size, height, angle_Top
 
   walls.push({ x: 0, y: (height / 2 - (topSize - tickLot) / 2) + angle_Top.f * 4, z: -length / 2 + sizePin, H: height - (topSize + tickLot) + angle_Top.f * 9, W: width, L: size, N: "F" });
   walls.push({ x: 0, y: (height / 2 - (topSize - tickLot) / 2) + angle_Top.b * 4, z: length / 2 - sizePin, H: height - (topSize + tickLot) + (angle_Top.b) * 9, W: width, L: size, N: "B" });
-  walls.push({ x: width / 2 - sizePin, y: (height / 2 - (topSize - tickLot) / 2) + angle_Top.r, z: 0, H: height - (topSize + tickLot), W: size, L: length, N: "R" });
-  walls.push({ x: -width / 2 + sizePin, y: (height / 2 - (topSize - tickLot) / 2) + angle_Top.l, z: 0, H: height - (topSize + tickLot), W: size, L: length, N: "L" });
+  walls.push({ x: width / 2 - sizePin, y: (height / 2 - (topSize - tickLot) / 2) + angle_Top.l * 4, z: 0, H: height - (topSize + tickLot) + angle_Top.l * 9, W: size, L: length, N: "R" });
+  walls.push({ x: -width / 2 + sizePin, y: (height / 2 - (topSize - tickLot) / 2) + angle_Top.r * 4, z: 0, H: height - (topSize + tickLot) + angle_Top.r * 9, W: size, L: length, N: "L" });
 
   return walls;
 }
@@ -68,7 +68,7 @@ export default function Lot({
 
           {/* Render top surface if height is defined */}
           {height && top && (
-            <mesh position={[0, height - .05 + ((angle_Top.b || angle_Top.f) ? (angle_Top.b || angle_Top.f) + 0.155 * 2  : 0), 0]} rotation={new THREE.Euler(angle_Top.f || -angle_Top.b, 0, angle_Top.r)} name="top-surface">
+            <mesh position={[0, height - .05 + ((angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) ? (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) + 0.155 * 2 : 0), 0]} rotation={new THREE.Euler(angle_Top.f || -angle_Top.b, 0, angle_Top.l || -angle_Top.r)} name="top-surface">
               <boxGeometry args={[width + .3, .1, length + .3]} />
               <meshBasicMaterial color={"blue"} />
             </mesh>
@@ -78,23 +78,25 @@ export default function Lot({
           {height && size && tickLot && walls({ width, height, size, length, tickLot, topSize: .1, angle_Top }).map((e, index) => {
             let vertices = new Float32Array();
             let vertices_2 = new Float32Array();
-            let vertices_3 = new Float32Array();
+            
             switch (e.N) {
               case "R":
-                vertices = new Float32Array(angle_Top.b ? [ - size / 2 ,height / 2 - 0.1, length /2 ,  - size / 2 , e.y + angle_Top.b * 8.5 -0.1 , length /2 ,- size / 2, height / 2 - 0.1, -length / 2] : (angle_Top.f ? [- size / 2, height / 2 - 0.1, length /2 - size,  - size / 2, e.y + angle_Top.f * 8.5 - 0.1, -length / 2 + size ,- size / 2, height / 2 - 0.1, -length / 2 + size] : []));
-                vertices_2 = new Float32Array(angle_Top.b ? [  size ,  e.y + angle_Top.b * 8.5 - 0.1, length /2,   size , height / 2 - 0.1, length /2 , size , height / 2 - 0.1, -length / 2] : (angle_Top.f ? [ size / 2, height / 2 - 0.1, -length /2 + size,  size / 2, e.y + angle_Top.f * 8.5   - 0.1, -length / 2 + size , size / 2, height / 2 - 0.1, length / 2] : []));
-               
+                vertices = new Float32Array(angle_Top.b ? [- size / 2, height / 2 - 0.1, length / 2, - size / 2, e.y + angle_Top.b * 8.5 - 0.1, length / 2, - size / 2, height / 2 - 0.1, -length / 2] : (angle_Top.f ? [- size / 2, height / 2 - 0.1, length / 2 - size, - size / 2, e.y + angle_Top.f * 8.5 - 0.1, -length / 2 + size, - size / 2, height / 2 - 0.1, -length / 2 + size] : []));
+                vertices_2 = new Float32Array(angle_Top.b ? [size, e.y + angle_Top.b * 8.5 - 0.1, length / 2, size, height / 2 - 0.1, length / 2, size, height / 2 - 0.1, -length / 2] : (angle_Top.f ? [size / 2, height / 2 - 0.1, -length / 2 + size, size / 2, e.y + angle_Top.f * 8.5 - 0.1, -length / 2 + size, size / 2, height / 2 - 0.1, length / 2] : []));
+
                 break;
               case "L":
-                vertices = new Float32Array(angle_Top.b ? [ - size / 2 ,height / 2 - 0.1, length /2 ,  - size / 2 , e.y + angle_Top.b * 8.5 -0.1 , length /2 ,- size / 2, height / 2 - 0.1, -length / 2]  : (angle_Top.f ? [ - size / 2, height / 2 - 0.1, length /2 - size,  - size / 2, e.y + angle_Top.f * 8.5 - 0.1, -length / 2 + size , - size / 2, height / 2 - 0.1, -length / 2 + size] : []));
-                vertices_2 = new Float32Array(angle_Top.b ? [  size ,  e.y + angle_Top.b * 8.5 - 0.1, length /2,   size , height / 2 - 0.1, length /2 , size , height / 2 - 0.1, -length / 2] : (angle_Top.f ? [size / 2, height / 2 - 0.1, -length /2 +  size, size / 2, e.y + angle_Top.f * 8.5 - 0.1, -length / 2 + size ,  size / 2, height / 2 - 0.1, length / 2] : []));
-               
+                vertices = new Float32Array(angle_Top.b ? [- size / 2, height / 2 - 0.1, length / 2, - size / 2, e.y + angle_Top.b * 8.5 - 0.1, length / 2, - size / 2, height / 2 - 0.1, -length / 2] : (angle_Top.f ? [- size / 2, height / 2 - 0.1, length / 2 - size, - size / 2, e.y + angle_Top.f * 8.5 - 0.1, -length / 2 + size, - size / 2, height / 2 - 0.1, -length / 2 + size] : []));
+                vertices_2 = new Float32Array(angle_Top.b ? [size, e.y + angle_Top.b * 8.5 - 0.1, length / 2, size, height / 2 - 0.1, length / 2, size, height / 2 - 0.1, -length / 2] : (angle_Top.f ? [size / 2, height / 2 - 0.1, -length / 2 + size, size / 2, e.y + angle_Top.f * 8.5 - 0.1, -length / 2 + size, size / 2, height / 2 - 0.1, length / 2] : []));
+
                 break;
               case "F":
-                //vertices = new Float32Array(angle_Top.r ? [1, 2, 3] : (angle_Top.l ? [1, 2, 3] : []));
+                vertices = new Float32Array(angle_Top.r ? [-length /2,  e.y + angle_Top.r * 8.5 - 0.1  , -size/2, length /2, height / 2 - 0.1, -size / 2, -length /2,height / 2 - 0.1  , -size / 2]: (angle_Top.l ? [-length / 2, height / 2 - 0.1, -size / 2, length / 2, e.y + angle_Top.l * 8.5 - 0.1, -size / 2, length / 2, height / 2 - 0.1, -size / 2] : []));
+                vertices_2 = new Float32Array(angle_Top.r ? [-length /2, height / 2 - 0.1 , size/2, length /2, height / 2 - 0.1, size / 2, -length /2,  e.y + angle_Top.r * 8.5 - 0.1 , size / 2] : (angle_Top.l ? [length / 2, e.y + angle_Top.l * 8.5 - 0.1, size / 2, -length / 2, height / 2 - 0.1, size / 2, length / 2, height / 2 - 0.1, size / 2] : []));
                 break;
               case "B":
-                //vertices = new Float32Array(angle_Top.r ? [1, 2, 3] : (angle_Top.l ? [1, 2, 3] : []));
+                vertices = new Float32Array(angle_Top.r ? [-length /2,  e.y + angle_Top.r * 8.5 - 0.1  , -size/2, length /2, height / 2 - 0.1, -size / 2, -length /2,height / 2 - 0.1  , -size / 2]: (angle_Top.l ? [-length / 2, height / 2 - 0.1, -size / 2, length / 2, e.y + angle_Top.l * 8.5 - 0.1, -size / 2, length / 2, height / 2 - 0.1, -size / 2] : []));
+                vertices_2 = new Float32Array(angle_Top.r ? [-length /2, height / 2 - 0.1 , size/2, length /2, height / 2 - 0.1, size / 2, -length /2,  e.y + angle_Top.r * 8.5 - 0.1 , size / 2] : (angle_Top.l ? [length / 2, e.y + angle_Top.l * 8.5 - 0.1, size / 2, -length / 2, height / 2 - 0.1, size / 2, length / 2, height / 2 - 0.1, size / 2] : []));
                 break;
 
             }
@@ -125,7 +127,7 @@ export default function Lot({
                           itemSize={1}
                         />
                       </bufferGeometry>
-                      {/*<meshBasicMaterial  color={"pink"}/>*/}
+                      <meshBasicMaterial  color={"pink"}/>
                     </mesh>
                     <mesh>
                       <bufferGeometry>
@@ -142,14 +144,14 @@ export default function Lot({
                           itemSize={1}
                         />
                       </bufferGeometry>
-                      <meshBasicMaterial color={"pink"}/>
+                      <meshBasicMaterial color={"pink"} />
                     </mesh>
                     <Plane
-                      args={[size, length]}
-                      rotation={new THREE.Euler((-angle_Top.f || angle_Top.b) * 14.75, 0, angle_Top.r)} 
-                      position={[0, height / 2 + (angle_Top.f || angle_Top.b) * 3.3, 0]}
+                      args={[(angle_Top.r || angle_Top.l) ? width : size, (angle_Top.r || angle_Top.l) ? size : length]}
+                      rotation={new THREE.Euler((angle_Top.l || angle_Top.r ? -1.573: (-angle_Top.f || -angle_Top.b) * 14.75), (angle_Top.l ? -angle_Top.l + 0.0115 :  angle_Top.r) - 0.0058   , 0 )}
+                      position={[0, height / 2 + (angle_Top.f || angle_Top.b || angle_Top.r || angle_Top.l) * 3.26, 0]}
                     >
-                      <meshBasicMaterial  color={"pink"}/>
+                      <meshBasicMaterial color={"pink"} />
                     </Plane>
                   </mesh>
                 )
@@ -158,7 +160,7 @@ export default function Lot({
 
 
 
-                {/*<boxGeometry args={[e.W, e.H, e.L]} />*/}
+                <boxGeometry args={[e.W, e.H, e.L]} />
 
                 <meshBasicMaterial color={"pink"} />
               </mesh>
