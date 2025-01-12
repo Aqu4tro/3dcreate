@@ -186,8 +186,8 @@ export default function Home() {
           ))}
 
           <OrbitControls rotateSpeed={0.2} />
-          <ambientLight intensity={0.1} />
-          <directionalLight position={[5, -50, 5]} color="blue" />
+          <ambientLight intensity={0.5 } />
+          <directionalLight position={[5, -50, 5]} color="white" />
         </Canvas>
       </div>
       <div style={{ width: "25vw", overflowY: "auto" }}>

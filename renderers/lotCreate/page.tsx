@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-
+import { TextureLoader } from "three";
 import { Room } from "@/app/page";
 import * as THREE from "three";
 import Block from "../blockCreate/page";
 import { ThreeEvent, useLoader } from "@react-three/fiber";
 import { Image, Plane, useTexture } from "@react-three/drei";
-import i from "./assets/walls.jpg";
+import i from "../../assets/walls.jpg";
 
 
 interface LotProps extends Room {
@@ -51,7 +51,7 @@ export default function Lot({
     setSelected(); // Call the setSelected function
 
   };
-  
+  const [texture] = useTexture(["/assets/walls.jpg"]);
 
 
   return (
@@ -125,6 +125,7 @@ export default function Lot({
                             array={vertices}
                             count={vertices.length / 3}
                             itemSize={3}
+                            
                           />
                           <bufferAttribute
                             attach="index"
@@ -133,7 +134,7 @@ export default function Lot({
                             itemSize={1}
                           />
                         </bufferGeometry>
-                        <meshStandardMaterial />
+                        <meshStandardMaterial map={texture} />
                       </mesh>
                       <mesh>
                         <bufferGeometry>
@@ -150,14 +151,14 @@ export default function Lot({
                             itemSize={1}
                           />
                         </bufferGeometry>
-                        <meshStandardMaterial />
+                        <meshStandardMaterial map={texture} />
                       </mesh>
                       <Plane
                         args={[(angle_Top.r || angle_Top.l) ? width : size, (angle_Top.r || angle_Top.l) ? size : length]}
                         rotation={new THREE.Euler((angle_Top.l || angle_Top.r ? -1.573: (-angle_Top.f || -angle_Top.b) * 14.75), (angle_Top.l ? -angle_Top.l + 0.0115 :  angle_Top.r) - 0.0058   , 0 )}
                         position={[0, height / 2 + (angle_Top.f || angle_Top.b || angle_Top.r || angle_Top.l) * 3.26, 0]}
                       >
-                        <meshStandardMaterial />
+                        <meshStandardMaterial map={texture} />
                       </Plane>
                     </mesh>
                   )
@@ -168,9 +169,9 @@ export default function Lot({
 
                   <boxGeometry args={[e.W, e.H, e.L]} />
 
-                  <meshStandardMaterial color={"white"}>
-                    <Image url={`${i}`} />
-                  </meshStandardMaterial>
+                  <meshStandardMaterial map={texture} />
+                    
+                 
                 </mesh>
 
 
