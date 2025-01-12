@@ -1,8 +1,11 @@
+import { useEffect, useState } from "react";
+
 import { Room } from "@/app/page";
 import * as THREE from "three";
 import Block from "../blockCreate/page";
-import { ThreeEvent } from "@react-three/fiber";
-import { Plane } from "@react-three/drei";
+import { ThreeEvent, useLoader } from "@react-three/fiber";
+import { Image, Plane, useTexture } from "@react-three/drei";
+import i from "./assets/walls.jpg";
 
 
 interface LotProps extends Room {
@@ -48,6 +51,8 @@ export default function Lot({
     setSelected(); // Call the setSelected function
 
   };
+  
+
 
   return (
     !disable && tickLot && (
@@ -63,6 +68,7 @@ export default function Lot({
             >
               <boxGeometry args={[width, tickLot, length]} />
               <meshBasicMaterial color="gray" />
+              
             </mesh>
           )}
 
@@ -107,63 +113,65 @@ export default function Lot({
             ]);
             console.log(vertices)
             return (
-              <mesh key={index} position={[e.x, e.y, e.z]} rotation={new THREE.Euler(0, 0, 0)} name={`wall-${index}`}>
+                <mesh key={index} position={[e.x, e.y, e.z]} rotation={new THREE.Euler(0, 0, 0)} name={`wall-${index}`}>
 
 
-                {vertices.length != 0 && (
-                  <mesh >
+                  {vertices.length != 0 && (
                     <mesh >
-                      <bufferGeometry>
-                        <bufferAttribute
-                          attach="attributes-position"
-                          array={vertices}
-                          count={vertices.length / 3}
-                          itemSize={3}
-                        />
-                        <bufferAttribute
-                          attach="index"
-                          array={indices}
-                          count={indices.length}
-                          itemSize={1}
-                        />
-                      </bufferGeometry>
-                      <meshBasicMaterial  color={"pink"}/>
+                      <mesh  >
+                        <bufferGeometry>
+                          <bufferAttribute
+                            attach="attributes-position"
+                            array={vertices}
+                            count={vertices.length / 3}
+                            itemSize={3}
+                          />
+                          <bufferAttribute
+                            attach="index"
+                            array={indices}
+                            count={indices.length}
+                            itemSize={1}
+                          />
+                        </bufferGeometry>
+                        <meshStandardMaterial />
+                      </mesh>
+                      <mesh>
+                        <bufferGeometry>
+                          <bufferAttribute
+                            attach="attributes-position"
+                            array={vertices_2}
+                            count={vertices_2.length / 3}
+                            itemSize={3}
+                          />
+                          <bufferAttribute
+                            attach="index"
+                            array={indices}
+                            count={indices.length}
+                            itemSize={1}
+                          />
+                        </bufferGeometry>
+                        <meshStandardMaterial />
+                      </mesh>
+                      <Plane
+                        args={[(angle_Top.r || angle_Top.l) ? width : size, (angle_Top.r || angle_Top.l) ? size : length]}
+                        rotation={new THREE.Euler((angle_Top.l || angle_Top.r ? -1.573: (-angle_Top.f || -angle_Top.b) * 14.75), (angle_Top.l ? -angle_Top.l + 0.0115 :  angle_Top.r) - 0.0058   , 0 )}
+                        position={[0, height / 2 + (angle_Top.f || angle_Top.b || angle_Top.r || angle_Top.l) * 3.26, 0]}
+                      >
+                        <meshStandardMaterial />
+                      </Plane>
                     </mesh>
-                    <mesh>
-                      <bufferGeometry>
-                        <bufferAttribute
-                          attach="attributes-position"
-                          array={vertices_2}
-                          count={vertices_2.length / 3}
-                          itemSize={3}
-                        />
-                        <bufferAttribute
-                          attach="index"
-                          array={indices}
-                          count={indices.length}
-                          itemSize={1}
-                        />
-                      </bufferGeometry>
-                      <meshBasicMaterial color={"pink"} />
-                    </mesh>
-                    <Plane
-                      args={[(angle_Top.r || angle_Top.l) ? width : size, (angle_Top.r || angle_Top.l) ? size : length]}
-                      rotation={new THREE.Euler((angle_Top.l || angle_Top.r ? -1.573: (-angle_Top.f || -angle_Top.b) * 14.75), (angle_Top.l ? -angle_Top.l + 0.0115 :  angle_Top.r) - 0.0058   , 0 )}
-                      position={[0, height / 2 + (angle_Top.f || angle_Top.b || angle_Top.r || angle_Top.l) * 3.26, 0]}
-                    >
-                      <meshBasicMaterial color={"pink"} />
-                    </Plane>
-                  </mesh>
-                )
+                  )
 
-                }
+                  }
 
 
 
-                <boxGeometry args={[e.W, e.H, e.L]} />
+                  <boxGeometry args={[e.W, e.H, e.L]} />
 
-                <meshBasicMaterial color={"pink"} />
-              </mesh>
+                  <meshStandardMaterial color={"white"}>
+                    <Image url={`${i}`} />
+                  </meshStandardMaterial>
+                </mesh>
 
 
             )
