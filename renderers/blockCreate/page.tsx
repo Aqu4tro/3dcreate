@@ -93,7 +93,7 @@ export default function Block({
               rotation={new THREE.Euler(0, 0, 0)}
               name={`wall-${index}`}
             >
-              {(angle_Top.f || angle_Top.r || angle_Top.b || angle_Top.l) !==
+              {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L" ) || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L" )) !==
                 0 && (
                 <InclinedWall
                   id={id}
@@ -103,7 +103,7 @@ export default function Block({
                   length={length}
                   angle_Top={angle_Top}
                   size={size}
-                  texture={texture}
+                  wallTexture={texture}
                   name={name}
                   tickLot={tickLot}
                   top={top}
@@ -111,6 +111,7 @@ export default function Block({
                   position={position}
                   rotation={rotation}
                   disable={disable}
+                  topSize={0.1}
                 />
               )}
               <boxGeometry args={[e.W, e.H, e.L]} />

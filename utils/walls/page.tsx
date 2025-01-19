@@ -29,36 +29,36 @@ export default function walls({
   const _topSize = topSize ? topSize : 0.1;
   walls.push({
     x: 0,
-    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.f * 4,
+    y: height / 2 + (_topSize - tickLot) / 2 + angle_Top.f * length/2,
     z: -length / 2 + sizePin,
-    H: height - (_topSize + tickLot) + angle_Top.f * 9,
+    H: height - (_topSize + tickLot) + (angle_Top.f * length),
     W: width,
     L: size,
     N: "F",
   });
   walls.push({
     x: 0,
-    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.b * 4,
+    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.b * length/2,
     z: length / 2 - sizePin,
-    H: height - (_topSize + tickLot) + angle_Top.b * 9,
+    H: height - (_topSize + tickLot) + (angle_Top.b * length),
     W: width,
     L: size,
     N: "B",
   });
   walls.push({
     x: width / 2 - sizePin,
-    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.l * 4,
+    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.l * width/2,
     z: 0,
-    H: height - (_topSize + tickLot) + angle_Top.l * 9,
+    H: height - (_topSize + tickLot) + (angle_Top.l * width),
     W: size,
     L: length,
     N: "R",
   });
   walls.push({
     x: -width / 2 + sizePin,
-    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.r * 4,
+    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.r * width/2,
     z: 0,
-    H: height - (_topSize + tickLot) + angle_Top.r * 9,
+    H: height - (_topSize + tickLot) + (angle_Top.r * width),
     W: size,
     L: length,
     N: "L",

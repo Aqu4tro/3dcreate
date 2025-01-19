@@ -29,7 +29,9 @@ export type Room = {
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
   angle_Top: { f: number; l: number; r: number; b: number };
-  texture?: THREE.Texture;
+  wallTexture?: THREE.Texture;
+  topTexture?: THREE.Texture;
+  floorTexture?: THREE.Texture;
 };
 
 export default function Home() {
@@ -90,7 +92,9 @@ export default function Home() {
         floor,
         disable: false,
         selected: false,
-        texture: undefined,
+        wallTexture: undefined,
+        topTexture: undefined,
+        floorTexture: undefined,
         position: { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
         angle_Top: { f: 0, l: 0, r: 0, b: 0 },
@@ -183,6 +187,9 @@ export default function Home() {
               position={item.position}
               rotation={item.rotation}
               angle_Top={item.angle_Top}
+              wallTexture={item.wallTexture}
+              floorTexture={item.floorTexture}
+              topTexture={item.topTexture} 
             />
           ))}
 

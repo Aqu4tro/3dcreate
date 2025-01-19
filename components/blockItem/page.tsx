@@ -4,6 +4,7 @@ import { Add, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
+import { useTexture } from "@react-three/drei";
 
 interface BlockItemProps {
   block: Room;
@@ -49,8 +50,10 @@ export default function BlockItem({
     r: number;
     b: number;
   }>(block.angle_Top);
-
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
+  const [wallTexture, setWallTexture] = useState<File | null>(null);
+  const [topTexture, setTopTexture] = useState<File | null>(null);
+  const [floorTexture, setFloorTexture] = useState<File | null>(null);
   block.width = width;
   block.height = height;
   block.length = length;
@@ -62,7 +65,9 @@ export default function BlockItem({
   block.position = position;
   block.rotation = rotation;
   block.angle_Top = angle_Top;
-
+  block.wallTexture = useTexture(wallTexture?.name as string);
+  block.topTexture = useTexture(topTexture?.name as string);
+  block.floorTexture = useTexture(floorTexture?.name as string);
   //função de update da rendenização
   function updateBlock() {
     updateLot({
@@ -294,6 +299,7 @@ export default function BlockItem({
             }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
+          
         </Box>
         <Box display={"flex"} alignItems={"center"}>
           <Typography>Show Floor</Typography>

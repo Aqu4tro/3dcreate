@@ -71,8 +71,7 @@ export default function Lot({
             height -
               0.05 +
               (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l
-                ? (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) +
-                  0.155 * 2
+                ? (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 6
                 : 0),
             0,
           ]}
@@ -109,8 +108,7 @@ export default function Lot({
             rotation={new THREE.Euler(0, 0, 0)}
             name={`wall-${index}`}
           >
-            {(angle_Top.f || angle_Top.r || angle_Top.b || angle_Top.l) !==
-              0 && (
+            {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L" ) || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L" )) && (
               <InclinedWall
                 id={id}
                 wall={e}
@@ -119,7 +117,7 @@ export default function Lot({
                 length={length}
                 angle_Top={angle_Top}
                 size={size}
-                texture={texture}
+                wallTexture={texture}
                 name={name}
                 tickLot={tickLot}
                 top={top}
@@ -152,6 +150,9 @@ export default function Lot({
           position={e.position}
           rotation={e.rotation}
           angle_Top={e.angle_Top}
+          wallTexture={e.wallTexture}
+          topTexture={e.topTexture}
+          floorTexture={e.floorTexture}
         />
       ))}
     </mesh>
