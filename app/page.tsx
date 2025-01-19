@@ -3,6 +3,7 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Dispatch, SetStateAction, useState } from "react";
+import * as THREE from "three";
 import { Add, ArrowBack } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
 import Lot from "@/renderers/lotCreate/page";
@@ -14,10 +15,11 @@ export type Room = {
   byLot?: number;
   length: number;
   width: number;
-  size?: number;
-  height?: number;
+  size: number;
+  height: number;
   name: string;
-  tickLot?: number;
+  tickLot: number;
+  topSize?: number | 0.1;
   objects?: Room[];
   top: boolean;
   floor: boolean;
@@ -27,7 +29,7 @@ export type Room = {
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
   angle_Top: { f: number; l: number; r: number; b: number };
-  texture?: string;
+  texture?: THREE.Texture;
 };
 
 export default function Home() {
@@ -88,10 +90,10 @@ export default function Home() {
         floor,
         disable: false,
         selected: false,
-        texture: "",
+        texture: undefined,
         position: { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
-        angle_Top: { f: 0, l: 0, r: 0 , b: 0},
+        angle_Top: { f: 0, l: 0, r: 0, b: 0 },
       },
     ]);
     setCountLot(countLot + 1);
@@ -165,7 +167,6 @@ export default function Home() {
 
           {lot.map((item) => (
             <Lot
-            
               id={item.id}
               length={item.length}
               width={item.width}
@@ -186,7 +187,7 @@ export default function Home() {
           ))}
 
           <OrbitControls rotateSpeed={0.2} />
-          <ambientLight intensity={0.5 } />
+          <ambientLight intensity={0.5} />
           <directionalLight position={[5, -50, 5]} color="white" />
         </Canvas>
       </div>
