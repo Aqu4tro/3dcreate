@@ -1,11 +1,25 @@
 import { Room } from "@/app/page";
-import { Box, Button, Checkbox, TextField, Typography } from "@mui/material";
-import { Add, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
+  styled,
+  TextField,
+  Typography,
+} from "@mui/material";
+import {
+  Add,
+  CloudUploadOutlined,
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+} from "@mui/icons-material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
 import { useTexture } from "@react-three/drei";
 import Image from "next/image";
+import { floor } from "three/webgpu";
 
 interface BlockItemProps {
   block: Room;
@@ -56,12 +70,23 @@ export default function BlockItem({
   const [topTexture, setTopTexture] = useState<File | null>(null);
   const [floorTexture, setFloorTexture] = useState<File | null>(null);
 
-
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, set: Dispatch<SetStateAction<File | null>>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<File | null>>) => {
     if (event.target.files && event.target.files.length > 0) {
-      set(event.target.files[0]);
+      _set(event.target.files[0]);
     }
   };
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   block.width = width;
   block.height = height;
@@ -96,8 +121,8 @@ export default function BlockItem({
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-            ? { ...item, selected: !item.selected }
-            : item
+          ? { ...item, selected: !item.selected }
+          : item
       );
     });
   };
@@ -279,10 +304,14 @@ export default function BlockItem({
               </Box>
             </Box>
             <Box>
-              <Button variant="outlined" startIcon={<KeyboardArrowDown fontSize="small" sx={{ color: "white" }} />}>
+              <Button
+                variant="outlined"
+                startIcon={
+                  <KeyboardArrowDown fontSize="small" sx={{ color: "white" }} />
+                }
+              >
                 Anexos
               </Button>
-
             </Box>
           </Box>
         </>
@@ -312,6 +341,35 @@ export default function BlockItem({
             }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
+          {/* Clickable Image to trigger file input */}
+          <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
+            {topTexture ? (
+              <Image
+                src={URL.createObjectURL(topTexture)} // Create a URL for the uploaded file
+                alt="Description of the images"
+                width={30}
+                height={30}
+              />
+            ) : (
+              <IconButton
+                size="medium"
+                sx={{ color: "white" }}
+                onClick={() => document.getElementById("file-upload-top")?.click()} // Trigger file input on button click
+              >
+                <CloudUploadOutlined fontSize="medium" />
+              </IconButton>
+            
+            )}
+          </label>
+
+          {/* Hidden file input */}
+          <VisuallyHiddenInput
+            id="file-upload-top"
+            type="file"
+            accept="image/*"
+            onChange={(event) => handleFileChange(event, setTopTexture)}
+            multiple
+          />
         </Box>
         <Box display={"flex"} alignItems={"center"}>
           <Typography>Show Floor</Typography>
@@ -322,9 +380,36 @@ export default function BlockItem({
             }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
-          <TextField type="file" onChange={(e) => handleFileChange(e as React.ChangeEvent<HTMLInputElement>, setFloorTexture)}>
-            {floorTexture && <Image src={URL.createObjectURL(floorTexture)} alt="Floor Texture" />}
-          </TextField>
+
+          {/* Clickable Image to trigger file input */}
+          <label htmlFor="file-upload-floor" style={{ cursor: "pointer" }}>
+            {floorTexture ? (
+              <Image
+                src={URL.createObjectURL(floorTexture)} // Create a URL for the uploaded file
+                alt="Description of the image"
+                width={30}
+                height={30}
+              />
+            ) : (
+              <IconButton
+                size="medium"
+                sx={{ color: "white" }}
+                onClick={() => document.getElementById("file-upload-floor")?.click()} // Trigger file input on button click
+              >
+                <CloudUploadOutlined fontSize="medium" />
+              </IconButton>
+            
+            )}
+          </label>
+
+          {/* Hidden file input */}
+          <VisuallyHiddenInput
+            id="file-upload-floor"
+            type="file"
+            accept="image/*"
+            onChange={(event) => handleFileChange(event, setFloorTexture)}
+            multiple
+          />
         </Box>
       </Box>
       {!byLot && (
