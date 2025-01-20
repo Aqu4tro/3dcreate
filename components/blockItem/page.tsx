@@ -1,10 +1,11 @@
 import { Room } from "@/app/page";
-import { Box, Button, Checkbox, Typography } from "@mui/material";
+import { Box, Button, Checkbox, TextField, Typography } from "@mui/material";
 import { Add, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
 import { useTexture } from "@react-three/drei";
+import Image from "next/image";
 
 interface BlockItemProps {
   block: Room;
@@ -54,6 +55,14 @@ export default function BlockItem({
   const [wallTexture, setWallTexture] = useState<File | null>(null);
   const [topTexture, setTopTexture] = useState<File | null>(null);
   const [floorTexture, setFloorTexture] = useState<File | null>(null);
+
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, set: Dispatch<SetStateAction<File | null>>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      set(event.target.files[0]);
+    }
+  };
+
   block.width = width;
   block.height = height;
   block.length = length;
@@ -65,9 +74,7 @@ export default function BlockItem({
   block.position = position;
   block.rotation = rotation;
   block.angle_Top = angle_Top;
-  block.wallTexture = useTexture(wallTexture?.name as string);
-  block.topTexture = useTexture(topTexture?.name as string);
-  block.floorTexture = useTexture(floorTexture?.name as string);
+
   //função de update da rendenização
   function updateBlock() {
     updateLot({
@@ -89,8 +96,8 @@ export default function BlockItem({
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-          ? { ...item, selected: !item.selected }
-          : item
+            ? { ...item, selected: !item.selected }
+            : item
       );
     });
   };
@@ -241,35 +248,41 @@ export default function BlockItem({
             <Box>
               <Typography>Angle Top</Typography>
               <Box display={"flex"} gap={".5vw"} padding={".1vw"}>
-              <SmallBlockController
-                name="Front"
-                value={angle_Top.f}
-                setValue={(newF) =>
-                  setAngle_Top((prev) => ({ ...prev, f: newF as number }))
-                }
-              />
-              <SmallBlockController
-                name="Left"
-                value={angle_Top.l}
-                setValue={(newL) =>
-                  setAngle_Top((prev) => ({ ...prev, l: newL as number }))
-                }
-              />
-              <SmallBlockController
-                name="Right"
-                value={angle_Top.r}
-                setValue={(newR) =>
-                  setAngle_Top((prev) => ({ ...prev, r: newR as number }))
-                }
-              />
-              <SmallBlockController
-                name="Back"
-                value={angle_Top.b}
-                setValue={(newB) =>
-                  setAngle_Top((prev) => ({ ...prev, b: newB as number }))
-                }
-              />
+                <SmallBlockController
+                  name="Front"
+                  value={angle_Top.f}
+                  setValue={(newF) =>
+                    setAngle_Top((prev) => ({ ...prev, f: newF as number }))
+                  }
+                />
+                <SmallBlockController
+                  name="Left"
+                  value={angle_Top.l}
+                  setValue={(newL) =>
+                    setAngle_Top((prev) => ({ ...prev, l: newL as number }))
+                  }
+                />
+                <SmallBlockController
+                  name="Right"
+                  value={angle_Top.r}
+                  setValue={(newR) =>
+                    setAngle_Top((prev) => ({ ...prev, r: newR as number }))
+                  }
+                />
+                <SmallBlockController
+                  name="Back"
+                  value={angle_Top.b}
+                  setValue={(newB) =>
+                    setAngle_Top((prev) => ({ ...prev, b: newB as number }))
+                  }
+                />
               </Box>
+            </Box>
+            <Box>
+              <Button variant="outlined" startIcon={<KeyboardArrowDown fontSize="small" sx={{ color: "white" }} />}>
+                Anexos
+              </Button>
+
             </Box>
           </Box>
         </>
@@ -299,7 +312,6 @@ export default function BlockItem({
             }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
-          
         </Box>
         <Box display={"flex"} alignItems={"center"}>
           <Typography>Show Floor</Typography>
@@ -310,6 +322,9 @@ export default function BlockItem({
             }}
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
+          <TextField type="file" onChange={(e) => handleFileChange(e as React.ChangeEvent<HTMLInputElement>, setFloorTexture)}>
+            {floorTexture && <Image src={URL.createObjectURL(floorTexture)} alt="Floor Texture" />}
+          </TextField>
         </Box>
       </Box>
       {!byLot && (
