@@ -4,8 +4,16 @@ import {
   Button,
   Checkbox,
   IconButton,
+  List,
+  ListItem,
+  Menu,
+  MenuItem,
+  Select,
+  Stack,
   styled,
+
   TextField,
+
   Typography,
 } from "@mui/material";
 import {
@@ -17,9 +25,10 @@ import {
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
-import { useTexture } from "@react-three/drei";
+
 import Image from "next/image";
-import { floor } from "three/webgpu";
+import ComponentList, { Component } from "../componentList/page";
+
 
 interface BlockItemProps {
   block: Room;
@@ -69,8 +78,30 @@ export default function BlockItem({
   const [wallTexture, setWallTexture] = useState<File | null>(null);
   const [topTexture, setTopTexture] = useState<File | null>(null);
   const [floorTexture, setFloorTexture] = useState<File | null>(null);
+  const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [components, setComponents] = useState<Component[]>([]);
+  const [panelVisible, setPanelVisible] = useState<boolean>(false);
+  const [wall, setWall] = useState<"F" | "B" | "L" | "R">("F");
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<File | null>>) => {
+  function showComponentPanel() {
+    setPanelVisible(!panelVisible);
+  }
+
+  function handleAddComponent(type: 1 | 0, wall: "F" | "B" | "L" | "R") {
+
+    setComponents((prev) => [
+      ...prev,
+      {
+        name: type === 1 ? "Door" : "Window",
+        wall: wall,
+        position: [0, 0, 0],
+        scale: [1, 1, 1],
+        disabled: false,
+      },
+    ]);
+  }
+
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<File | null>>) {
     if (event.target.files && event.target.files.length > 0) {
       _set(event.target.files[0]);
     }
@@ -96,9 +127,10 @@ export default function BlockItem({
   block.floor = _floor;
   block.top = _top;
   block.objects = blocks;
-  block.position = position;
+  block.components = components
   block.rotation = rotation;
   block.angle_Top = angle_Top;
+  block.floorTexture = floorTexture || undefined;
 
   //função de update da rendenização
   function updateBlock() {
@@ -121,8 +153,8 @@ export default function BlockItem({
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-          ? { ...item, selected: !item.selected }
-          : item
+            ? { ...item, selected: !item.selected }
+            : item
       );
     });
   };
@@ -142,6 +174,10 @@ export default function BlockItem({
     angle_Top,
     disable,
     select,
+    wallTexture,
+    topTexture,
+    floorTexture,
+    components
   ]);
 
   //criação de blocos
@@ -159,6 +195,7 @@ export default function BlockItem({
     position,
     rotation,
     angle_Top,
+    components,
   }: Room) {
     updateBlock();
     if (
@@ -176,6 +213,7 @@ export default function BlockItem({
         top,
         floor,
         disable: disable,
+        components,
         position,
         rotation,
         angle_Top,
@@ -305,13 +343,71 @@ export default function BlockItem({
             </Box>
             <Box>
               <Button
-                variant="outlined"
-                startIcon={
-                  <KeyboardArrowDown fontSize="small" sx={{ color: "white" }} />
-                }
+
+                sx={{ alignItems: "center", width: "100%", display: "flex", flexDirection: "column" }}
+                onClick={() => {
+                  setShowAddModal(!showAddModal);
+                  panelVisible ? showComponentPanel() : null;
+                }}
               >
-                Anexos
+                <Typography sx={{ color: "white", fontSize: 15 }}>Components</Typography>
+                {showAddModal ?
+                  <KeyboardArrowUp fontSize="large" sx={{ color: "white" }} />
+                  :
+                  <KeyboardArrowDown fontSize="large" sx={{ color: "white" }} />
+
+                }
               </Button>
+              {
+                showAddModal &&
+                <Box>
+                  <Button sx={{
+                    width: "100%", color: "white"
+
+                  }} onClick={showComponentPanel} >
+                    <Add fontSize="medium" />
+                  </Button>
+                  {
+                    panelVisible &&
+                    <Box>
+                      <List>
+                        <ListItem>
+                          <Typography>Door</Typography>
+                          <Select sx={{ color: "white" }}>
+                            <MenuItem value={"F"}>Front</MenuItem>
+                            <MenuItem value={"B"}>Back</MenuItem>
+                            <MenuItem value={"L"}>Left</MenuItem>
+                            <MenuItem value={"R"}>Right</MenuItem>
+                          </Select>
+                          <Button onClick={() => handleAddComponent(1, wall)}>
+                            <Add fontSize="medium" />
+                          </Button>
+                        </ListItem>
+                        <ListItem >
+                          <Typography>Window</Typography>
+                          <Select sx={{ color: "white" }}>
+                            <MenuItem value={"F"}>Front</MenuItem>
+                            <MenuItem value={"B"}>Back</MenuItem>
+                            <MenuItem value={"L"}>Left</MenuItem>
+                            <MenuItem value={"R"}>Right</MenuItem>
+                          </Select>
+                          <Button onClick={() => handleAddComponent(0, wall)}>
+                            <Add fontSize="medium" />
+                          </Button>
+                        </ListItem>
+                      </List>
+                    </Box>
+
+                  }
+
+                  <Box>
+                    <ComponentList components={components} />
+                  </Box>
+
+                </Box>
+
+              }
+
             </Box>
           </Box>
         </>
@@ -358,7 +454,7 @@ export default function BlockItem({
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
-            
+
             )}
           </label>
 
@@ -398,7 +494,7 @@ export default function BlockItem({
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
-            
+
             )}
           </label>
 
@@ -448,6 +544,7 @@ export default function BlockItem({
                 position: position,
                 rotation: rotation,
                 angle_Top: angle_Top,
+                components: components
               })
             }
           >

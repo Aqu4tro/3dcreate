@@ -10,6 +10,7 @@ import Lot from "@/renderers/lotCreate/page";
 import Panel from "@/components/panel/page";
 import BlockItem from "@/components/blockItem/page";
 import BlockSmall from "@/components/blockSmall/page";
+import { Component } from "@/components/componentList/page";
 export type Room = {
   id: number;
   byLot?: number;
@@ -29,9 +30,10 @@ export type Room = {
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
   angle_Top: { f: number; l: number; r: number; b: number };
-  wallTexture?: THREE.Texture;
-  topTexture?: THREE.Texture;
-  floorTexture?: THREE.Texture;
+  wallTexture?: File;
+  topTexture?: File;
+  floorTexture?: File;
+  components: Component[];
 };
 
 export default function Home() {
@@ -98,6 +100,7 @@ export default function Home() {
         position: { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
         angle_Top: { f: 0, l: 0, r: 0, b: 0 },
+        components:[],
       },
     ]);
     setCountLot(countLot + 1);
@@ -130,6 +133,7 @@ export default function Home() {
                 position: { x: 0, y: 0, z: 0 },
                 angle_Top: { f: 0, l: 0, r: 0, b: 0 },
                 rotation: { x: 0, y: 0, z: 0 },
+                components: [],
               })
             }
             setHeight={setHeight}
@@ -190,6 +194,7 @@ export default function Home() {
               wallTexture={item.wallTexture}
               floorTexture={item.floorTexture}
               topTexture={item.topTexture} 
+              components={item.components}
             />
           ))}
 
