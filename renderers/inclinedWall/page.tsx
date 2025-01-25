@@ -5,6 +5,7 @@ import { wall } from "../../utils/walls/page";
 
 interface InclinedWallProps extends Room {
   wall: wall;
+  _wallTexture: THREE.Texture;
 }
 
 export default function InclinedWall({
@@ -302,7 +303,7 @@ export default function InclinedWall({
             itemSize={1}
           />
         </bufferGeometry>
-        <meshStandardMaterial map={wallTexture} />
+        <meshStandardMaterial map={wallTexture instanceof THREE.Texture ? wallTexture : null} />
       </mesh>
       <mesh>
         <bufferGeometry>
@@ -325,7 +326,7 @@ export default function InclinedWall({
             itemSize={1}
           />
         </bufferGeometry>
-        <meshStandardMaterial map={wallTexture} />
+        <meshStandardMaterial map={wallTexture instanceof THREE.Texture ? wallTexture : null} />
       </mesh>
       <Plane
         args={[
@@ -348,7 +349,7 @@ export default function InclinedWall({
           angle_Top.f ? size/5 : angle_Top.b ? size /5 : 0,
         ]}
       >
-        <meshStandardMaterial map={wallTexture} />
+        <meshStandardMaterial map={wallTexture instanceof THREE.Texture ? wallTexture : null} />
       </Plane>
     </mesh>
   );

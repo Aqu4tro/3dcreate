@@ -29,9 +29,26 @@ export default function Lot({
   position,
   rotation,
   angle_Top,
+  wallTexture,
+  topTexture,
+  floorTexture,
 }: LotProps) {
   // Always call useTexture unconditionally
-  const texture = useTexture("/assets/walls.jpg");
+  const _wallTexture = useTexture(
+    typeof wallTexture === "string" || !wallTexture
+      ? wallTexture || "/assets/walls.jpg"
+      : URL.createObjectURL(wallTexture)
+  );
+  const _topTexture = useTexture(
+    typeof topTexture === "string" || !topTexture
+      ? topTexture || "/assets/6648194.jpg"
+      : URL.createObjectURL(topTexture)
+  );
+  const _floorTexture = useTexture(
+    typeof floorTexture === "string" || !floorTexture
+      ? floorTexture || "/assets/damaged-parquet-texture.jpg"
+      : URL.createObjectURL(floorTexture)
+  );
 
   // Function to toggle selection state
   function switchSelect(
@@ -59,7 +76,7 @@ export default function Lot({
           name="floor"
         >
           <boxGeometry args={[width, tickLot, length]} />
-          <meshBasicMaterial color="gray" />
+          <meshStandardMaterial map={_floorTexture} />
         </mesh>
       )}
 
@@ -85,7 +102,7 @@ export default function Lot({
           name="top-surface"
         >
           <boxGeometry args={[width + 0.3, 0.1, length + 0.3]} />
-          <meshBasicMaterial color={"blue"} />
+          <meshStandardMaterial map={_topTexture} />
         </mesh>
       )}
 
@@ -117,7 +134,7 @@ export default function Lot({
                 length={length}
                 angle_Top={angle_Top}
                 size={size}
-                wallTexture={texture}
+                _wallTexture={_wallTexture}
                 name={name}
                 tickLot={tickLot}
                 top={top}
@@ -125,10 +142,11 @@ export default function Lot({
                 position={position}
                 rotation={rotation}
                 disable={disable}
+                components={[]} // Add the appropriate value for components
               />
             )}
             <boxGeometry args={[e.W, e.H, e.L]} />
-            <meshStandardMaterial map={texture} />
+            <meshStandardMaterial map={_wallTexture} />
           </mesh>
         ))}
 
@@ -153,6 +171,7 @@ export default function Lot({
           wallTexture={e.wallTexture}
           topTexture={e.topTexture}
           floorTexture={e.floorTexture}
+          components={[]}
         />
       ))}
     </mesh>

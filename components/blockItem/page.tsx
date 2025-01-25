@@ -92,6 +92,7 @@ export default function BlockItem({
     setComponents((prev) => [
       ...prev,
       {
+        id: components.length,
         name: type === 1 ? "Door" : "Window",
         wall: wall,
         position: [0, 0, 0],
@@ -99,6 +100,7 @@ export default function BlockItem({
         disabled: false,
       },
     ]);
+    showComponentPanel();
   }
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<File | null>>) {
@@ -373,7 +375,7 @@ export default function BlockItem({
                       <List>
                         <ListItem>
                           <Typography>Door</Typography>
-                          <Select sx={{ color: "white" }}>
+                          <Select sx={{ color: "white" }} onChange={(e) => setWall(e.target.value as "F" | "B" | "L" | "R")}>
                             <MenuItem value={"F"}>Front</MenuItem>
                             <MenuItem value={"B"}>Back</MenuItem>
                             <MenuItem value={"L"}>Left</MenuItem>
@@ -385,7 +387,7 @@ export default function BlockItem({
                         </ListItem>
                         <ListItem >
                           <Typography>Window</Typography>
-                          <Select sx={{ color: "white" }}>
+                          <Select sx={{ color: "white" }} onChange={(e) => setWall(e.target.value as "F" | "B" | "L" | "R")}>
                             <MenuItem value={"F"}>Front</MenuItem>
                             <MenuItem value={"B"}>Back</MenuItem>
                             <MenuItem value={"L"}>Left</MenuItem>
