@@ -1,11 +1,13 @@
 import { Room } from "@/app/page";
 import * as THREE from "three";
 import Block from "../blockCreate/page";
-import { ThreeEvent, useLoader } from "@react-three/fiber";
-import { Image, Plane, useTexture } from "@react-three/drei";
+import { ThreeEvent } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
 import walls from "../../utils/walls/page";
-import { useMemo } from "react";
+
 import InclinedWall from "../inclinedWall/page";
+import Door from "@/public/assets/objects/door/Scene";
+import ComponentAdd from "../componentAdd/page";
 
 interface LotProps extends Room {
   selected: boolean | undefined;
@@ -32,21 +34,25 @@ export default function Lot({
   wallTexture,
   topTexture,
   floorTexture,
+  components
 }: LotProps) {
+
+  
+
   // Always call useTexture unconditionally
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
-      ? wallTexture || "/assets/walls.jpg"
+      ? wallTexture || "/assets/images/walls.jpg"
       : URL.createObjectURL(wallTexture)
   );
   const _topTexture = useTexture(
     typeof topTexture === "string" || !topTexture
-      ? topTexture || "/assets/6648194.jpg"
+      ? topTexture || "/assets/images/6648194.jpg"
       : URL.createObjectURL(topTexture)
   );
   const _floorTexture = useTexture(
     typeof floorTexture === "string" || !floorTexture
-      ? floorTexture || "/assets/damaged-parquet-texture.jpg"
+      ? floorTexture || "/assets/images/damaged-parquet-texture.jpg"
       : URL.createObjectURL(floorTexture)
   );
 
@@ -146,6 +152,11 @@ export default function Lot({
               />
             )}
             <boxGeometry args={[e.W, e.H, e.L]} />
+          {
+            components?.map((e) => (
+              <ComponentAdd component={e} />
+            ))
+          }
             <meshStandardMaterial map={_wallTexture} />
           </mesh>
         ))}

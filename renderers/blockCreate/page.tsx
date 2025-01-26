@@ -26,17 +26,17 @@ export default function Block({
 }: Room) {
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
-      ? wallTexture || "/assets/default-wall.jpg"
+      ? wallTexture || "/assets/images/default-wall.jpg"
       : URL.createObjectURL(wallTexture)
   );
   const _topTexture = useTexture(
     typeof topTexture === "string" || !topTexture
-      ? topTexture || "/assets/default-wall.jpg"
+      ? topTexture || "/assets/images/default-wall.jpg"
       : URL.createObjectURL(topTexture)
   );
   const _floorTexture = useTexture(
     typeof floorTexture === "string" || !floorTexture
-      ? floorTexture || "/assets/default-wall.jpg"
+      ? floorTexture || "/assets/images/default-wall.jpg"
       : URL.createObjectURL(floorTexture)
   );
   const [isDisabled, setIsDisabled] = useState<boolean>(disable);

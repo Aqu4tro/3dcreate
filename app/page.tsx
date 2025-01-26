@@ -10,7 +10,7 @@ import Lot from "@/renderers/lotCreate/page";
 import Panel from "@/components/panel/page";
 import BlockItem from "@/components/blockItem/page";
 import BlockSmall from "@/components/blockSmall/page";
-import { Component } from "@/components/componentList/page";
+import { Component } from "@/components/componentBlock/page";
 export type Room = {
   id: number;
   byLot?: number;

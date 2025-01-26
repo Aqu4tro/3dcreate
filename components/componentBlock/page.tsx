@@ -7,23 +7,39 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 export interface Component {
     id: number;
   name: string;
   wall: string;
+  type: boolean;
   position: [x: number, y: number, z: number];
   scale: [x: number, y: number, z: number];
   disabled: boolean;
 }
 
-export default function ComponentList({
-  components,
+export default function ComponentBlock({
+  component,updateComponent
 }: {
-  components: Component[];
+  component: Component;
+  updateComponent: (component: Component) => void;
 }) {
+  const [position, setPosition] = useState(component.position);
+  const [scale, setScale] = useState(component.scale);
+  component.position = position;
+  component.scale = scale;
+  //função de update da rendenização
+  function _updateBlock() {
+    updateComponent({
+      ...component,
+      position: position,
+      scale: scale,
+
+    });
+  }
+
   return (
-    <List sx={{ display: "flex", flexDirection:"column", gap: "1.5vh"}}>
-      {components.map((component) => (
+    
         <ListItem sx={{ display: "flex", flexDirection: "column" , width: "100%", gap:"1vh",
         padding:1,
         boxShadow:"0 0 3px 0" ,
@@ -41,6 +57,10 @@ export default function ComponentList({
                 label="X"
                 value={component.position[0]}
                 disabled={component.wall === "L" || component.wall === "R"}
+                onChange={(e) => {
+                   setPosition([Number(e.target.value), position[1], position[2]]);
+                   _updateBlock();
+                }}
                 sx={{
                   alignSelf: "end",
                   width: "5vw",
@@ -53,6 +73,10 @@ export default function ComponentList({
               <TextField
                 label="Y"
                 value={component.position[1]}
+                onChange={(e) => {
+                  setPosition([position[0], Number(e.target.value), position[2]]);
+                  _updateBlock();
+                }}
                 sx={{
                   alignSelf: "end",
                   width: "5vw",
@@ -66,6 +90,10 @@ export default function ComponentList({
                 label="Z"
                 value={component.position[2]}
                 disabled={component.wall === "F" || component.wall === "B"}
+                onChange={(e) => {
+                  setPosition([position[0], position[1], Number(e.target.value)]);
+                  _updateBlock();
+                }}
                 sx={{
                   alignSelf: "end",
                   width: "5vw",
@@ -84,6 +112,10 @@ export default function ComponentList({
                 label="X"
                 value={component.scale[0]}
                 disabled={component.wall === "L" || component.wall === "R"}
+                onChange={(e) => {
+                  setScale([Number(e.target.value), scale[1], scale[2]]);
+                  _updateBlock();
+                }}
                 sx={{
                   alignSelf: "end",
                   width: "5vw",
@@ -96,6 +128,10 @@ export default function ComponentList({
               <TextField
                 label="Y"
                 value={component.scale[1]}
+                onChange={(e) => {
+                  setScale([scale[0], Number(e.target.value), scale[2]]);
+                  _updateBlock();
+                }}
                 sx={{
                   alignSelf: "end",
                   width: "5vw",
@@ -109,6 +145,10 @@ export default function ComponentList({
                 label="Z"
                 value={component.scale[2]}
                 disabled={component.wall === "F" || component.wall === "B"}
+                onChange={(e) => {
+                  setScale([scale[0], scale[1], Number(e.target.value)]);
+                  _updateBlock();
+                }}
                 sx={{
                   alignSelf: "end",
                   width: "5vw",
@@ -121,7 +161,6 @@ export default function ComponentList({
             </List>
           </Box>
         </ListItem>
-      ))}
-    </List>
+    
   );
 }

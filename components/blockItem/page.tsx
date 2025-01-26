@@ -27,7 +27,7 @@ import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
 
 import Image from "next/image";
-import ComponentList, { Component } from "../componentList/page";
+import  ComponentBlock, { Component } from "../componentBlock/page";
 
 
 interface BlockItemProps {
@@ -87,13 +87,14 @@ export default function BlockItem({
     setPanelVisible(!panelVisible);
   }
 
-  function handleAddComponent(type: 1 | 0, wall: "F" | "B" | "L" | "R") {
+  function handleAddComponent(type: boolean, wall: "F" | "B" | "L" | "R") {
 
     setComponents((prev) => [
       ...prev,
       {
         id: components.length,
-        name: type === 1 ? "Door" : "Window",
+        name: type ? "Door" : "Window",
+        type: type,
         wall: wall,
         position: [0, 0, 0],
         scale: [1, 1, 1],
@@ -129,7 +130,7 @@ export default function BlockItem({
   block.floor = _floor;
   block.top = _top;
   block.objects = blocks;
-  block.components = components
+  block.components = components;
   block.rotation = rotation;
   block.angle_Top = angle_Top;
   block.floorTexture = floorTexture || undefined;
@@ -163,6 +164,7 @@ export default function BlockItem({
 
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
+    
   }, [
     _top,
     _floor,
@@ -381,7 +383,7 @@ export default function BlockItem({
                             <MenuItem value={"L"}>Left</MenuItem>
                             <MenuItem value={"R"}>Right</MenuItem>
                           </Select>
-                          <Button onClick={() => handleAddComponent(1, wall)}>
+                          <Button onClick={() => handleAddComponent(true, wall)}>
                             <Add fontSize="medium" />
                           </Button>
                         </ListItem>
@@ -393,7 +395,7 @@ export default function BlockItem({
                             <MenuItem value={"L"}>Left</MenuItem>
                             <MenuItem value={"R"}>Right</MenuItem>
                           </Select>
-                          <Button onClick={() => handleAddComponent(0, wall)}>
+                          <Button onClick={() => handleAddComponent(false, wall)}>
                             <Add fontSize="medium" />
                           </Button>
                         </ListItem>
@@ -403,7 +405,11 @@ export default function BlockItem({
                   }
 
                   <Box>
-                    <ComponentList components={components} />
+                  <List sx={{ display: "flex", flexDirection:"column", gap: "1.5vh"}}>
+                    {components.map((component) => (
+                    <ComponentBlock updateComponent={updateBlock} component={component} />
+                  ))}
+    </List>
                   </Box>
 
                 </Box>
