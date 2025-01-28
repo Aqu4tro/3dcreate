@@ -15,7 +15,7 @@ export default function InclinedWall({
   height,
   angle_Top,
   wall,
-  wallTexture,
+  _wallTexture,
   topSize,
   tickLot,
 }: InclinedWallProps) {
@@ -32,23 +32,23 @@ export default function InclinedWall({
     angle_Top.f
       ? [1, 0, 0, 0.25, 0, 0]
       : angle_Top.b
-      ? [0, 0.25, 0, 0, 1, 0]
-      : angle_Top.l
-      ? [1, 0, 0, 0.25, 0, 0]
-      : angle_Top.r
-      ? [0, 0.25, 1, 0, 0, 0]
-      : []
+        ? [0, 0.25, 0, 0, 1, 0]
+        : angle_Top.l
+          ? [1, 0, 0, 0.25, 0, 0]
+          : angle_Top.r
+            ? [0, 0.25, 1, 0, 0, 0]
+            : []
   );
   const uvs_2 = new Float32Array(
     angle_Top.b
       ? [0, 0.25, 0, 0, 1, 0]
       : angle_Top.f
-      ? [0, 0, 0, 0.25, 1, 0]
-      : angle_Top.l
-      ? [0, 0.25, 1, 0, 0, 0]
-      : angle_Top.r
-      ? [0, 0, 1, 0, 0, 0.25]
-      : []
+        ? [0, 0, 0, 0.25, 1, 0]
+        : angle_Top.l
+          ? [0, 0.25, 1, 0, 0, 0]
+          : angle_Top.r
+            ? [0, 0, 1, 0, 0, 0.25]
+            : []
   );
 
   switch (wall.N) {
@@ -56,18 +56,18 @@ export default function InclinedWall({
       vertices = new Float32Array(
         angle_Top.b
           ? [
-              -size / 2,
-              height / 2 - 0.1,
-              length / 2,
-              -size / 2,
-              wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
-              length / 2,
-              -size / 2,
-              height / 2 - 0.1,
-              -length / 2,
-            ]
+            -size / 2,
+            height / 2 - 0.1,
+            length / 2,
+            -size / 2,
+            wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
+            length / 2,
+            -size / 2,
+            height / 2 - 0.1,
+            -length / 2,
+          ]
           : angle_Top.f
-          ? [
+            ? [
               -size / 2,
               height / 2 - 0.1,
               length / 2 - size,
@@ -78,34 +78,34 @@ export default function InclinedWall({
               height / 2 - 0.1,
               -length / 2 + size,
             ]
-          : []
+            : []
       );
       vertices_2 = new Float32Array(
         angle_Top.b
           ? [
-              size / 2,
-              wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
-              length / 2,
-              size / 2,
-              height / 2 - 0.1,
-              length / 2,
-              size / 2,
-              height / 2 - 0.1,
-              -length / 2,
-            ]
+            size / 2,
+            wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
+            length / 2,
+            size / 2,
+            height / 2 - 0.1,
+            length / 2,
+            size / 2,
+            height / 2 - 0.1,
+            -length / 2,
+          ]
           : angle_Top.f
-          ? [
+            ? [
               size / 2,
               height / 2 - 0.1,
               -length / 2 + size,
               size / 2,
-              wall.y + (angle_Top.f * length) -  (topSize ? topSize : 0 + tickLot),
+              wall.y + (angle_Top.f * length) - (topSize ? topSize : 0 + tickLot),
               -length / 2 + size,
               size / 2,
               height / 2 - 0.1,
               length / 2,
             ]
-          : []
+            : []
       );
 
       break;
@@ -113,18 +113,18 @@ export default function InclinedWall({
       vertices = new Float32Array(
         angle_Top.b
           ? [
-              -size / 2,
-              height / 2 - 0.1,
-              length / 2,
-              -size / 2,
-              wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
-              length / 2,
-              -size / 2,
-              height / 2 - 0.1,
-              -length / 2,
-            ]
+            -size / 2,
+            height / 2 - 0.1,
+            length / 2,
+            -size / 2,
+            wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
+            length / 2,
+            -size / 2,
+            height / 2 - 0.1,
+            -length / 2,
+          ]
           : angle_Top.f
-          ? [
+            ? [
               -size / 2,
               height / 2 - 0.1,
               length / 2 - size,
@@ -135,23 +135,23 @@ export default function InclinedWall({
               height / 2 - 0.1,
               -length / 2 + size,
             ]
-          : []
+            : []
       );
       vertices_2 = new Float32Array(
         angle_Top.b
           ? [
-              size / 2,
-              wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
-              length / 2,
-              size / 2,
-              height / 2 - 0.1,
-              length / 2,
-              size / 2,
-              height / 2 - 0.1,
-              -length / 2,
-            ]
+            size / 2,
+            wall.y + (angle_Top.b * length) - (topSize ? topSize : 0 + tickLot),
+            length / 2,
+            size / 2,
+            height / 2 - 0.1,
+            length / 2,
+            size / 2,
+            height / 2 - 0.1,
+            -length / 2,
+          ]
           : angle_Top.f
-          ? [
+            ? [
               size / 2,
               height / 2 - 0.1,
               -length / 2 + size,
@@ -162,7 +162,7 @@ export default function InclinedWall({
               height / 2 - 0.1,
               length / 2,
             ]
-          : []
+            : []
       );
 
       break;
@@ -170,18 +170,18 @@ export default function InclinedWall({
       vertices = new Float32Array(
         angle_Top.r
           ? [
-              -width / 2,
-              wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
-              -size / 2,
-              width / 2,
-              height / 2 - 0.1,
-              -size / 2,
-              -width / 2,
-              height / 2 - 0.1,
-              -size / 2,
-            ]
+            -width / 2,
+            wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
+            -size / 2,
+            width / 2,
+            height / 2 - 0.1,
+            -size / 2,
+            -width / 2,
+            height / 2 - 0.1,
+            -size / 2,
+          ]
           : angle_Top.l
-          ? [
+            ? [
               -width / 2,
               height / 2 - 0.1,
               -size / 2,
@@ -192,23 +192,23 @@ export default function InclinedWall({
               height / 2 - 0.1,
               -size / 2,
             ]
-          : []
+            : []
       );
       vertices_2 = new Float32Array(
         angle_Top.r
           ? [
-              -width / 2,
-              height / 2 - 0.1,
-              size / 2,
-              width / 2,
-              height / 2 - 0.1,
-              size / 2,
-              -width / 2,
-              wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
-              size / 2,
-            ]
+            -width / 2,
+            height / 2 - 0.1,
+            size / 2,
+            width / 2,
+            height / 2 - 0.1,
+            size / 2,
+            -width / 2,
+            wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
+            size / 2,
+          ]
           : angle_Top.l
-          ? [
+            ? [
               width / 2,
               wall.y + (angle_Top.l * width) - (topSize ? topSize : 0 + tickLot),
               size / 2,
@@ -219,25 +219,25 @@ export default function InclinedWall({
               height / 2 - 0.1,
               size / 2,
             ]
-          : []
+            : []
       );
       break;
     case "B":
       vertices = new Float32Array(
         angle_Top.r
           ? [
-              -width / 2,
-              wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
-              -size / 2,
-              width / 2,
-              height / 2 - 0.1,
-              -size / 2,
-              -width / 2,
-              height / 2 - 0.1,
-              -size / 2,
-            ]
+            -width / 2,
+            wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
+            -size / 2,
+            width / 2,
+            height / 2 - 0.1,
+            -size / 2,
+            -width / 2,
+            height / 2 - 0.1,
+            -size / 2,
+          ]
           : angle_Top.l
-          ? [
+            ? [
               -width / 2,
               height / 2 - 0.1,
               -size / 2,
@@ -248,23 +248,23 @@ export default function InclinedWall({
               height / 2 - 0.1,
               -size / 2,
             ]
-          : []
+            : []
       );
       vertices_2 = new Float32Array(
         angle_Top.r
           ? [
-              -width / 2,
-              height / 2 - 0.1,
-              size / 2,
-              width/ 2,
-              height / 2 - 0.1,
-              size / 2,
-              -width / 2,
-              wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
-              size / 2,
-            ]
+            -width / 2,
+            height / 2 - 0.1,
+            size / 2,
+            width / 2,
+            height / 2 - 0.1,
+            size / 2,
+            -width / 2,
+            wall.y + (angle_Top.r * width) - (topSize ? topSize : 0 + tickLot),
+            size / 2,
+          ]
           : angle_Top.l
-          ? [
+            ? [
               width / 2,
               wall.y + (angle_Top.l * width) - (topSize ? topSize : 0 + tickLot),
               size / 2,
@@ -275,7 +275,7 @@ export default function InclinedWall({
               height / 2 - 0.1,
               size / 2,
             ]
-          : []
+            : []
       );
       break;
   }
@@ -303,7 +303,7 @@ export default function InclinedWall({
             itemSize={1}
           />
         </bufferGeometry>
-        <meshStandardMaterial map={wallTexture instanceof THREE.Texture ? wallTexture : null} />
+        <meshStandardMaterial map={_wallTexture instanceof THREE.Texture ? _wallTexture : null} />
       </mesh>
       <mesh>
         <bufferGeometry>
@@ -326,30 +326,30 @@ export default function InclinedWall({
             itemSize={1}
           />
         </bufferGeometry>
-        <meshStandardMaterial map={wallTexture instanceof THREE.Texture ? wallTexture : null} />
+        <meshStandardMaterial map={_wallTexture instanceof THREE.Texture ? _wallTexture : null} />
       </mesh>
       <Plane
         args={[
-          angle_Top.r || angle_Top.l ? Math.sqrt(wall.y + ((angle_Top.l || angle_Top.r) * width) - (topSize ? topSize : 0 + tickLot)*wall.y + ((angle_Top.l || angle_Top.r) * width) - (topSize ? topSize : 0 + tickLot) + (width-size*2) * (width-size*2))  : size,
-          angle_Top.r || angle_Top.l ? size : Math.sqrt(wall.y + ((angle_Top.f || angle_Top.b) * length) - (topSize ? topSize : 0 + tickLot)*wall.y + ((angle_Top.f || angle_Top.b) * length) - (topSize ? topSize : 0 + tickLot) + (length-size*2) * (length-size*2))   ,
+          angle_Top.r || angle_Top.l ? Math.sqrt(wall.y + ((angle_Top.l || angle_Top.r) * width) - (topSize ? topSize : 0 + tickLot) * wall.y + ((angle_Top.l || angle_Top.r) * width) - (topSize ? topSize : 0 + tickLot) + (width - size * 2) * (width - size * 2)) : size,
+          angle_Top.r || angle_Top.l ? size : Math.sqrt(wall.y + ((angle_Top.f || angle_Top.b) * length) - (topSize ? topSize : 0 + tickLot) * wall.y + ((angle_Top.f || angle_Top.b) * length) - (topSize ? topSize : 0 + tickLot) + (length - size * 2) * (length - size * 2)),
         ]}
         rotation={
           new THREE.Euler(
             angle_Top.l || angle_Top.r
-              ? -1.5702 
-              : -1.5702 + (angle_Top.f || angle_Top.b)  ,  
-            (-angle_Top.l || angle_Top.r)  ,
+              ? -1.5702
+              : -1.5702 + (angle_Top.f || -angle_Top.b),
+            (-angle_Top.l || angle_Top.r),
             0
           )
         }
         position={[
           0,
           height / 2 +
-            (angle_Top.f * length/2 || angle_Top.b * length/2|| angle_Top.r * width/2|| angle_Top.l * width/2) - (topSize ? topSize : 0 + tickLot)  ,
-          angle_Top.f ? size/5 : angle_Top.b ? size /5 : 0,
+          (angle_Top.f * length / 2 || angle_Top.b * length / 2 || angle_Top.r * width / 2 || angle_Top.l * width / 2) - (topSize ? topSize : 0 + tickLot),
+          angle_Top.f ? size / 5 : angle_Top.b ? size / 5 : 0,
         ]}
       >
-        <meshStandardMaterial map={wallTexture instanceof THREE.Texture ? wallTexture : null} />
+        <meshStandardMaterial map={_wallTexture instanceof THREE.Texture ? _wallTexture : null} />
       </Plane>
     </mesh>
   );

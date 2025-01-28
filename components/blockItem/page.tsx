@@ -27,7 +27,7 @@ import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
 
 import Image from "next/image";
-import  ComponentBlock, { Component } from "../componentBlock/page";
+import ComponentBlock, { Component } from "../componentBlock/page";
 
 
 interface BlockItemProps {
@@ -75,11 +75,11 @@ export default function BlockItem({
     b: number;
   }>(block.angle_Top);
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
-  const [wallTexture, setWallTexture] = useState<File | null>(null);
-  const [topTexture, setTopTexture] = useState<File | null>(null);
-  const [floorTexture, setFloorTexture] = useState<File | null>(null);
+  const [wallTexture, setWallTexture] = useState<string>(block.wallTexture || "");
+  const [topTexture, setTopTexture] = useState<string>(block.topTexture || "");
+  const [floorTexture, setFloorTexture] = useState<string>(block.floorTexture || "");
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
-  const [components, setComponents] = useState<Component[]>([]);
+  const [components, setComponents] = useState<Component[]>(block.components);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
   const [wall, setWall] = useState<"F" | "B" | "L" | "R">("F");
 
@@ -104,9 +104,9 @@ export default function BlockItem({
     showComponentPanel();
   }
 
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<File | null>>) {
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<string>>) {
     if (event.target.files && event.target.files.length > 0) {
-      _set(event.target.files[0]);
+      _set(URL.createObjectURL(event.target.files[0]) );
     }
   };
 
@@ -133,7 +133,9 @@ export default function BlockItem({
   block.components = components;
   block.rotation = rotation;
   block.angle_Top = angle_Top;
-  block.floorTexture = floorTexture || undefined;
+  block.floorTexture = floorTexture;
+  block.topTexture = topTexture;
+  block.wallTexture = wallTexture;
 
   //função de update da rendenização
   function updateBlock() {
@@ -164,7 +166,7 @@ export default function BlockItem({
 
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
-    
+
   }, [
     _top,
     _floor,
@@ -405,11 +407,15 @@ export default function BlockItem({
                   }
 
                   <Box>
-                  <List sx={{ display: "flex", flexDirection:"column", gap: "1.5vh"}}>
-                    {components.map((component) => (
-                    <ComponentBlock updateComponent={updateBlock} component={component} />
-                  ))}
-    </List>
+                    <List sx={{ display: "flex", flexDirection: "column", gap: "1.5vh" }}>
+                      {components.map((component) => (
+
+
+                        <ComponentBlock updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={(id) => setComponents(prev => prev.filter(c => c.id !== id))} />
+                      )
+
+                      )}
+                    </List>
                   </Box>
 
                 </Box>
@@ -435,24 +441,20 @@ export default function BlockItem({
           </Box>
         </>
       )}
-      <Box display={"flex"} marginTop={2} justifyContent={"space-between"}>
-        <Box display={"flex"} alignItems={"center"}>
-          <Typography>Show Top</Typography>
-          <Checkbox
-            checked={_top}
-            onChange={(e) => {
-              _setTop(e.target.checked);
-            }}
-            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
-          />
+      <Box display={"flex"} marginTop={2} flexDirection={"column"} justifyContent={"space-between"}>
+        <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
+          <Typography width={"35%"}>Show Top</Typography>
+          
+          
           {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
             {topTexture ? (
               <Image
-                src={URL.createObjectURL(topTexture)} // Create a URL for the uploaded file
+                src={topTexture} // Create a URL for the uploaded file
                 alt="Description of the images"
                 width={30}
                 height={30}
+                
               />
             ) : (
               <IconButton
@@ -474,22 +476,23 @@ export default function BlockItem({
             onChange={(event) => handleFileChange(event, setTopTexture)}
             multiple
           />
-        </Box>
-        <Box display={"flex"} alignItems={"center"}>
-          <Typography>Show Floor</Typography>
           <Checkbox
-            checked={_floor}
+            checked={_top}
             onChange={(e) => {
-              _setFloor(e.target.checked);
+              _setTop(e.target.checked);
             }}
-            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
+            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" }  }}
           />
+        </Box>
+        <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
+          <Typography width={"35%"}>Show Floor</Typography>
+         
 
           {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-floor" style={{ cursor: "pointer" }}>
             {floorTexture ? (
               <Image
-                src={URL.createObjectURL(floorTexture)} // Create a URL for the uploaded file
+                src={floorTexture} // Create a URL for the uploaded file
                 alt="Description of the image"
                 width={30}
                 height={30}
@@ -512,6 +515,47 @@ export default function BlockItem({
             type="file"
             accept="image/*"
             onChange={(event) => handleFileChange(event, setFloorTexture)}
+            multiple
+          />
+           <Checkbox
+            checked={_floor}
+            onChange={(e) => {
+              _setFloor(e.target.checked);
+            }}
+            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
+          />
+        </Box>
+        <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
+          <Typography width={"35%"}>Wall Texture</Typography>
+         
+
+          {/* Clickable Image to trigger file input */}
+          <label htmlFor="file-upload-wall" style={{ cursor: "pointer" }}>
+            {wallTexture ? (
+              <Image
+                src={wallTexture} // Create a URL for the uploaded file
+                alt="Description of the image"
+                width={30}
+                height={30}
+              />
+            ) : (
+              <IconButton
+                size="medium"
+                sx={{ color: "white" }}
+                onClick={() => document.getElementById("file-upload-wall")?.click()} // Trigger file input on button click
+              >
+                <CloudUploadOutlined fontSize="medium" />
+              </IconButton>
+
+            )}
+          </label>
+
+          {/* Hidden file input */}
+          <VisuallyHiddenInput
+            id="file-upload-wall"
+            type="file"
+            accept="image/*"
+            onChange={(event) => handleFileChange(event, setWallTexture)}
             multiple
           />
         </Box>

@@ -30,9 +30,9 @@ export type Room = {
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
   angle_Top: { f: number; l: number; r: number; b: number };
-  wallTexture?: File;
-  topTexture?: File;
-  floorTexture?: File;
+  wallTexture?: string;
+  topTexture?: string;
+  floorTexture?: string;
   components: Component[];
 };
 

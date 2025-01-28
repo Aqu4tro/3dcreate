@@ -36,24 +36,21 @@ export default function Lot({
   floorTexture,
   components
 }: LotProps) {
-
-  
-
   // Always call useTexture unconditionally
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
-      : URL.createObjectURL(wallTexture)
+      : wallTexture
   );
   const _topTexture = useTexture(
     typeof topTexture === "string" || !topTexture
       ? topTexture || "/assets/images/6648194.jpg"
-      : URL.createObjectURL(topTexture)
+      : topTexture
   );
   const _floorTexture = useTexture(
     typeof floorTexture === "string" || !floorTexture
       ? floorTexture || "/assets/images/damaged-parquet-texture.jpg"
-      : URL.createObjectURL(floorTexture)
+      : floorTexture
   );
 
   // Function to toggle selection state
@@ -92,10 +89,10 @@ export default function Lot({
           position={[
             0,
             height -
-              0.05 +
-              (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l
-                ? (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 6
-                : 0),
+            0.05 +
+            (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l
+              ? (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 4
+              : 0),
             0,
           ]}
           rotation={
@@ -131,7 +128,7 @@ export default function Lot({
             rotation={new THREE.Euler(0, 0, 0)}
             name={`wall-${index}`}
           >
-            {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L" ) || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L" )) && (
+            {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L") || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
               <InclinedWall
                 id={id}
                 wall={e}
@@ -152,11 +149,13 @@ export default function Lot({
               />
             )}
             <boxGeometry args={[e.W, e.H, e.L]} />
-          {
-            components?.map((e) => (
-              <ComponentAdd component={e} />
-            ))
-          }
+
+            {
+              components?.map((f) => (
+                <ComponentAdd component={f} />
+
+              ))
+            }
             <meshStandardMaterial map={_wallTexture} />
           </mesh>
         ))}
