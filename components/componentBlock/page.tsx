@@ -55,106 +55,106 @@ export default function ComponentBlock({
       flexDirection: "row",
       padding: 1,
       boxShadow: "0 0 3px 0",
-      height:"30vh",
+      height: "30vh",
       borderRadius: 3
     }}>
-      <Box sx={{display: "flex", flexDirection: "column", width: "100%", gap: "1vh"}}>
-      <Box sx={{ display: "flex", flexDirection: "row", alignContent: "center", justifyContent: "space-between", width: "90%" }}>
-        <Typography>Id: {component.id}</Typography>
-        <Typography>{component.name}</Typography>
-        <Typography>Wall: {component.wall}</Typography>
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "self-start", width: "90%" }}>
-        <Typography >Positon:</Typography>
-        <List sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-          <TextField
-            label="X"
-            value={component.position[component.wall === "F" || component.wall === "B" ? 0 : component.wall === "L" || component.wall === "R" ? 2 : 0]}
+      <Box sx={{ display: "flex", flexDirection: "column", width: "100%", gap: "1vh" }}>
+        <Box sx={{ display: "flex", flexDirection: "row", alignContent: "center", justifyContent: "space-between", width: "90%" }}>
+          <Typography>Id: {component.id}</Typography>
+          <Typography>{component.name}</Typography>
+          <Typography>Wall: {component.wall}</Typography>
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "self-start", width: "90%" }}>
+          <Typography >Positon:</Typography>
+          <List sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+            <TextField
+              label="X"
+              value={component.position[component.wall === "F" || component.wall === "B" ? 0 : component.wall === "L" || component.wall === "R" ? 2 : 0]}
 
-            onChange={(e) => {
-              setPosition([component.wall === "F" || component.wall === "B" ? Number(e.target.value) : position[0], position[1], component.wall === "L" || component.wall === "R" ? Number(e.target.value) : position[2]]);
-              _updateBlock();
-            }}
-            sx={{
-              alignSelf: "end",
-              width: "5vw",
-              "& .MuiFilledInput-root": { color: "white" },
-            }}
-            size="small"
-            type="number"
-            variant="filled"
-          />
-          <TextField
-            label="Y"
-            value={component.position[1]}
-            onChange={(e) => {
-              setPosition([position[0], Number(e.target.value), position[2]]);
-              _updateBlock();
-            }}
-            sx={{
-              alignSelf: "end",
-              width: "5vw",
-              "& .MuiFilledInput-root": { color: "white" },
-            }}
-            size="small"
-            type="number"
-            variant="filled"
-          />
+              onChange={(e) => {
+                setPosition([component.wall === "F" || component.wall === "B" ? Number(e.target.value) : position[0], position[1], component.wall === "L" || component.wall === "R" ? Number(e.target.value) : position[2]]);
+                _updateBlock();
+              }}
+              sx={{
+                alignSelf: "end",
+                width: "5vw",
+                "& .MuiFilledInput-root": { color: "white" },
+              }}
+              size="small"
+              type="number"
+              variant="filled"
+            />
+            <TextField
+              label="Y"
+              value={component.position[1]}
+              onChange={(e) => {
+                setPosition([position[0], Number(e.target.value), position[2]]);
+                _updateBlock();
+              }}
+              sx={{
+                alignSelf: "end",
+                width: "5vw",
+                "& .MuiFilledInput-root": { color: "white" },
+              }}
+              size="small"
+              type="number"
+              variant="filled"
+            />
 
 
-        </List>
-      </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "self-start", width: "90%" }}>
-        <Typography>Scale:</Typography>
-        <List sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
-          <TextField
-            label="X"
-            value={component.type ? component.scale[2] : component.scale[0]}
-            disabled={component.wall === "L" || component.wall === "R"}
-            onChange={(e) => {
-              setScale([!component.type ? Number(e.target.value) : scale[0], scale[1], !component.type ? scale[2] : Number(e.target.value)]);
-              _updateBlock();
-            }}
-            sx={{
-              alignSelf: "end",
-              width: "5vw",
-              "& .MuiFilledInput-root": { color: "white" },
-            }}
-            size="small"
-            type="number"
-            variant="filled"
-          />
-          <TextField
-            label="Y"
-            value={component.scale[1]}
-            onChange={(e) => {
-              setScale([scale[0], Number(e.target.value), scale[2]]);
-              _updateBlock();
-            }}
-            sx={{
-              alignSelf: "end",
-              width: "5vw",
-              "& .MuiFilledInput-root": { color: "white" },
-            }}
-            size="small"
-            type="number"
-            variant="filled"
-          />
+          </List>
+        </Box>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "self-start", width: "90%" }}>
+          <Typography>Scale:</Typography>
+          <List sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
+            <TextField
+              label="X"
+              value={component.type ? component.scale[2] : component.scale[0]}
+              disabled={component.wall === "L" || component.wall === "R"}
+              onChange={(e) => {
+                setScale([!component.type ? Number(e.target.value) : scale[0], scale[1], !component.type ? scale[2] : Number(e.target.value)]);
+                _updateBlock();
+              }}
+              sx={{
+                alignSelf: "end",
+                width: "5vw",
+                "& .MuiFilledInput-root": { color: "white" },
+              }}
+              size="small"
+              type="number"
+              variant="filled"
+            />
+            <TextField
+              label="Y"
+              value={component.scale[1]}
+              onChange={(e) => {
+                setScale([scale[0], Number(e.target.value), scale[2]]);
+                _updateBlock();
+              }}
+              sx={{
+                alignSelf: "end",
+                width: "5vw",
+                "& .MuiFilledInput-root": { color: "white" },
+              }}
+              size="small"
+              type="number"
+              variant="filled"
+            />
 
-        </List>
-      </Box>
+          </List>
+        </Box>
       </Box>
       <Button
         onClick={() => {
           onDelete(component.id);
         }}
-        sx={{ height: "100%", borderWidth: 3 }} 
+        sx={{ height: "100%", borderWidth: 3 }}
         variant="outlined"
         color="error"
       >
         <Delete color="error" fontSize="large" />
       </Button>
-      </ListItem>  
+    </ListItem>
 
   );
 }

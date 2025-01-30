@@ -6,14 +6,9 @@ import {
   IconButton,
   List,
   ListItem,
-  Menu,
   MenuItem,
   Select,
-  Stack,
   styled,
-
-  TextField,
-
   Typography,
 } from "@mui/material";
 import {
@@ -25,9 +20,9 @@ import {
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { BlockController, SmallBlockController } from "../blockController/page";
-
 import Image from "next/image";
 import ComponentBlock, { Component } from "../componentBlock/page";
+import BlockSmall from "../blockSmall/page";
 
 
 interface BlockItemProps {
@@ -41,6 +36,8 @@ interface BlockItemProps {
   setSelect: () => void;
   select: boolean | undefined;
   updateLot: (updatedBlock: Room) => void; // Adiciona a função de
+
+  _setBlocks: Dispatch<SetStateAction<Room[]>>;
 }
 
 export default function BlockItem({
@@ -52,6 +49,7 @@ export default function BlockItem({
   setDisable,
   setSelect,
   select,
+  _setBlocks,
 }: BlockItemProps) {
   const [width, setWidth] = useState<number>(block.width);
   const [height, setHeight] = useState<number>(block.height || 0);
@@ -75,6 +73,7 @@ export default function BlockItem({
     b: number;
   }>(block.angle_Top);
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
+
   const [wallTexture, setWallTexture] = useState<string>(block.wallTexture || "");
   const [topTexture, setTopTexture] = useState<string>(block.topTexture || "");
   const [floorTexture, setFloorTexture] = useState<string>(block.floorTexture || "");
@@ -106,7 +105,7 @@ export default function BlockItem({
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<string>>) {
     if (event.target.files && event.target.files.length > 0) {
-      _set(URL.createObjectURL(event.target.files[0]) );
+      _set(URL.createObjectURL(event.target.files[0]));
     }
   };
 
@@ -136,6 +135,7 @@ export default function BlockItem({
   block.floorTexture = floorTexture;
   block.topTexture = topTexture;
   block.wallTexture = wallTexture;
+  block.position = position;
 
   //função de update da rendenização
   function updateBlock() {
@@ -163,7 +163,7 @@ export default function BlockItem({
       );
     });
   };
-
+  function deleteBlock(id: number, _set: Dispatch<SetStateAction<Room[]>>) { _set(prev => prev.filter(c => c.id !== id)) }
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
 
@@ -183,7 +183,8 @@ export default function BlockItem({
     wallTexture,
     topTexture,
     floorTexture,
-    components
+    components,
+    blocks
   ]);
 
   //criação de blocos
@@ -223,6 +224,7 @@ export default function BlockItem({
         position,
         rotation,
         angle_Top,
+        byLot: true,
       });
       setCountBlock(Number(countBlock + 1));
     }
@@ -243,6 +245,7 @@ export default function BlockItem({
         select={block.selected}
         setSelect={setSelect}
         byLot={byLot}
+        onDelete={() => deleteBlock(block.id, _setBlocks)}
       />
       {showModal ? (
         <>
@@ -444,8 +447,8 @@ export default function BlockItem({
       <Box display={"flex"} marginTop={2} flexDirection={"column"} justifyContent={"space-between"}>
         <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
           <Typography width={"35%"}>Show Top</Typography>
-          
-          
+
+
           {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
             {topTexture ? (
@@ -454,7 +457,6 @@ export default function BlockItem({
                 alt="Description of the images"
                 width={30}
                 height={30}
-                
               />
             ) : (
               <IconButton
@@ -464,7 +466,6 @@ export default function BlockItem({
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
-
             )}
           </label>
 
@@ -481,12 +482,12 @@ export default function BlockItem({
             onChange={(e) => {
               _setTop(e.target.checked);
             }}
-            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" }  }}
+            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
         </Box>
         <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
           <Typography width={"35%"}>Show Floor</Typography>
-         
+
 
           {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-floor" style={{ cursor: "pointer" }}>
@@ -517,7 +518,7 @@ export default function BlockItem({
             onChange={(event) => handleFileChange(event, setFloorTexture)}
             multiple
           />
-           <Checkbox
+          <Checkbox
             checked={_floor}
             onChange={(e) => {
               _setFloor(e.target.checked);
@@ -527,7 +528,6 @@ export default function BlockItem({
         </Box>
         <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
           <Typography width={"35%"}>Wall Texture</Typography>
-         
 
           {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-wall" style={{ cursor: "pointer" }}>
@@ -563,7 +563,9 @@ export default function BlockItem({
       {!byLot && (
         <Box>
           {blocks.map((e) => (
-            <BlockItem
+            (
+              e.selected ? (
+                <BlockItem
               key={e.id}
               updateLot={updateBlock}
               block={e}
@@ -574,7 +576,21 @@ export default function BlockItem({
               setDisable={() => toggleSelectLot(e.id, "D")}
               select={e.selected}
               setSelect={() => toggleSelectLot(e.id, "S")}
+              _setBlocks={setBlocks}
             />
+            ) : (
+              <BlockSmall
+                key={e.id} // Adicione uma chave única para cada item
+                name={e.name}
+                setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
+                id={e.id}
+                byLot={true}
+                disable={e.disable}
+                setDisable={() => toggleSelectLot(e.id, "D")}
+              />
+            )
+            )
+            
           ))}
 
           <Button

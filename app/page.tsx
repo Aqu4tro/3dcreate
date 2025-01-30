@@ -3,7 +3,6 @@
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Dispatch, SetStateAction, useState } from "react";
-import * as THREE from "three";
 import { Add, ArrowBack } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
 import Lot from "@/renderers/lotCreate/page";
@@ -13,7 +12,7 @@ import BlockSmall from "@/components/blockSmall/page";
 import { Component } from "@/components/componentBlock/page";
 export type Room = {
   id: number;
-  byLot?: number;
+  byLot?: true;
   length: number;
   width: number;
   size: number;
@@ -61,8 +60,8 @@ export default function Home() {
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-          ? { ...item, selected: !item.selected }
-          : item
+            ? { ...item, selected: !item.selected }
+            : item
       )
     );
   };
@@ -100,7 +99,7 @@ export default function Home() {
         position: { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
         angle_Top: { f: 0, l: 0, r: 0, b: 0 },
-        components:[],
+        components: [],
       },
     ]);
     setCountLot(countLot + 1);
@@ -193,7 +192,7 @@ export default function Home() {
               angle_Top={item.angle_Top}
               wallTexture={item.wallTexture}
               floorTexture={item.floorTexture}
-              topTexture={item.topTexture} 
+              topTexture={item.topTexture}
               components={item.components}
             />
           ))}
@@ -214,13 +213,17 @@ export default function Home() {
                 setDisable={() => toggleSelectLot(e.id, "D")}
                 setSelect={() => toggleSelectLot(e.id, "S")}
                 select={e.selected}
+                _setBlocks={setLot}
               />
             ) : (
               <BlockSmall
                 key={e.id} // Adicione uma chave única para cada item
                 name={e.name}
-                disable={e.disable}
                 setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
+                id={e.id}
+                byLot={e.byLot}
+                disable={e.disable}
+                setDisable={() => toggleSelectLot(e.id, "D")}
               />
             )
           )}

@@ -151,8 +151,8 @@ export default function Lot({
             <boxGeometry args={[e.W, e.H, e.L]} />
 
             {
-              components?.map((f) => (
-                <ComponentAdd component={f} />
+              components?.map((f, index) => (
+                <ComponentAdd component={f} key={index} />
 
               ))
             }
@@ -171,7 +171,7 @@ export default function Lot({
           tickLot={e.tickLot}
           name={e.name}
           length={e.length}
-          byLot={id}
+          byLot={true}
           disable={e.disable}
           top={e.top}
           floor={e.floor}
