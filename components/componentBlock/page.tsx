@@ -40,7 +40,7 @@ export default function ComponentBlock({
       ...component,
       position: position,
       scale: scale,
-
+      
     });
   }
   return (

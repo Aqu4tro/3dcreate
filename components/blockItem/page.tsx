@@ -73,11 +73,11 @@ export default function BlockItem({
     b: number;
   }>(block.angle_Top);
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
-
   const [wallTexture, setWallTexture] = useState<string>(block.wallTexture || "");
   const [topTexture, setTopTexture] = useState<string>(block.topTexture || "");
   const [floorTexture, setFloorTexture] = useState<string>(block.floorTexture || "");
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
+  const [componentId, setComponentId] = useState(0);
   const [components, setComponents] = useState<Component[]>(block.components);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
   const [wall, setWall] = useState<"F" | "B" | "L" | "R">("F");
@@ -91,7 +91,7 @@ export default function BlockItem({
     setComponents((prev) => [
       ...prev,
       {
-        id: components.length,
+        id: componentId,
         name: type ? "Door" : "Window",
         type: type,
         wall: wall,
@@ -101,6 +101,7 @@ export default function BlockItem({
       },
     ]);
     showComponentPanel();
+    setComponentId(componentId + 1);
   }
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<string>>) {
@@ -425,8 +426,7 @@ export default function BlockItem({
                       {components.map((component,index) => (
 
 
-                        <ComponentBlock key={index} updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={(id) => { console.log(component); 
-                          return(setComponents(prev => prev.filter(c => c.id !== id)))}} />
+                        <ComponentBlock key={index} updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={(id) => setComponents(prev => prev.filter(c => c.id !== id))} />
                       )
 
                       )}

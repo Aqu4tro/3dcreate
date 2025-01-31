@@ -156,10 +156,8 @@ export default function Lot({
             <boxGeometry args={[e.W, e.H, e.L]} />
 
 {components?.map((f) => {
-              
-              return(
-                
-                <ComponentAdd key={f.id} component={f} />
+              return( 
+                <ComponentAdd component={f} />
               )
             }
             )}
