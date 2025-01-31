@@ -27,7 +27,7 @@ export default function BlocksList({ blockList }: { blockList: Room[] }) {
     <Box padding={1}>
       {blockList.map((e) => (
         e.selected && (
-        <BlockItem disable={e.disable} select={e.selected} setSelect={ () => toggleSelectLot(e.id,"S")} setDisable={() => toggleSelectLot(e.id, "D")} updateLot={updateBlock} block={e} />
+        <BlockItem disable={e.disable} select={e.selected} setSelect={ () => toggleSelectLot(e.id,"S")} setDisable={() => toggleSelectLot(e.id, "D")} updateLot={updateBlock} block={e} _setBlocks={setObjects} />
       )))}
     </Box>
   );

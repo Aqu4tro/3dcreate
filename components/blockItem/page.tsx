@@ -163,7 +163,18 @@ export default function BlockItem({
       );
     });
   };
-  function deleteBlock(id: number, _set: Dispatch<SetStateAction<Room[]>>) { _set(prev => prev.filter(c => c.id !== id)) }
+  function deleteRoom(id: number, _set: Dispatch<SetStateAction<Room[]>>) {
+    _set(prev => {
+      const updatedRooms = prev.filter(c => c.id !== id);
+      
+      // Optional: You could log or handle cases where no rooms were deleted
+      if (updatedRooms.length === prev.length) {
+        console.warn(`No room found with id: ${id}`);
+      }
+      
+      return updatedRooms;
+    });
+  }
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
 
@@ -245,7 +256,7 @@ export default function BlockItem({
         select={block.selected}
         setSelect={setSelect}
         byLot={byLot}
-        onDelete={() => deleteBlock(block.id, _setBlocks)}
+        onDelete={() => deleteRoom(block.id, _setBlocks)}
       />
       {showModal ? (
         <>
@@ -411,10 +422,11 @@ export default function BlockItem({
 
                   <Box>
                     <List sx={{ display: "flex", flexDirection: "column", gap: "1.5vh" }}>
-                      {components.map((component) => (
+                      {components.map((component,index) => (
 
 
-                        <ComponentBlock updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={(id) => setComponents(prev => prev.filter(c => c.id !== id))} />
+                        <ComponentBlock key={index} updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={(id) => { console.log(component); 
+                          return(setComponents(prev => prev.filter(c => c.id !== id)))}} />
                       )
 
                       )}
@@ -529,7 +541,6 @@ export default function BlockItem({
         <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
           <Typography width={"35%"}>Wall Texture</Typography>
 
-          {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-wall" style={{ cursor: "pointer" }}>
             {wallTexture ? (
               <Image

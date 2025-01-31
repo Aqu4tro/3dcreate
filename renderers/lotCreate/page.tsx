@@ -8,6 +8,7 @@ import walls from "../../utils/walls/page";
 import InclinedWall from "../inclinedWall/page";
 import Door from "@/public/assets/objects/door/Scene";
 import ComponentAdd from "../componentAdd/page";
+import { useEffect } from "react";
 
 interface LotProps extends Room {
   selected: boolean | undefined;
@@ -52,6 +53,10 @@ export default function Lot({
       ? floorTexture || "/assets/images/damaged-parquet-texture.jpg"
       : floorTexture
   );
+
+  useEffect(() => {
+    components
+  }, [components])
 
   // Function to toggle selection state
   function switchSelect(
@@ -150,12 +155,15 @@ export default function Lot({
             )}
             <boxGeometry args={[e.W, e.H, e.L]} />
 
-            {
-              components?.map((f, index) => (
-                <ComponentAdd component={f} key={index} />
-
-              ))
+{components?.map((f) => {
+              
+              return(
+                
+                <ComponentAdd key={f.id} component={f} />
+              )
             }
+            )}
+ 
             <meshStandardMaterial map={_wallTexture} />
           </mesh>
         ))}

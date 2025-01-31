@@ -6,7 +6,7 @@ const BlockHeader = ({ name, id, disable, setDisable, setSelect, byLot, onDelete
   function handleSelected() {
     setSelect();
   }
-  console.log(byLot);
+  
   return (
     <Box>
       <Box display={"flex"} position="relative" justifyContent={"center"} borderRadius={4} borderColor="grey.300">

@@ -1,17 +1,13 @@
-import { wall } from "@/utils/walls/page";
 import { Delete } from "@mui/icons-material";
 import {
   Box,
   Button,
-  IconButton,
   List,
   ListItem,
-  Slide,
-  Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 export interface Component {
   id: number;
   name: string;
@@ -47,7 +43,6 @@ export default function ComponentBlock({
 
     });
   }
-
   return (
 
     <ListItem sx={{
@@ -140,7 +135,6 @@ export default function ComponentBlock({
               type="number"
               variant="filled"
             />
-
           </List>
         </Box>
       </Box>

@@ -14,7 +14,7 @@ interface BlockSmallProps {
 }
 
 function BlockSmall({ id, name, setSelect, byLot, disable, setDisable }: BlockSmallProps) {
-console.log(byLot);
+
   function handleSelected() {
     setSelect();
   }

@@ -107,7 +107,7 @@ export default function Home() {
 
   //mostrar/ocultar painel de terreno
   function togglePanel() {
-    console.log(lot);
+    
     setPanelVisible(!panelVisible);
     //setThick(false);
   }
@@ -174,6 +174,7 @@ export default function Home() {
 
           {lot.map((item) => (
             <Lot
+              key={item.id}
               id={item.id}
               length={item.length}
               width={item.width}
@@ -204,9 +205,10 @@ export default function Home() {
       </div>
       <div style={{ width: "25vw", overflowY: "auto" }}>
         <Box padding={1}>
-          {lot.map((e) =>
+          {lot.map((e,index) =>
             e.selected ? (
               <BlockItem
+                key={e.id}
                 updateLot={updateLot}
                 block={e}
                 disable={e.disable}
