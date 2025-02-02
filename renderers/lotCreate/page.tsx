@@ -4,9 +4,7 @@ import Block from "../blockCreate/page";
 import { ThreeEvent } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import walls from "../../utils/walls/page";
-
 import InclinedWall from "../inclinedWall/page";
-import Door from "@/public/assets/objects/door/Scene";
 import ComponentAdd from "../componentAdd/page";
 import { useEffect } from "react";
 
@@ -155,11 +153,11 @@ export default function Lot({
             )}
             <boxGeometry args={[e.W, e.H, e.L]} />
 
-{components?.map((f) => {
-              return( 
-                <ComponentAdd component={f} />
+{components?.map((f) => ( 
+  
+  f.wall === e.N ? <ComponentAdd component={f} /> : null
               )
-            }
+            
             )}
  
             <meshStandardMaterial map={_wallTexture} />
