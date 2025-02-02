@@ -7,6 +7,9 @@ import walls from "../../utils/walls/page";
 import InclinedWall from "../inclinedWall/page";
 import ComponentAdd from "../componentAdd/page";
 import { useEffect } from "react";
+import { CSG } from "three-csg-ts";
+import { Component } from "@/components/componentBlock/page";
+
 
 interface LotProps extends Room {
   selected: boolean | undefined;
@@ -67,6 +70,24 @@ export default function Lot({
   if (disable || !tickLot) {
     return null; // Early return if disabled or tickLot is false
   }
+
+function AddWall({ H, W, L, components }: { H: number; W: number; L: number; components: Component[] }) {
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(W, H, L));
+  let subRes = CSG.subtract(wall, new THREE.Mesh());
+
+  components?.forEach((f) => {
+    const common = new THREE.Mesh(new THREE.BoxGeometry(.8, 2.1, .1), new THREE.MeshBasicMaterial());
+    common.position.set(f.position[0], f.position[1], f.position[2]);
+    subRes = CSG.subtract(subRes, common);
+  });
+
+  return (
+    <mesh>
+      <primitive object={subRes} />
+      <meshNormalMaterial />
+    </mesh>
+  );
+}
 
   return (
     <mesh
@@ -151,7 +172,8 @@ export default function Lot({
                 components={[]} // Add the appropriate value for components
               />
             )}
-            <boxGeometry args={[e.W, e.H, e.L]} />
+            {/*<boxGeometry args={[e.W, e.H, e.L]} />*/}
+            <AddWall H={e.H} W={e.W} L={e.L} components={components}/>
 
 {components?.map((f) => ( 
   
