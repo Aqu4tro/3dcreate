@@ -71,23 +71,32 @@ export default function Lot({
     return null; // Early return if disabled or tickLot is false
   }
 
-function AddWall({ H, W, L, components }: { H: number; W: number; L: number; components: Component[] }) {
-  const wall = new THREE.Mesh(new THREE.BoxGeometry(W, H, L));
-  let subRes = CSG.subtract(wall, new THREE.Mesh());
-
-  components?.forEach((f) => {
-    const common = new THREE.Mesh(new THREE.BoxGeometry(.8, 2.1, .1), new THREE.MeshBasicMaterial());
-    common.position.set(f.position[0], f.position[1], f.position[2]);
-    subRes = CSG.subtract(subRes, common);
-  });
-
-  return (
-    <mesh>
-      <primitive object={subRes} />
-      <meshNormalMaterial />
-    </mesh>
-  );
-}
+  function AddWall({ H, W, L, components }: { H: number; W: number; L: number; components: Component[] }) {
+    const wallGeometry = new THREE.BoxGeometry(W, H, L);
+    let mesh = new THREE.Mesh(wallGeometry);
+  
+    if (components.length > 0) {
+      let subRes = CSG.subtract;
+      components.forEach((f) => {
+        const commonGeometry = new THREE.BoxGeometry(0.8, 2.1, 0.1);
+        const commonMesh = new THREE.Mesh(commonGeometry);
+        commonMesh.position.set(f.position[0], f.position[1], f.position[2]);
+        
+        // Convert meshes to CSG objects
+        const wallCSG = CSG.fromMesh(mesh);
+        const cutoutCSG = CSG.fromMesh(commonMesh);
+  
+        // Subtract the cutout from the wall
+        mesh.geometry.dispose(); // Limpa a geometria anterior para evitar vazamento de memória
+        mesh.geometry = (wallCSG.subtract(cutoutCSG)).toMesh().geometry;
+      });
+    }
+  
+    return (
+      <primitive object={mesh} />
+    );
+  }
+  
 
   return (
     <mesh
