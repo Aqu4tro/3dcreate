@@ -15,7 +15,7 @@ export default function ComponentAdd({ component }: { component: Component }) {
         0,
       ]}
       position={[
-        component.position[0],
+         component.position[0],
         component.position[1],
         component.position[2],
       ]}

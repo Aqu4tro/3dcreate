@@ -30,7 +30,7 @@ export default function ComponentBlock({
 
 }) {
 
-  const [position, setPosition] = useState<[number, number, number]>(() => (component.position[0] === 0 && component.position[1] === 0 && component.position[2] === 0) ? [component.wall === "R" ? width / 2 : component.wall === "L" ? -width / 2 : 0, 0, component.wall === "F" ? lenght - (component.type ? .1 : 0.05) : component.wall === "B" ? -lenght + .1 : 0] : component.position);
+  const [position, setPosition] = useState<[number, number, number]>(() => (component.position[0] === 0 && component.position[1] === 0 && component.position[2] === 0) ? [ 0, component.type  ? 0 : -.55, component.wall === "F" ? lenght - (component.type ? .1 : 0.05) : component.wall === "B" ? -lenght + .1 : 0] : component.position);
   const [scale, setScale] = useState<[number, number, number]>(component.scale[0] !== 1 && component.scale[1] !== 1 && component.scale[2] !== 1 ? component.scale : [component.type ? .6 : .8, component.type ? .1 : .6, .1]);
   component.position = position;
   component.scale = scale;

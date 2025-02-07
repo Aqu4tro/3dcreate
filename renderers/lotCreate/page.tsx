@@ -7,8 +7,7 @@ import walls from "../../utils/walls/page";
 import InclinedWall from "../inclinedWall/page";
 import ComponentAdd from "../componentAdd/page";
 import { useEffect } from "react";
-import { CSG } from "three-csg-ts";
-import { Component } from "@/components/componentBlock/page";
+import AddWall from "../addWall/page";
 
 
 interface LotProps extends Room {
@@ -57,6 +56,7 @@ export default function Lot({
 
   useEffect(() => {
     components
+    
   }, [components])
 
   // Function to toggle selection state
@@ -71,32 +71,7 @@ export default function Lot({
     return null; // Early return if disabled or tickLot is false
   }
 
-  function AddWall({ H, W, L, components }: { H: number; W: number; L: number; components: Component[] }) {
-    const wallGeometry = new THREE.BoxGeometry(W, H, L);
-    let mesh = new THREE.Mesh(wallGeometry);
-  
-    if (components.length > 0) {
-      let subRes = CSG.subtract;
-      components.forEach((f) => {
-        const commonGeometry = new THREE.BoxGeometry(0.8, 2.1, 0.1);
-        const commonMesh = new THREE.Mesh(commonGeometry);
-        commonMesh.position.set(f.position[0], f.position[1], f.position[2]);
-        
-        // Convert meshes to CSG objects
-        const wallCSG = CSG.fromMesh(mesh);
-        const cutoutCSG = CSG.fromMesh(commonMesh);
-  
-        // Subtract the cutout from the wall
-        mesh.geometry.dispose(); // Limpa a geometria anterior para evitar vazamento de memória
-        mesh.geometry = (wallCSG.subtract(cutoutCSG)).toMesh().geometry;
-      });
-    }
-  
-    return (
-      <primitive object={mesh} />
-    );
-  }
-  
+
 
   return (
     <mesh
@@ -155,44 +130,38 @@ export default function Lot({
           topSize: 0.1,
           angle_Top,
         }).map((e, index) => (
-          <mesh
+            <mesh
             key={index}
             position={[e.x, e.y, e.z]}
             rotation={new THREE.Euler(0, 0, 0)}
             name={`wall-${index}`}
-          >
+            >
             {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L") || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
               <InclinedWall
-                id={id}
-                wall={e}
-                width={width}
-                height={height}
-                length={length}
-                angle_Top={angle_Top}
-                size={size}
-                _wallTexture={_wallTexture}
-                name={name}
-                tickLot={tickLot}
-                top={top}
-                floor={floor}
-                position={position}
-                rotation={rotation}
-                disable={disable}
-                components={[]} // Add the appropriate value for components
+              id={id}
+              wall={e}
+              width={width}
+              height={height}
+              length={length}
+              angle_Top={angle_Top}
+              size={size}
+              _wallTexture={_wallTexture}
+              name={name}
+              tickLot={tickLot}
+              top={top}
+              floor={floor}
+              position={position}
+              rotation={rotation}
+              disable={disable}
+              components={components}
               />
             )}
-            {/*<boxGeometry args={[e.W, e.H, e.L]} />*/}
-            <AddWall H={e.H} W={e.W} L={e.L} components={components}/>
+            <AddWall H={e.H} W={e.W} L={e.L} components={components} name={e.N} texture={_wallTexture} />
 
-{components?.map((f) => ( 
-  
-  f.wall === e.N ? <ComponentAdd component={f} /> : null
-              )
-            
-            )}
- 
-            <meshStandardMaterial map={_wallTexture} />
-          </mesh>
+            {components?.map((f) => (
+              f.wall === e.N ? <ComponentAdd key={f.id} component={f} /> : null
+            ))}
+            </mesh>
         ))}
 
       {/* Render additional objects */}
