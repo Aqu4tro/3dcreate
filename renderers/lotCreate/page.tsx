@@ -56,8 +56,7 @@ export default function Lot({
 
   useEffect(() => {
     components
-    
-  }, [components])
+  }, [components]);
 
   // Function to toggle selection state
   function switchSelect(
@@ -156,11 +155,20 @@ export default function Lot({
               components={components}
               />
             )}
-            <AddWall H={e.H} W={e.W} L={e.L} components={components} name={e.N} texture={_wallTexture} />
+         
+    <AddWall 
+      x={e.x}
+      y={e.y}
+      z={e.z}
+      H={e.H} 
+      W={e.W} 
+      L={e.L} 
+      components={components} 
+      name={e.N} 
+      texture={_wallTexture} 
+    />
 
-            {components?.map((f) => (
-              f.wall === e.N ? <ComponentAdd key={f.id} component={f} /> : null
-            ))}
+            
             </mesh>
         ))}
 
