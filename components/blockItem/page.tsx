@@ -103,7 +103,9 @@ export default function BlockItem({
     showComponentPanel();
     setComponentId(componentId + 1);
   }
-
+  const handleDeleteComponent = (id: number) => {
+    setComponents((prev) => prev.filter((component) => component.id !== id));
+  };
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<string>>) {
     if (event.target.files && event.target.files.length > 0) {
       _set(URL.createObjectURL(event.target.files[0]));
@@ -423,10 +425,8 @@ export default function BlockItem({
 
                   <Box>
                     <List sx={{ display: "flex", flexDirection: "column", gap: "1.5vh" }}>
-                      {components.map((component,index) => (
-
-
-                        <ComponentBlock key={index} updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={(id) => setComponents(prev => prev.filter(c => c.id !== id))} />
+                      {components.map((component) => (
+                        <ComponentBlock key={component.id} updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={() => handleDeleteComponent(component.id)} />
                       )
 
                       )}

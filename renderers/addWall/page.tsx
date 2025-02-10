@@ -27,63 +27,48 @@ export default function AddWall({
   // Create the wall geometry and material
   const wallGeometry = new THREE.BoxGeometry(W, H, L);
   const wallMaterial = new THREE.MeshStandardMaterial({ map: texture });
-  const finalMesh = new THREE.Mesh(wallGeometry, wallMaterial);
-
-  // Set the position of the final mesh
-  finalMesh.position.set(x, y, z);
+  let finalMesh = new THREE.Mesh(wallGeometry, wallMaterial);
+  
+  let commonMesh = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), new THREE.MeshBasicMaterial());
 
   // Perform CSG operations for each component
   components.forEach((f) => {
+    // Check if the component should affect the wall
     if (
       (f.wall === "F" && name === "B") ||
       (f.wall === "B" && name === "F") ||
       (f.wall === "R" && name === "R") ||
       (f.wall === "L" && name === "L")
     ) {
-      const commonGeometry = new THREE.BoxGeometry(
-        ...(f.type
-          ? [
-              f.wall === "L" || f.wall === "R" ? 0.15 : 0.97,
-              2.05,
-              f.wall === "L" || f.wall === "R" ? 0.8 : 0.15,
-            ]
-          : [
-              f.wall === "L" || f.wall === "R" ? 0.15 : 1.4,
-              1.1,
-              f.wall === "L" || f.wall === "R" ? 0.8 : 0.15,
-            ])
+      // Create a common mesh based on the component's properties
+     
+      commonMesh.scale.set(
+        f.type ? (f.wall === "L" || f.wall === "R" ? 0.15 : 0.97) : (f.wall === "L" || f.wall === "R" ? 0.15 : 1.4),
+        f.type ? 2.05 : 1.1,
+        f.wall === "L" || f.wall === "R" ? 0.8 : 0.15
       );
-
-      const commonMesh = new THREE.Mesh(commonGeometry);
-      commonMesh.position.set(f.position[0], f.position[1], f.position[2]);
-
-      // Ensure the matrices are updated
-      //commonMesh.updateMatrix();
-      //finalMesh.updateMatrix();
-
-      // Perform CSG operation
-      const finalCSG = CSG.fromMesh(finalMesh);
-      const commonCSG = CSG.fromMesh(commonMesh);
-      const subtractedCSG = finalCSG.subtract(commonCSG);
-      const subtractedMesh = CSG.toMesh(
-        subtractedCSG,
-        finalMesh.matrix,
-        finalMesh.material as THREE.Material
-      );
-
-      // Update finalMesh with the new geometry and material
-      //finalMesh.geometry.dispose(); 
-      finalMesh.geometry = subtractedMesh.geometry as THREE.BoxGeometry; // Update geometry
-      finalMesh.material = subtractedMesh.material as THREE.MeshStandardMaterial; // Update material
+    commonMesh.position.set(f.wall === "R" || f.wall === "L" ? 0 : f.position[0], f.position[1], f.wall === "B" || f.wall === "F" ? 0 : f.position[2])
+     
+      
+      
+      commonMesh.updateMatrix();
+      // Perform CSG subtraction
+      let result = CSG.subtract(finalMesh, commonMesh);
+     finalMesh = result as THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
     }
   });
-
+  finalMesh.updateMatrix();
   return (
     <group>
-      <mesh geometry={finalMesh.geometry} material={finalMesh.material} />
-      {components?.map((f) =>
-        f.wall === name ? <ComponentAdd key={f.id} component={f} /> : null
-      )}
+        <mesh geometry={finalMesh.geometry} material={finalMesh.material} >
+        
+        {components?.map((f) =>
+               f.wall === name ? <ComponentAdd key={f.id} component={f} /> : null
+             )}
+             </mesh>
     </group>
+     
+     
+    
   );
 }

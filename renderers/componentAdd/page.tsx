@@ -16,15 +16,15 @@ export default function ComponentAdd({ component }: { component: Component }) {
       ]}
       position={[
          component.position[0],
-        component.position[1],
-        component.position[2],
+        component.type ? component.position[1] : component.position[1] - .55,
+        component.position[2]-.1,
       ]}
       scale={[
         component.type
           ? 0.01
           : component.scale[0] / 10 + (component.type ? 0 : 0.5),
         component.scale[1] / 10 + (component.type ? 0 : 0.3),
-        component.type ? component.scale[2] / 10 : 0.01,
+        component.type ? component.scale[2] / 10 : .5,
       ]}
     >
       {component.type ? <Door /> : <Window />}

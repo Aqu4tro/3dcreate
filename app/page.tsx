@@ -1,7 +1,7 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Sky } from "@react-three/drei";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Add, ArrowBack } from "@mui/icons-material";
 import { Box, Button } from "@mui/material";
@@ -201,11 +201,13 @@ export default function Home() {
           <OrbitControls rotateSpeed={0.2} />
           <ambientLight intensity={0.5} />
           <directionalLight position={[5, -50, 5]} color="white" />
+          <Sky distance={40000} sunPosition={[0, 5, 0]} inclination={0} azimuth={180}  turbidity={10} mieCoefficient={0.005} mieDirectionalG={150} rayleigh={.3}/>
+
         </Canvas>
       </div>
       <div style={{ width: "25vw", overflowY: "auto" }}>
         <Box padding={1}>
-          {lot.map((e,index) =>
+          {lot.map((e) =>
             e.selected ? (
               <BlockItem
                 key={e.id}
