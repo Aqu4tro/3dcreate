@@ -24,7 +24,6 @@ import Image from "next/image";
 import ComponentBlock, { Component } from "../componentBlock/page";
 import BlockSmall from "../blockSmall/page";
 
-
 interface BlockItemProps {
   block: Room;
   byLot?: boolean;
@@ -73,9 +72,13 @@ export default function BlockItem({
     b: number;
   }>(block.angle_Top);
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
-  const [wallTexture, setWallTexture] = useState<string>(block.wallTexture || "");
+  const [wallTexture, setWallTexture] = useState<string>(
+    block.wallTexture || ""
+  );
   const [topTexture, setTopTexture] = useState<string>(block.topTexture || "");
-  const [floorTexture, setFloorTexture] = useState<string>(block.floorTexture || "");
+  const [floorTexture, setFloorTexture] = useState<string>(
+    block.floorTexture || ""
+  );
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [componentId, setComponentId] = useState(0);
   const [components, setComponents] = useState<Component[]>(block.components);
@@ -87,7 +90,6 @@ export default function BlockItem({
   }
 
   function handleAddComponent(type: boolean, wall: "F" | "B" | "L" | "R") {
-
     setComponents((prev) => [
       ...prev,
       {
@@ -106,11 +108,14 @@ export default function BlockItem({
   const handleDeleteComponent = (id: number) => {
     setComponents((prev) => prev.filter((component) => component.id !== id));
   };
-  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>, _set: Dispatch<SetStateAction<string>>) {
+  function handleFileChange(
+    event: React.ChangeEvent<HTMLInputElement>,
+    _set: Dispatch<SetStateAction<string>>
+  ) {
     if (event.target.files && event.target.files.length > 0) {
       _set(URL.createObjectURL(event.target.files[0]));
     }
-  };
+  }
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -161,26 +166,25 @@ export default function BlockItem({
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-            ? { ...item, selected: !item.selected }
-            : item
+          ? { ...item, selected: !item.selected }
+          : item
       );
     });
   };
   function deleteRoom(id: number, _set: Dispatch<SetStateAction<Room[]>>) {
-    _set(prev => {
-      const updatedRooms = prev.filter(c => c.id !== id);
-      
+    _set((prev) => {
+      const updatedRooms = prev.filter((c) => c.id !== id);
+
       // Optional: You could log or handle cases where no rooms were deleted
       if (updatedRooms.length === prev.length) {
         console.warn(`No room found with id: ${id}`);
       }
-      
+
       return updatedRooms;
     });
   }
   useEffect(() => {
     updateBlock(); // Chama a função sempre que _top ou _floor mudar
-
   }, [
     _top,
     _floor,
@@ -198,7 +202,7 @@ export default function BlockItem({
     topTexture,
     floorTexture,
     components,
-    blocks
+    blocks,
   ]);
 
   //criação de blocos
@@ -366,77 +370,104 @@ export default function BlockItem({
             </Box>
             <Box>
               <Button
-
-                sx={{ alignItems: "center", width: "100%", display: "flex", flexDirection: "column" }}
+                sx={{
+                  alignItems: "center",
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
                 onClick={() => {
                   setShowAddModal(!showAddModal);
                   panelVisible ? showComponentPanel() : null;
                 }}
               >
-                <Typography sx={{ color: "white", fontSize: 15 }}>Components</Typography>
-                {showAddModal ?
+                <Typography sx={{ color: "white", fontSize: 15 }}>
+                  Components
+                </Typography>
+                {showAddModal ? (
                   <KeyboardArrowUp fontSize="large" sx={{ color: "white" }} />
-                  :
+                ) : (
                   <KeyboardArrowDown fontSize="large" sx={{ color: "white" }} />
-
-                }
+                )}
               </Button>
-              {
-                showAddModal &&
+              {showAddModal && (
                 <Box>
-                  <Button sx={{
-                    width: "100%", color: "white"
-
-                  }} onClick={showComponentPanel} >
+                  <Button
+                    sx={{
+                      width: "100%",
+                      color: "white",
+                    }}
+                    onClick={showComponentPanel}
+                  >
                     <Add fontSize="medium" />
                   </Button>
-                  {
-                    panelVisible &&
+                  {panelVisible && (
                     <Box>
                       <List>
                         <ListItem>
                           <Typography>Door</Typography>
-                          <Select sx={{ color: "white" }} onChange={(e) => setWall(e.target.value as "F" | "B" | "L" | "R")}>
+                          <Select
+                            sx={{ color: "white" }}
+                            onChange={(e) =>
+                              setWall(e.target.value as "F" | "B" | "L" | "R")
+                            }
+                          >
                             <MenuItem value={"F"}>Front</MenuItem>
                             <MenuItem value={"B"}>Back</MenuItem>
                             <MenuItem value={"L"}>Left</MenuItem>
                             <MenuItem value={"R"}>Right</MenuItem>
                           </Select>
-                          <Button onClick={() => handleAddComponent(true, wall)}>
+                          <Button
+                            onClick={() => handleAddComponent(true, wall)}
+                          >
                             <Add fontSize="medium" />
                           </Button>
                         </ListItem>
-                        <ListItem >
+                        <ListItem>
                           <Typography>Window</Typography>
-                          <Select sx={{ color: "white" }} onChange={(e) => setWall(e.target.value as "F" | "B" | "L" | "R")}>
+                          <Select
+                            sx={{ color: "white" }}
+                            onChange={(e) =>
+                              setWall(e.target.value as "F" | "B" | "L" | "R")
+                            }
+                          >
                             <MenuItem value={"F"}>Front</MenuItem>
                             <MenuItem value={"B"}>Back</MenuItem>
                             <MenuItem value={"L"}>Left</MenuItem>
                             <MenuItem value={"R"}>Right</MenuItem>
                           </Select>
-                          <Button onClick={() => handleAddComponent(false, wall)}>
+                          <Button
+                            onClick={() => handleAddComponent(false, wall)}
+                          >
                             <Add fontSize="medium" />
                           </Button>
                         </ListItem>
                       </List>
                     </Box>
-
-                  }
+                  )}
 
                   <Box>
-                    <List sx={{ display: "flex", flexDirection: "column", gap: "1.5vh" }}>
+                    <List
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "1.5vh",
+                      }}
+                    >
                       {components.map((component) => (
-                        <ComponentBlock key={component.id} updateComponent={updateBlock} component={component} width={width} lenght={length} onDelete={() => handleDeleteComponent(component.id)} />
-                      )
-
-                      )}
+                        <ComponentBlock
+                          key={component.id}
+                          updateComponent={updateBlock}
+                          component={component}
+                          width={width}
+                          lenght={length}
+                          onDelete={() => handleDeleteComponent(component.id)}
+                        />
+                      ))}
                     </List>
                   </Box>
-
                 </Box>
-
-              }
-
+              )}
             </Box>
           </Box>
         </>
@@ -456,10 +487,19 @@ export default function BlockItem({
           </Box>
         </>
       )}
-      <Box display={"flex"} marginTop={2} flexDirection={"column"} justifyContent={"space-between"}>
-        <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
+      <Box
+        display={"flex"}
+        marginTop={2}
+        flexDirection={"column"}
+        justifyContent={"space-between"}
+      >
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          height={"5vh"}
+          justifyContent={"space-between"}
+        >
           <Typography width={"35%"}>Show Top</Typography>
-
 
           {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
@@ -474,7 +514,9 @@ export default function BlockItem({
               <IconButton
                 size="medium"
                 sx={{ color: "white" }}
-                onClick={() => document.getElementById("file-upload-top")?.click()} // Trigger file input on button click
+                onClick={() =>
+                  document.getElementById("file-upload-top")?.click()
+                } // Trigger file input on button click
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
@@ -497,9 +539,13 @@ export default function BlockItem({
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
         </Box>
-        <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          height={"5vh"}
+          justifyContent={"space-between"}
+        >
           <Typography width={"35%"}>Show Floor</Typography>
-
 
           {/* Clickable Image to trigger file input */}
           <label htmlFor="file-upload-floor" style={{ cursor: "pointer" }}>
@@ -514,11 +560,12 @@ export default function BlockItem({
               <IconButton
                 size="medium"
                 sx={{ color: "white" }}
-                onClick={() => document.getElementById("file-upload-floor")?.click()} // Trigger file input on button click
+                onClick={() =>
+                  document.getElementById("file-upload-floor")?.click()
+                } // Trigger file input on button click
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
-
             )}
           </label>
 
@@ -538,7 +585,12 @@ export default function BlockItem({
             sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
           />
         </Box>
-        <Box display={"flex"} alignItems={"center"} height={"5vh"} justifyContent={"space-between"}>
+        <Box
+          display={"flex"}
+          alignItems={"center"}
+          height={"5vh"}
+          justifyContent={"space-between"}
+        >
           <Typography width={"35%"}>Wall Texture</Typography>
 
           <label htmlFor="file-upload-wall" style={{ cursor: "pointer" }}>
@@ -553,11 +605,12 @@ export default function BlockItem({
               <IconButton
                 size="medium"
                 sx={{ color: "white" }}
-                onClick={() => document.getElementById("file-upload-wall")?.click()} // Trigger file input on button click
+                onClick={() =>
+                  document.getElementById("file-upload-wall")?.click()
+                } // Trigger file input on button click
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
-
             )}
           </label>
 
@@ -573,22 +626,21 @@ export default function BlockItem({
       </Box>
       {!byLot && (
         <Box>
-          {blocks.map((e) => (
-            (
-              e.selected ? (
-                <BlockItem
-              key={e.id}
-              updateLot={updateBlock}
-              block={e}
-              byLot={true}
-              floor={e.floor}
-              top={e.top}
-              disable={e.disable}
-              setDisable={() => toggleSelectLot(e.id, "D")}
-              select={e.selected}
-              setSelect={() => toggleSelectLot(e.id, "S")}
-              _setBlocks={setBlocks}
-            />
+          {blocks.map((e) =>
+            e.selected ? (
+              <BlockItem
+                key={e.id}
+                updateLot={updateBlock}
+                block={e}
+                byLot={true}
+                floor={e.floor}
+                top={e.top}
+                disable={e.disable}
+                setDisable={() => toggleSelectLot(e.id, "D")}
+                select={e.selected}
+                setSelect={() => toggleSelectLot(e.id, "S")}
+                _setBlocks={setBlocks}
+              />
             ) : (
               <BlockSmall
                 key={e.id} // Adicione uma chave única para cada item
@@ -600,9 +652,7 @@ export default function BlockItem({
                 setDisable={() => toggleSelectLot(e.id, "D")}
               />
             )
-            )
-            
-          ))}
+          )}
 
           <Button
             sx={{ alignItems: "center", width: "100%", color: "white" }}
@@ -623,7 +673,7 @@ export default function BlockItem({
                 position: position,
                 rotation: rotation,
                 angle_Top: angle_Top,
-                components: components
+                components: components,
               })
             }
           >

@@ -6,11 +6,11 @@ import { useTexture } from "@react-three/drei";
 import walls from "../../utils/walls/page";
 import InclinedWall from "../inclinedWall/page";
 import ComponentAdd from "../componentAdd/page";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddWall from "../addWall/page";
 
 
-interface LotProps extends Room {
+export interface LotProps extends Room {
   selected: boolean | undefined;
   setSelected: () => void;
 }
@@ -24,7 +24,6 @@ export default function Lot({
   size,
   tickLot,
   objects,
-  selected,
   setSelected,
   disable,
   top,
@@ -37,6 +36,7 @@ export default function Lot({
   floorTexture,
   components
 }: LotProps) {
+  const[_objects, _setObjects] = useState<Room[] | undefined>(objects);
   // Always call useTexture unconditionally
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
@@ -53,7 +53,22 @@ export default function Lot({
       ? floorTexture || "/assets/images/damaged-parquet-texture.jpg"
       : floorTexture
   );
-
+  const toggleSelectLot = (id: number, t: "D" | "S") => {
+   
+    _setObjects((prevLot) =>
+      prevLot
+        ? prevLot.map((item) =>
+            t === "D"
+              ? item.id === id
+                ? { ...item, disable: !item.disable }
+                : item
+              : item.id === id
+              ? { ...item, selected: !item.selected }
+              : item
+          )
+        : prevLot
+    );
+  };
   useEffect(() => {
     components
   }, [components]);
@@ -194,6 +209,8 @@ export default function Lot({
           topTexture={e.topTexture}
           floorTexture={e.floorTexture}
           components={[]}
+          selected={false}
+          setSelected={() => toggleSelectLot(e.id, "S")}
         />
       ))}
     </mesh>

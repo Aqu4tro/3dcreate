@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Fade,
   List,
   ListItem,
   TextField,
@@ -35,11 +36,12 @@ export default function Panel({
   createLot: () => void;
 }) {
   return (
+    
     <div
       style={{
         position: "absolute",
-        bottom: "10vh",
-        left: "3vh",
+        bottom: "21vh",
+        left: "12vh",
         zIndex: 2,
       }}
     >
@@ -99,26 +101,31 @@ export default function Panel({
               onChange={(e) => setThick(e.target.checked ? true : false)} // Exemplo de uso
             />
           </ListItem>
-          <List sx={{ display: thick ? "block" : "none" }}>
-            <ListItem>
-              <TextField
-                variant="outlined"
-                type="number"
-                label="Size"
-                size="small"
-                onChange={(e) => setSize(Number(e.target.value))}
-              />
-            </ListItem>
-            <ListItem>
-              <TextField
-                variant="outlined"
-                type="number"
-                label="Height"
-                size="small"
-                onChange={(e) => setHeight(Number(e.target.value))}
-              />
-            </ListItem>
-          </List>
+          {
+            thick && (
+              <List >
+              <ListItem>
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  label="Size"
+                  size="small"
+                  onChange={(e) => setSize(Number(e.target.value))}
+                />
+              </ListItem>
+              <ListItem>
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  label="Height"
+                  size="small"
+                  onChange={(e) => setHeight(Number(e.target.value))}
+                />
+              </ListItem>
+            </List>
+            )
+          }
+        
         </List>
         <Button
           variant="outlined"
