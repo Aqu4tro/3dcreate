@@ -83,8 +83,8 @@ export default function Home() {
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-          ? { ...item, selected: !item.selected }
-          : item
+            ? { ...item, selected: !item.selected }
+            : item
       )
     );
   };
@@ -128,7 +128,6 @@ export default function Home() {
     setCountLot(countLot + 1);
   }
 
-  //mostrar/ocultar painel de terreno
   function togglePanel() {
     setPanelVisible(!panelVisible);
     setThick(false);
@@ -138,22 +137,22 @@ export default function Home() {
     setPanelVisible(false);
   }
   function handleUploadFile(
-      event: React.ChangeEvent<HTMLInputElement>,
-      _set: Dispatch<SetStateAction<Room[]>>
-    ) {
+    event: React.ChangeEvent<HTMLInputElement>,
+    _set: Dispatch<SetStateAction<Room[]>>
+  ) {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      
+
       const reader = new FileReader();
-      
+
       reader.onload = () => {
-        
-        
+
+
         if (reader.result) {
           try {
             const parsedData = JSON.parse(reader.result as string);
-            
-            
+
+
             if (Array.isArray(parsedData)) {
               _set((preview) => [...(preview || []), ...parsedData]);
             } else {
@@ -166,16 +165,16 @@ export default function Home() {
           console.error('Nenhum resultado encontrado ao ler o arquivo.');
         }
       };
-      
+
       reader.onerror = () => {
         console.error('Erro ao ler o arquivo.');
       };
-      
+
       reader.readAsText(file);
     }
   }
-  
-  
+
+
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -245,7 +244,7 @@ export default function Home() {
                   }}
                   onClick={() =>
                     document.getElementById("file-upload-top")?.click()
-                  } // Trigger file input on button click
+                  }
                   color="inherit"
                 >
                   <UploadFile fontSize="large" />
@@ -256,7 +255,7 @@ export default function Home() {
                 type="file"
                 accept="json/*"
                 onChange={(event) => handleUploadFile(event, setLot)}
-               
+
               />
             </div>
           </Fade>
@@ -416,9 +415,9 @@ export default function Home() {
                   />
                 ) : (
                   <BlockSmall
-                    key={e.id} // Adicione uma chave única para cada item
+                    key={e.id}
                     name={e.name}
-                    setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
+                    setSelect={() => toggleSelectLot(e.id, "S")}
                     id={e.id}
                     byLot={e.byLot}
                     disable={e.disable}

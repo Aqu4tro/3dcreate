@@ -1,10 +1,8 @@
-import { Room } from "@/app/page";
 import * as THREE from "three";
 import { ThreeEvent } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import walls from "../../utils/walls/page";
 import InclinedWall from "../inclinedWall/page";
-import ComponentAdd from "../componentAdd/page";
 import { useEffect } from "react";
 import AddWall from "../addWall/page";
 import { LotProps } from "../lotCreate/page";
@@ -29,7 +27,7 @@ export default function Block({
   floorTexture,
   components,
 }: LotProps) {
-  // Always call useTexture unconditionally
+  
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
@@ -50,7 +48,7 @@ export default function Block({
     components;
   }, [components]);
 
-  // Function to toggle selection state
+  
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -59,7 +57,7 @@ export default function Block({
   }
 
   if (disable || !tickLot) {
-    return null; // Early return if disabled or tickLot is false
+    return null; 
   }
 
   return (
@@ -68,7 +66,7 @@ export default function Block({
       position={[position.x, position.y, position.z]}
       rotation={new THREE.Euler(rotation.x, rotation.y, rotation.z)}
     >
-      {/* Render floor */}
+      
       {floor && (
         <mesh
           position={[0, tickLot / 2, 0]}
@@ -80,16 +78,12 @@ export default function Block({
         </mesh>
       )}
 
-      {/* Render top surface if height is defined */}
+      
       {height && top && (
         <mesh
           position={[
             0,
-            height -
-              0.05 +
-              (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l
-                ? (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 4
-                : 0),
+            height - 0.1 + (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 1.7 ,  
             0,
           ]}
           rotation={
@@ -106,7 +100,7 @@ export default function Block({
         </mesh>
       )}
 
-      {/* Render walls if dimensions are defined */}
+      
       {height &&
         size &&
         tickLot &&

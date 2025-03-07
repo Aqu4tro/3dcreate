@@ -5,10 +5,8 @@ import { ThreeEvent } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import walls from "../../utils/walls/page";
 import InclinedWall from "../inclinedWall/page";
-import ComponentAdd from "../componentAdd/page";
 import { useEffect, useState } from "react";
 import AddWall from "../addWall/page";
-
 
 export interface LotProps extends Room {
   selected: boolean | undefined;
@@ -37,7 +35,7 @@ export default function Lot({
   components
 }: LotProps) {
   const[_objects, _setObjects] = useState<Room[] | undefined>(objects);
-  // Always call useTexture unconditionally
+ 
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
@@ -73,7 +71,7 @@ export default function Lot({
     components
   }, [components]);
 
-  // Function to toggle selection state
+  
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -82,18 +80,16 @@ export default function Lot({
   }
 
   if (disable || !tickLot) {
-    return null; // Early return if disabled or tickLot is false
+    return null; 
   }
-
-
-
+  console.log((angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) )
   return (
     <mesh
       onClick={(event) => switchSelect(event)}
       position={[position.x, position.y, position.z]}
       rotation={new THREE.Euler(rotation.x, rotation.y, rotation.z)}
     >
-      {/* Render floor */}
+      
       {floor && (
         <mesh
           position={[0, tickLot / 2, 0]}
@@ -104,17 +100,12 @@ export default function Lot({
           <meshStandardMaterial map={_floorTexture} />
         </mesh>
       )}
-
-      {/* Render top surface if height is defined */}
+      
       {height && top && (
         <mesh
           position={[
             0,
-            height -
-            0.05 +
-            (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l
-              ? (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 4
-              : 0),
+            height - 0.1 + (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 1.7 ,            
             0,
           ]}
           rotation={
@@ -131,7 +122,7 @@ export default function Lot({
         </mesh>
       )}
 
-      {/* Render walls if dimensions are defined */}
+      
       {height &&
         size &&
         tickLot &&
@@ -156,7 +147,7 @@ export default function Lot({
               wall={e}
               width={width}
               height={height}
-              length={length}
+              length={name === "L" || "R" ? length - size : length}
               angle_Top={angle_Top}
               size={size}
               _wallTexture={_wallTexture}
@@ -187,7 +178,7 @@ export default function Lot({
             </mesh>
         ))}
 
-      {/* Render additional objects */}
+      
       {objects?.map((e) => (
         <Block
           key={e.id}

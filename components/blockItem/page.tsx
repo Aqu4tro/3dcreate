@@ -34,7 +34,7 @@ interface BlockItemProps {
   setDisable: () => void;
   setSelect: () => void;
   select: boolean | undefined;
-  updateLot: (updatedBlock: Room) => void; // Adiciona a função de
+  updateLot: (updatedBlock: Room) => void;
 
   _setBlocks: Dispatch<SetStateAction<Room[]>>;
 }
@@ -42,7 +42,6 @@ interface BlockItemProps {
 export default function BlockItem({
   block,
   byLot,
-  _byLot,
   updateLot,
   disable,
   setDisable,
@@ -71,7 +70,7 @@ export default function BlockItem({
     r: number;
     b: number;
   }>(block.angle_Top);
-  const [blocks, setBlocks] = useState<Room[]>(block.objects || []); // Estado dos blocos
+  const [blocks, setBlocks] = useState<Room[]>(block.objects || []);
   const [wallTexture, setWallTexture] = useState<string>(
     block.wallTexture || ""
   );
@@ -145,7 +144,7 @@ export default function BlockItem({
   block.wallTexture = wallTexture;
   block.position = position;
 
-  //função de update da rendenização
+
   function updateBlock() {
     updateLot({
       ...block,
@@ -166,8 +165,8 @@ export default function BlockItem({
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-          ? { ...item, selected: !item.selected }
-          : item
+            ? { ...item, selected: !item.selected }
+            : item
       );
     });
   };
@@ -175,7 +174,7 @@ export default function BlockItem({
     _set((prev) => {
       const updatedRooms = prev.filter((c) => c.id !== id);
 
-      // Optional: You could log or handle cases where no rooms were deleted
+
       if (updatedRooms.length === prev.length) {
         console.warn(`No room found with id: ${id}`);
       }
@@ -184,7 +183,7 @@ export default function BlockItem({
     });
   }
   useEffect(() => {
-    updateBlock(); // Chama a função sempre que _top ou _floor mudar
+    updateBlock();
   }, [
     _top,
     _floor,
@@ -205,7 +204,7 @@ export default function BlockItem({
     blocks,
   ]);
 
-  //criação de blocos
+
   function createBlock({
     id,
     length,
@@ -501,11 +500,11 @@ export default function BlockItem({
         >
           <Typography width={"35%"}>Show Top</Typography>
 
-          {/* Clickable Image to trigger file input */}
+
           <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
             {topTexture ? (
               <Image
-                src={topTexture} // Create a URL for the uploaded file
+                src={topTexture}
                 alt="Description of the images"
                 width={30}
                 height={30}
@@ -516,14 +515,14 @@ export default function BlockItem({
                 sx={{ color: "white" }}
                 onClick={() =>
                   document.getElementById("file-upload-top")?.click()
-                } // Trigger file input on button click
+                }
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
             )}
           </label>
 
-          {/* Hidden file input */}
+
           <VisuallyHiddenInput
             id="file-upload-top"
             type="file"
@@ -547,11 +546,11 @@ export default function BlockItem({
         >
           <Typography width={"35%"}>Show Floor</Typography>
 
-          {/* Clickable Image to trigger file input */}
+
           <label htmlFor="file-upload-floor" style={{ cursor: "pointer" }}>
             {floorTexture ? (
               <Image
-                src={floorTexture} // Create a URL for the uploaded file
+                src={floorTexture}
                 alt="Description of the image"
                 width={30}
                 height={30}
@@ -562,14 +561,14 @@ export default function BlockItem({
                 sx={{ color: "white" }}
                 onClick={() =>
                   document.getElementById("file-upload-floor")?.click()
-                } // Trigger file input on button click
+                }
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
             )}
           </label>
 
-          {/* Hidden file input */}
+
           <VisuallyHiddenInput
             id="file-upload-floor"
             type="file"
@@ -596,7 +595,7 @@ export default function BlockItem({
           <label htmlFor="file-upload-wall" style={{ cursor: "pointer" }}>
             {wallTexture ? (
               <Image
-                src={wallTexture} // Create a URL for the uploaded file
+                src={wallTexture}
                 alt="Description of the image"
                 width={30}
                 height={30}
@@ -607,14 +606,14 @@ export default function BlockItem({
                 sx={{ color: "white" }}
                 onClick={() =>
                   document.getElementById("file-upload-wall")?.click()
-                } // Trigger file input on button click
+                }
               >
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
             )}
           </label>
 
-          {/* Hidden file input */}
+
           <VisuallyHiddenInput
             id="file-upload-wall"
             type="file"
@@ -643,9 +642,9 @@ export default function BlockItem({
               />
             ) : (
               <BlockSmall
-                key={e.id} // Adicione uma chave única para cada item
+                key={e.id}
                 name={e.name}
-                setSelect={() => toggleSelectLot(e.id, "S")} // Passa a função com o ID do lot
+                setSelect={() => toggleSelectLot(e.id, "S")}
                 id={e.id}
                 byLot={true}
                 disable={e.disable}
