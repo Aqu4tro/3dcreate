@@ -23,6 +23,7 @@ import { BlockController, SmallBlockController } from "../blockController/page";
 import Image from "next/image";
 import ComponentBlock, { Component } from "../componentBlock/page";
 import BlockSmall from "../blockSmall/page";
+import AngleController from "../angleController/page";
 
 interface BlockItemProps {
   block: Room;
@@ -336,36 +337,7 @@ export default function BlockItem({
             </Box>
             <Box>
               <Typography>Angle Top</Typography>
-              <Box display={"flex"} gap={".5vw"} padding={".1vw"}>
-                <SmallBlockController
-                  name="Front"
-                  value={angle_Top.f}
-                  setValue={(newF) =>
-                    setAngle_Top((prev) => ({ ...prev, f: newF as number }))
-                  }
-                />
-                <SmallBlockController
-                  name="Left"
-                  value={angle_Top.l}
-                  setValue={(newL) =>
-                    setAngle_Top((prev) => ({ ...prev, l: newL as number }))
-                  }
-                />
-                <SmallBlockController
-                  name="Right"
-                  value={angle_Top.r}
-                  setValue={(newR) =>
-                    setAngle_Top((prev) => ({ ...prev, r: newR as number }))
-                  }
-                />
-                <SmallBlockController
-                  name="Back"
-                  value={angle_Top.b}
-                  setValue={(newB) =>
-                    setAngle_Top((prev) => ({ ...prev, b: newB as number }))
-                  }
-                />
-              </Box>
+             <AngleController angle_Top={angle_Top} setAngle_Top={setAngle_Top} />
             </Box>
             <Box>
               <Button
