@@ -9,6 +9,7 @@ export type AngleTop = {
   b: number; 
 };
 
+type angles = "Front" | "Right" | "Left" | "Back";
 
 type AngleControllerProps = {
   angle_Top: AngleTop; 
@@ -16,7 +17,23 @@ type AngleControllerProps = {
 };
 
 export default function AngleController({ angle_Top, setAngle_Top }: AngleControllerProps)  {
-  return (
+
+  function angleInsertVerify(angle : angles){
+    switch(angle){
+      case("Front"):
+      (angle_Top.r || angle_Top.l ||angle_Top.b ) ? false : true;       
+      case("Left"):
+      (angle_Top.r || angle_Top.f ||angle_Top.b ) ? false : true; 
+      case("Right"):
+      (angle_Top.f || angle_Top.l ||angle_Top.b ) ? false : true; 
+      case("Back"):
+      (angle_Top.r || angle_Top.l ||angle_Top.f ) ? false : true; 
+
+    }
+
+  }
+
+return (
     <Box display={"flex"} gap={".5vw"} padding={".1vw"}>
       <SmallBlockController
         name="Front"
@@ -24,6 +41,7 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
         setValue={(newF) =>
           setAngle_Top((prev) => ({ ...prev, f: newF as number }))
         }
+        disable={angleInsertVerify("Front")}
       />
       <SmallBlockController
         name="Left"
@@ -31,6 +49,7 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
         setValue={(newL) =>
           setAngle_Top((prev) => ({ ...prev, l: newL as number }))
         }
+        disable={angleInsertVerify("Left")}
       />
       <SmallBlockController
         name="Right"
@@ -38,6 +57,7 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
         setValue={(newR) =>
           setAngle_Top((prev) => ({ ...prev, r: newR as number }))
         }
+        disable={angleInsertVerify("Right")}
       />
       <SmallBlockController
         name="Back"
@@ -45,6 +65,7 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
         setValue={(newB) =>
           setAngle_Top((prev) => ({ ...prev, b: newB as number }))
         }
+        disable={angleInsertVerify("Back")}
       />
     </Box>
   );

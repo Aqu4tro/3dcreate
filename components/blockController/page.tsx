@@ -6,10 +6,12 @@ export function BlockController({
   name,
   value,
   setValue,
+  disable
 }: {
   name: string;
   value: number;
   setValue: Dispatch<SetStateAction<number>>;
+  disable: boolean;
 }) {
   return (
     <Box>
@@ -37,6 +39,7 @@ export function BlockController({
           size="small"
           type="number"
           variant="filled"
+          disable={disable}
         />
       </Stack>
     </Box>
