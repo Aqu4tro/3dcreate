@@ -84,6 +84,8 @@ export default function BlockItem({
   const [components, setComponents] = useState<Component[]>(block.components);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
   const [wall, setWall] = useState<"F" | "B" | "L" | "R">("F");
+  const [name, setName] = useState<string>(block.name)
+
 
   function showComponentPanel() {
     setPanelVisible(!panelVisible);
@@ -128,7 +130,7 @@ export default function BlockItem({
     whiteSpace: "nowrap",
     width: 1,
   });
-
+  block.name = name;
   block.width = width;
   block.height = height;
   block.length = length;
@@ -149,6 +151,7 @@ export default function BlockItem({
   function updateBlock() {
     updateLot({
       ...block,
+      name,
       width: width,
       height: height,
       size,
@@ -186,6 +189,7 @@ export default function BlockItem({
   useEffect(() => {
     updateBlock();
   }, [
+    name,
     _top,
     _floor,
     width,
@@ -256,7 +260,7 @@ export default function BlockItem({
       borderRadius={3}
     >
       <BlockHeader
-        name={block.name}
+        name={name}
         id={block.id}
         disable={disable}
         setDisable={setDisable}
@@ -264,6 +268,7 @@ export default function BlockItem({
         setSelect={setSelect}
         byLot={byLot}
         onDelete={() => deleteRoom(block.id, _setBlocks)}
+        renameBlock={setName}
       />
       {showModal ? (
         <>
@@ -286,7 +291,7 @@ export default function BlockItem({
               setValue={setTickLot}
             />
             <Box>
-              <Typography>Position</Typography>
+              <Typography color="white">Position</Typography>
               <br />
               <BlockController
                 name="X"
@@ -311,7 +316,7 @@ export default function BlockItem({
               />
             </Box>
             <Box>
-              <Typography>Rotation</Typography>
+              <Typography color="white">Rotation</Typography>
               <br />
               <BlockController
                 name="X"
@@ -336,7 +341,7 @@ export default function BlockItem({
               />
             </Box>
             <Box>
-              <Typography>Angle Top</Typography>
+              <Typography color="white">Angle Top</Typography>
              <AngleController angle_Top={angle_Top} setAngle_Top={setAngle_Top} />
             </Box>
             <Box>
@@ -376,17 +381,17 @@ export default function BlockItem({
                     <Box>
                       <List>
                         <ListItem>
-                          <Typography>Door</Typography>
+                          <Typography color="white">Door</Typography>
                           <Select
                             sx={{ color: "white" }}
                             onChange={(e) =>
                               setWall(e.target.value as "F" | "B" | "L" | "R")
                             }
                           >
-                            <MenuItem value={"F"}>Front</MenuItem>
-                            <MenuItem value={"B"}>Back</MenuItem>
-                            <MenuItem value={"L"}>Left</MenuItem>
-                            <MenuItem value={"R"}>Right</MenuItem>
+                            <MenuItem value={"F"} color="white">Front</MenuItem>
+                            <MenuItem value={"B"} color="white">Back</MenuItem>
+                            <MenuItem value={"L"} color="white">Left</MenuItem>
+                            <MenuItem value={"R"} color="white">Right</MenuItem>
                           </Select>
                           <Button
                             onClick={() => handleAddComponent(true, wall)}
@@ -395,17 +400,17 @@ export default function BlockItem({
                           </Button>
                         </ListItem>
                         <ListItem>
-                          <Typography>Window</Typography>
+                          <Typography color="white">Window</Typography>
                           <Select
                             sx={{ color: "white" }}
                             onChange={(e) =>
                               setWall(e.target.value as "F" | "B" | "L" | "R")
                             }
                           >
-                            <MenuItem value={"F"}>Front</MenuItem>
-                            <MenuItem value={"B"}>Back</MenuItem>
-                            <MenuItem value={"L"}>Left</MenuItem>
-                            <MenuItem value={"R"}>Right</MenuItem>
+                            <MenuItem value={"F"} color="white">Front</MenuItem>
+                            <MenuItem value={"B"} color="white">Back</MenuItem>
+                            <MenuItem value={"L"} color="white">Left</MenuItem>
+                            <MenuItem value={"R"} color="white">Right</MenuItem>
                           </Select>
                           <Button
                             onClick={() => handleAddComponent(false, wall)}
@@ -470,7 +475,7 @@ export default function BlockItem({
           height={"5vh"}
           justifyContent={"space-between"}
         >
-          <Typography width={"35%"}>Show Top</Typography>
+          <Typography width={"35%"} color="white">Show Top</Typography>
 
 
           <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
@@ -516,7 +521,7 @@ export default function BlockItem({
           height={"5vh"}
           justifyContent={"space-between"}
         >
-          <Typography width={"35%"}>Show Floor</Typography>
+          <Typography width={"35%"} color="white">Show Floor</Typography>
 
 
           <label htmlFor="file-upload-floor" style={{ cursor: "pointer" }}>
@@ -562,7 +567,7 @@ export default function BlockItem({
           height={"5vh"}
           justifyContent={"space-between"}
         >
-          <Typography width={"35%"}>Wall Texture</Typography>
+          <Typography width={"35%"} color="white">Wall Texture</Typography>
 
           <label htmlFor="file-upload-wall" style={{ cursor: "pointer" }}>
             {wallTexture ? (

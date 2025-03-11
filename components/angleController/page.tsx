@@ -1,39 +1,49 @@
 import React from "react";
 import { Box } from "@mui/material";
-import { SmallBlockController } from "@/components/blockController/page"; 
+import { SmallBlockController } from "@/components/blockController/page";
 
 export type AngleTop = {
-  f: number; 
+  f: number;
   l: number;
-  r: number; 
-  b: number; 
+  r: number;
+  b: number;
 };
 
 type angles = "Front" | "Right" | "Left" | "Back";
 
 type AngleControllerProps = {
-  angle_Top: AngleTop; 
-  setAngle_Top: React.Dispatch<React.SetStateAction<AngleTop>>; 
+  angle_Top: AngleTop;
+  setAngle_Top: React.Dispatch<React.SetStateAction<AngleTop>>;
 };
 
-export default function AngleController({ angle_Top, setAngle_Top }: AngleControllerProps)  {
+export default function AngleController({ angle_Top, setAngle_Top }: AngleControllerProps) {
 
-  function angleInsertVerify(angle : angles){
-    switch(angle){
-      case("Front"):
-      (angle_Top.r || angle_Top.l ||angle_Top.b ) ? false : true;       
-      case("Left"):
-      (angle_Top.r || angle_Top.f ||angle_Top.b ) ? false : true; 
-      case("Right"):
-      (angle_Top.f || angle_Top.l ||angle_Top.b ) ? false : true; 
-      case("Back"):
-      (angle_Top.r || angle_Top.l ||angle_Top.f ) ? false : true; 
+  function angleInsertVerify(angle: angles): boolean {
+    const { f, l, r, b } = angle_Top;
 
+    if (angle === "Front") {
+      return (r !== 0 || l !== 0 || b !== 0);
+    }
+    else if (angle === "Left") {
+      return (r !== 0 || f !== 0 || b !== 0);
+    }
+    else if (angle === "Right") {
+      return (f !== 0 || l !== 0 || b !== 0);
+    }
+    else if (angle === "Back") {
+      return (r !== 0 || l !== 0 || f !== 0);
+    }
+    else {
+      return false;
     }
 
   }
 
-return (
+
+
+
+
+  return (
     <Box display={"flex"} gap={".5vw"} padding={".1vw"}>
       <SmallBlockController
         name="Front"
@@ -42,6 +52,7 @@ return (
           setAngle_Top((prev) => ({ ...prev, f: newF as number }))
         }
         disable={angleInsertVerify("Front")}
+
       />
       <SmallBlockController
         name="Left"

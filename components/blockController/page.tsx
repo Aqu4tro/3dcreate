@@ -11,11 +11,11 @@ export function BlockController({
   name: string;
   value: number;
   setValue: Dispatch<SetStateAction<number>>;
-  disable: boolean;
+  disable?: boolean;
 }) {
   return (
     <Box>
-      <Typography>{name}</Typography>
+      <Typography color="white">{name}</Typography>
       <Stack spacing={-1}>
         <Slider
           onChange={(event, newValue) => {
@@ -39,7 +39,7 @@ export function BlockController({
           size="small"
           type="number"
           variant="filled"
-          disable={disable}
+          disabled={disable}
         />
       </Stack>
     </Box>
@@ -49,10 +49,14 @@ export function SmallBlockController({
   name,
   value,
   setValue,
+  disable,
+  maxValue
 }: {
   name: string;
   value: number;
   setValue: Dispatch<SetStateAction<number>>;
+  disable?: boolean;
+  maxValue?: number;
 }) {
   return (
     <TextField
@@ -68,6 +72,8 @@ export function SmallBlockController({
       size="small"
       type="number"
       variant="filled"
+      disabled={disable}
+
     />
   );
 }

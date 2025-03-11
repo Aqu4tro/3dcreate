@@ -34,8 +34,8 @@ export default function Lot({
   floorTexture,
   components
 }: LotProps) {
-  const[_objects, _setObjects] = useState<Room[] | undefined>(objects);
- 
+  const [_objects, _setObjects] = useState<Room[] | undefined>(objects);
+
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
@@ -52,18 +52,18 @@ export default function Lot({
       : floorTexture
   );
   const toggleSelectLot = (id: number, t: "D" | "S") => {
-   
+
     _setObjects((prevLot) =>
       prevLot
         ? prevLot.map((item) =>
-            t === "D"
-              ? item.id === id
-                ? { ...item, disable: !item.disable }
-                : item
-              : item.id === id
+          t === "D"
+            ? item.id === id
+              ? { ...item, disable: !item.disable }
+              : item
+            : item.id === id
               ? { ...item, selected: !item.selected }
               : item
-          )
+        )
         : prevLot
     );
   };
@@ -71,7 +71,7 @@ export default function Lot({
     components
   }, [components]);
 
-  
+
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -80,16 +80,16 @@ export default function Lot({
   }
 
   if (disable || !tickLot) {
-    return null; 
+    return null;
   }
-  console.log((angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) )
+
   return (
     <mesh
       onClick={(event) => switchSelect(event)}
       position={[position.x, position.y, position.z]}
       rotation={new THREE.Euler(rotation.x, rotation.y, rotation.z)}
     >
-      
+
       {floor && (
         <mesh
           position={[0, tickLot / 2, 0]}
@@ -100,12 +100,12 @@ export default function Lot({
           <meshStandardMaterial map={_floorTexture} />
         </mesh>
       )}
-      
+
       {height && top && (
         <mesh
           position={[
             0,
-            height - 0.1 + (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 1.7 ,            
+            height - 0.1 + (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 1.7,
             0,
           ]}
           rotation={
@@ -122,7 +122,6 @@ export default function Lot({
         </mesh>
       )}
 
-      
       {height &&
         size &&
         tickLot &&
@@ -135,50 +134,47 @@ export default function Lot({
           topSize: 0.1,
           angle_Top,
         }).map((e, index) => (
-            <mesh
+          <mesh
             key={index}
             position={[e.x, e.y, e.z]}
             rotation={new THREE.Euler(0, 0, 0)}
             name={`wall-${index}`}
-            >
+          >
             {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L") || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
               <InclinedWall
-              id={id}
-              wall={e}
-              width={width}
-              height={height}
-              length={name === "L" || "R" ? length - size : length}
-              angle_Top={angle_Top}
-              size={size}
-              _wallTexture={_wallTexture}
-              name={name}
-              tickLot={tickLot}
-              top={top}
-              floor={floor}
-              position={position}
-              rotation={rotation}
-              disable={disable}
-              components={components}
+                id={id}
+                wall={e}
+                width={width}
+                height={height}
+                length={name === "L" || "R" ? length - size : length}
+                angle_Top={angle_Top}
+                size={size}
+                _wallTexture={_wallTexture}
+                name={name}
+                tickLot={tickLot}
+                top={top}
+                floor={floor}
+                position={position}
+                rotation={rotation}
+                disable={disable}
+                components={components}
               />
             )}
-         
-    <AddWall 
-      x={e.x}
-      y={e.y}
-      z={e.z}
-      H={e.H} 
-      W={e.W} 
-      L={e.L} 
-      components={components} 
-      name={e.N} 
-      texture={_wallTexture} 
-    />
 
-            
-            </mesh>
+            <AddWall
+              x={e.x}
+              y={e.y}
+              z={e.z}
+              H={e.H}
+              W={e.W}
+              L={e.L}
+              components={components}
+              name={e.N}
+              texture={_wallTexture}
+            />
+          </mesh>
         ))}
 
-      
       {objects?.map((e) => (
         <Block
           key={e.id}

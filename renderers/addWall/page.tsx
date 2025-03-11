@@ -21,23 +21,23 @@ export default function AddWall({
   name: string;
   texture: THREE.Texture;
 }) {
-  // Create the wall geometry and material
+ 
   const wallGeometry = new THREE.BoxGeometry(W, H, L);
   const wallMaterial = new THREE.MeshStandardMaterial({ map: texture });
   let finalMesh = new THREE.Mesh(wallGeometry, wallMaterial);
 
   let commonMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial());
 
-  // Perform CSG operations for each component
+  
   components.forEach((f) => {
-    // Check if the component should affect the wall
+    
     if (
       (f.wall === "F" && name === "B") ||
       (f.wall === "B" && name === "F") ||
       (f.wall === "R" && name === "R") ||
       (f.wall === "L" && name === "L")
     ) {
-      // Create a common mesh based on the component's properties
+      
 
       commonMesh.scale.set(
         f.type ? (f.wall === "L" || f.wall === "R" ? 0.15 : 0.97) : (f.wall === "L" || f.wall === "R" ? 0.15 : 1.4),
@@ -49,7 +49,7 @@ export default function AddWall({
 
 
       commonMesh.updateMatrix();
-      // Perform CSG subtraction
+      
       let result = CSG.subtract(finalMesh, commonMesh);
       finalMesh = result as THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
     }

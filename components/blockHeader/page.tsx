@@ -1,8 +1,9 @@
-import { Box, Checkbox, IconButton, Typography } from "@mui/material";
+import { Box, Checkbox, IconButton, TextField, Typography } from "@mui/material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { Delete, KeyboardArrowUp } from "@mui/icons-material";
-const BlockHeader = ({ name, id, disable, setDisable, setSelect, byLot, onDelete }: { name: string, id: number, disable: boolean, setDisable: () => void, select: boolean | undefined, setSelect: () => void, byLot: boolean | undefined, onDelete: () => void }) => {
-
+import { Delete, Done, Edit, KeyboardArrowUp } from "@mui/icons-material";
+import { Dispatch, SetStateAction, useState } from "react";
+function BlockHeader ({ name, id, disable, setDisable, setSelect, byLot, onDelete, renameBlock }: { name: string, id: number, disable: boolean, setDisable: () => void, select: boolean | undefined, setSelect: () => void, byLot: boolean | undefined, onDelete: () => void, renameBlock: Dispatch<SetStateAction<string>>}) {
+  const [renameState, setRenameState] = useState<boolean>(false);
   function handleSelected() {
     setSelect();
   }
@@ -18,10 +19,31 @@ const BlockHeader = ({ name, id, disable, setDisable, setSelect, byLot, onDelete
           ) : (<KeyboardArrowUp sx={{ color: "white" }} />)}
         </IconButton>
 
-
-        <Box justifyContent={"center"}>
-          <Typography fontSize={20}>{id + 1}  {name}</Typography>
+{!renameState ? (
+  <Box justifyContent={"center"} display={"flex"} width={"50%"} sx={{justifyContent:"space-evenly"}}>
+          <Typography fontSize={20} color="white">{id + 1}  {name}</Typography>
+          <IconButton  onClick={() => setRenameState(true) } sx={{ position: "absolute", right: "10%" }}>
+            <Edit sx={{color: "white"}} />
+          </IconButton>
+        </Box>)
+        :
+        (
+        <Box justifyContent={"center"} display={"flex"} width={"50%"} sx={{justifyContent:"space-evenly"}}>
+          <TextField value={name} onChange={(e) => renameBlock(e.target.value)} sx={{
+            alignSelf: "end",
+            width: "15vw",
+            "& .MuiOutlinedInput-root": { color: "white" },
+          }}
+          size="medium"
+          type="text"
+          variant="outlined"/>
+          <IconButton  onClick={() => setRenameState(false)}>
+            <Done sx={{color: "white"}} />
+          </IconButton>
         </Box>
+        )
+}
+        
 
         <IconButton onClick={onDelete} sx={{ position: "absolute", right: 0 }}>
           <Delete color="error" />
@@ -33,7 +55,7 @@ const BlockHeader = ({ name, id, disable, setDisable, setSelect, byLot, onDelete
 
       <Box display={"flex"} marginTop={2} justifyContent={"space-between"}>
         <Box display={"flex"} alignItems={"center"}>
-          <Typography>Disable</Typography>
+          <Typography color="white">Disable</Typography>
           <Checkbox
             value={disable}
             onChange={setDisable}
