@@ -29,36 +29,36 @@ export default function walls({
   const _topSize = topSize ? topSize : 0.1;
   walls.push({
     x: 0,
-    y: height / 2 + (_topSize - tickLot) / 2 + angle_Top.f * length/2,
+    y: height / 2 + length * Math.tan(angle_Top.f) / 2,
     z: -length / 2 + sizePin,
-    H: height - (_topSize + tickLot) + (angle_Top.f * length),
+    H: height - tickLot * 2 + length * Math.tan(angle_Top.f),
     W: width,
     L: size,
     N: "F",
   });
   walls.push({
     x: 0,
-    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.b * length/2,
+    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.b) / 2,
     z: length / 2 - sizePin,
-    H: height - (_topSize + tickLot) + (angle_Top.b * length),
+    H: height - tickLot + length * Math.tan(angle_Top.b),
     W: width,
     L: size,
     N: "B",
   });
   walls.push({
     x: width / 2 - sizePin,
-    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.l * width/2,
+    y: height / 2 + tickLot / 2 + width * Math.tan(angle_Top.l) / 2,
     z: 0,
-    H: height - (_topSize + tickLot) + (angle_Top.l * width),
+    H: height - tickLot + width * Math.tan(angle_Top.l),
     W: size,
     L: length,
     N: "R",
   });
   walls.push({
     x: -width / 2 + sizePin,
-    y: height / 2 - (_topSize - tickLot) / 2 + angle_Top.r * width/2,
+    y: height / 2 + tickLot / 2 + width * Math.tan(angle_Top.r) / 2,
     z: 0,
-    H: height - (_topSize + tickLot) + (angle_Top.r * width),
+    H: height - tickLot + width * Math.tan(angle_Top.r),
     W: size,
     L: length,
     N: "L",

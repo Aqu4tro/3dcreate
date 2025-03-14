@@ -105,19 +105,19 @@ export default function Lot({
         <mesh
           position={[
             0,
-            height - 0.1 + (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 1.7,
+            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2,
             0,
           ]}
           rotation={
             new THREE.Euler(
-              angle_Top.f || -angle_Top.b,
+              angle_Top.f || angle_Top.b,
               0,
               angle_Top.l || -angle_Top.r
             )
           }
           name="top-surface"
         >
-          <boxGeometry args={[width + 0.3, 0.1, length + 0.3]} />
+          <boxGeometry args={[(angle_Top.l || angle_Top.r ? width / Math.cos(angle_Top.r || angle_Top.l) : width) + 0.3, 0.1, ((angle_Top.f || angle_Top.b) ? length / Math.cos(angle_Top.f || angle_Top.b) : length) + 0.3]} />
           <meshStandardMaterial map={_topTexture} />
         </mesh>
       )}
