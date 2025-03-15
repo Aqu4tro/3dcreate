@@ -27,7 +27,7 @@ export default function Block({
   floorTexture,
   components,
 }: LotProps) {
-  
+
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
@@ -48,7 +48,7 @@ export default function Block({
     components;
   }, [components]);
 
-  
+console.log(components)
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -57,7 +57,7 @@ export default function Block({
   }
 
   if (disable || !tickLot) {
-    return null; 
+    return null;
   }
 
   return (
@@ -66,7 +66,7 @@ export default function Block({
       position={[position.x, position.y, position.z]}
       rotation={new THREE.Euler(rotation.x, rotation.y, rotation.z)}
     >
-      
+
       {floor && (
         <mesh
           position={[0, tickLot / 2, 0]}
@@ -78,12 +78,13 @@ export default function Block({
         </mesh>
       )}
 
-      
+
       {height && top && (
         <mesh
           position={[
             0,
-            height - 0.1 + (angle_Top.b || angle_Top.f || angle_Top.r || angle_Top.l) * 1.7 ,  
+            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2,
+
             0,
           ]}
           rotation={
@@ -100,7 +101,7 @@ export default function Block({
         </mesh>
       )}
 
-      
+
       {height &&
         size &&
         tickLot &&
@@ -119,16 +120,13 @@ export default function Block({
             rotation={new THREE.Euler(0, 0, 0)}
             name={`wall-${index}`}
           >
-            {((angle_Top.f && e.N !== "F" && e.N !== "B") ||
-              (angle_Top.r && e.N !== "R" && e.N !== "L") ||
-              (angle_Top.b && e.N !== "F" && e.N !== "B") ||
-              (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
+            {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L") || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
               <InclinedWall
                 id={id}
                 wall={e}
                 width={width}
                 height={height}
-                length={length}
+                length={name === "L" || "R" ? length - size : length}
                 angle_Top={angle_Top}
                 size={size}
                 _wallTexture={_wallTexture}
@@ -144,9 +142,6 @@ export default function Block({
             )}
 
             <AddWall
-              x={e.x}
-              y={e.y}
-              z={e.z}
               H={e.H}
               W={e.W}
               L={e.L}

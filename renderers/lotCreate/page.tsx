@@ -110,7 +110,7 @@ export default function Lot({
           ]}
           rotation={
             new THREE.Euler(
-              angle_Top.f || angle_Top.b,
+              angle_Top.f || -angle_Top.b,
               0,
               angle_Top.l || -angle_Top.r
             )
@@ -192,7 +192,7 @@ export default function Lot({
           wallTexture={e.wallTexture}
           topTexture={e.topTexture}
           floorTexture={e.floorTexture}
-          components={[]}
+          components={e.components}
           selected={false}
           setSelected={() => toggleSelectLot(e.id, "S")}
         />

@@ -3,6 +3,8 @@ import Door from "@/public/assets/objects/door/Scene";
 import { Window } from "@/public/assets/objects/window/Scene";
 
 export default function ComponentAdd({ component }: { component: Component }) {
+
+  console.log("pomba");
   return (
     <mesh
       rotation={[

@@ -24,7 +24,7 @@ export default function AddWall({
   let finalMesh = new THREE.Mesh(wallGeometry, wallMaterial);
 
   let commonMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial());
-
+  
   components.forEach((f) => {
     if (
       (f.wall === "F" && name === "F") ||
@@ -32,7 +32,8 @@ export default function AddWall({
       (f.wall === "R" && name === "R") ||
       (f.wall === "L" && name === "L")
     ) {
-
+      console.log(f.wall);
+console.log(f)
       commonMesh.scale.set(
         f.type ? (f.wall === "L" || f.wall === "R" ? 0.15 : 0.97) : (f.wall === "L" || f.wall === "R" ? 0.15 : 1.4),
         f.type ? 2.05 : 1.1,

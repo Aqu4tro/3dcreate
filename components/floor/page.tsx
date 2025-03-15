@@ -1,4 +1,3 @@
-import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 
 export default function Floor({width, height, size }: {width:number, height: number, size: number}){

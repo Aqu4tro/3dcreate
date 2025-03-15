@@ -336,7 +336,7 @@ export default function InclinedWall({
           new THREE.Euler(
             -1.57 + (angle_Top.f || -angle_Top.b)
             ,
-            (angle_Top.l || angle_Top.r) ? (angle_Top.l || angle_Top.r + .005) : 0 
+            (angle_Top.l || angle_Top.r) ? (-angle_Top.l   || angle_Top.r ) : 0 
             ,
             0
           )
