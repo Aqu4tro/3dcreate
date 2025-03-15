@@ -3,12 +3,11 @@ import Door from "@/public/assets/objects/door/Scene";
 import { Window } from "@/public/assets/objects/window/Scene";
 
 export default function ComponentAdd({ component }: { component: Component }) {
-  console.log("não sei")
   return (
     <mesh
       rotation={[
         0,
-        component.wall === "F" || component.wall === "B"
+        (component.wall === "F" || component.wall === "B")
           ? component.type
             ? 1.575
             : 0
@@ -16,9 +15,9 @@ export default function ComponentAdd({ component }: { component: Component }) {
         0,
       ]}
       position={[
-         component.position[0],
+        component.position[0],
         component.type ? component.position[1] : component.position[1] - .55,
-        component.position[2]-.1,
+        component.position[2] - .1,
       ]}
       scale={[
         component.type

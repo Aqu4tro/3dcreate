@@ -16,7 +16,6 @@ export default function InclinedWall({
   angle_Top,
   wall,
   _wallTexture,
-  topSize,
   tickLot,
 }: InclinedWallProps) {
   let vertices = new Float32Array([]);
@@ -331,20 +330,20 @@ export default function InclinedWall({
       <Plane
         args={[
           angle_Top.r || angle_Top.l ? width / Math.cos(angle_Top.l || angle_Top.r) : size,
-          angle_Top.r || angle_Top.l ? size : length / Math.cos(angle_Top.f || angle_Top.b)
+          angle_Top.f || angle_Top.b ? length / Math.cos(angle_Top.f || angle_Top.b) : size
         ]}
         rotation={
           new THREE.Euler(
-            angle_Top.l || angle_Top.r
-              ? -1.57 + (angle_Top.l || angle_Top.r)
-              : -1.57 + (angle_Top.f || angle_Top.b),
-            (angle_Top.l ? -angle_Top.l - 0.005 : angle_Top.r ? angle_Top.r + 0.005 : 0),
+            -1.57 + (angle_Top.f || -angle_Top.b)
+            ,
+            (angle_Top.l || angle_Top.r) ? (angle_Top.l || angle_Top.r + .005) : 0 
+            ,
             0
           )
         }
         position={[
           0,
-          height / 2 + length * Math.tan(angle_Top.f) / 2 - tickLot / 2,
+          height / 2 + (length * Math.tan(angle_Top.f) / 2 || length * Math.tan(angle_Top.b) / 2 || width * Math.tan(angle_Top.r) / 2 || width * Math.tan(angle_Top.l) / 2) - tickLot / 2,
           angle_Top.f ? size / 5 : angle_Top.b ? size / 5 : 0,
         ]}
       >

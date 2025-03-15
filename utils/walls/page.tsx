@@ -29,9 +29,9 @@ export default function walls({
   const _topSize = topSize ? topSize : 0.1;
   walls.push({
     x: 0,
-    y: height / 2 + length * Math.tan(angle_Top.f) / 2,
+    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.f) / 2,
     z: -length / 2 + sizePin,
-    H: height - tickLot * 2 + length * Math.tan(angle_Top.f),
+    H: height - tickLot + length * Math.tan(angle_Top.f),
     W: width,
     L: size,
     N: "F",

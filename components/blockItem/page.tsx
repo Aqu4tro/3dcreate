@@ -342,7 +342,7 @@ export default function BlockItem({
             </Box>
             <Box>
               <Typography color="white">Angle Top</Typography>
-             <AngleController angle_Top={angle_Top} setAngle_Top={setAngle_Top} />
+              <AngleController angle_Top={angle_Top} setAngle_Top={setAngle_Top} />
             </Box>
             <Box>
               <Button
@@ -435,8 +435,6 @@ export default function BlockItem({
                           key={component.id}
                           updateComponent={updateBlock}
                           component={component}
-                          width={width}
-                          lenght={length}
                           onDelete={() => handleDeleteComponent(component.id)}
                         />
                       ))}

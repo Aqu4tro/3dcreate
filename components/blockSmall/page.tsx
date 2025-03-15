@@ -38,11 +38,11 @@ function BlockSmall({ id, name, setSelect, byLot, disable, setDisable }: BlockSm
 
 
       </IconButton>
-      <Typography variant="h6">{id + 1}  {name}</Typography>
+      <Typography variant="h6" color="white">{id + 1}  {name}</Typography>
 
       
         <Box display={"flex"} alignItems={"center"} alignSelf={"center"} sx={{ position: "absolute", right: 0 }}>
-          <Typography>Disable</Typography>
+          <Typography color="white">Disable</Typography>
           <Checkbox
             value={disable}
             onChange={setDisable}

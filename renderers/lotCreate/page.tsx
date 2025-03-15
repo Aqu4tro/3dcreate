@@ -162,9 +162,6 @@ export default function Lot({
             )}
 
             <AddWall
-              x={e.x}
-              y={e.y}
-              z={e.z}
               H={e.H}
               W={e.W}
               L={e.L}

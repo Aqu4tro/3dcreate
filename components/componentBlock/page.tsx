@@ -20,21 +20,19 @@ export interface Component {
 }
 
 export default function ComponentBlock({
-  component, updateComponent, width, lenght, onDelete
+  component, updateComponent, onDelete
 }: {
   component: Component;
   updateComponent: (component: Component) => void;
-  width: number;
-  lenght: number;
   onDelete: (id: number) => void;
 
 }) {
 
-  const [position, setPosition] = useState<[number, number, number]>(() => (component.position[0] === 0 && component.position[1] === 0 && component.position[2] === 0) ? [ 0, component.type  ? 0 : -.55, component.wall === "F" ? lenght - (component.type ? .1 : 0.05) : component.wall === "B" ? -lenght + .1 : 0] : component.position);
+  const [position, setPosition] = useState<[number, number, number]>(() => (component.position[0] === 0 && component.position[1] === 0 && component.position[2] === 0) ? [ 0, component.type  ? 0 : -.55, component.wall === "F" ? (component.type ? .1 : 0.05) : component.wall === "B" ? .1 : 0] : component.position);
   const [scale, setScale] = useState<[number, number, number]>(component.scale[0] !== 1 && component.scale[1] !== 1 && component.scale[2] !== 1 ? component.scale : [component.type ? .6 : .8, component.type ? .1 : .6, .1]);
   component.position = position;
   component.scale = scale;
-  //função de update da rendenização
+  
   function _updateBlock() {
     updateComponent({
       ...component,
@@ -55,12 +53,12 @@ export default function ComponentBlock({
     }}>
       <Box sx={{ display: "flex", flexDirection: "column", width: "100%", gap: "1vh" }}>
         <Box sx={{ display: "flex", flexDirection: "row", alignContent: "center", justifyContent: "space-between", width: "90%" }}>
-          <Typography>Id: {component.id}</Typography>
-          <Typography>{component.name}</Typography>
-          <Typography>Wall: {component.wall}</Typography>
+          <Typography color="white">Id: {component.id}</Typography>
+          <Typography color="white">{component.name}</Typography>
+          <Typography color="white">Wall: {component.wall}</Typography>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "self-start", width: "90%" }}>
-          <Typography >Positon:</Typography>
+          <Typography color="white">Positon:</Typography>
           <List sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
             <TextField
               label="X"
@@ -100,7 +98,7 @@ export default function ComponentBlock({
           </List>
         </Box>
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "self-start", width: "90%" }}>
-          <Typography>Scale:</Typography>
+          <Typography color="white">Scale:</Typography>
           <List sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
             <TextField
               label="X"
