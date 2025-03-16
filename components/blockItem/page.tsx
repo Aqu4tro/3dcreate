@@ -36,6 +36,7 @@ interface BlockItemProps {
   setSelect: () => void;
   select: boolean | undefined;
   updateLot: (updatedBlock: Room) => void;
+
   _setBlocks: Dispatch<SetStateAction<Room[]>>;
 }
 
@@ -74,9 +75,7 @@ export default function BlockItem({
   const [wallTexture, setWallTexture] = useState<string>(
     block.wallTexture || ""
   );
-  const [topTexture, setTopTexture] = useState<string>(
-    block.topTexture || ""
-  );
+  const [topTexture, setTopTexture] = useState<string>(block.topTexture || "");
   const [floorTexture, setFloorTexture] = useState<string>(
     block.floorTexture || ""
   );
@@ -115,15 +114,9 @@ export default function BlockItem({
     event: React.ChangeEvent<HTMLInputElement>,
     _set: Dispatch<SetStateAction<string>>
   ) {
-    
-      
-      if (event.target.files && event.target.files.length > 0) {
-        const fileUrl = URL.createObjectURL(event.target.files[0]);
-        console.log("URL gerado:", fileUrl);
-        _set(fileUrl);
-     
-  }
-
+    if (event.target.files && event.target.files.length > 0) {
+      _set(URL.createObjectURL(event.target.files[0]));
+    }
   }
 
   const VisuallyHiddenInput = styled("input")({
@@ -487,7 +480,7 @@ export default function BlockItem({
             {topTexture ? (
               <Image
                 src={topTexture}
-                alt="top"
+                alt="Description of the images"
                 width={30}
                 height={30}
               />
@@ -502,7 +495,6 @@ export default function BlockItem({
                 <CloudUploadOutlined fontSize="medium" />
               </IconButton>
             )}
-
           </label>
 
 
@@ -534,7 +526,7 @@ export default function BlockItem({
             {floorTexture ? (
               <Image
                 src={floorTexture}
-                alt="floor"
+                alt="Description of the image"
                 width={30}
                 height={30}
               />
@@ -579,7 +571,7 @@ export default function BlockItem({
             {wallTexture ? (
               <Image
                 src={wallTexture}
-                alt="wall"
+                alt="Description of the image"
                 width={30}
                 height={30}
               />

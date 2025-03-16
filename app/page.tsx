@@ -2,10 +2,12 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Sky } from "@react-three/drei";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import {
   Add,
   ArrowBack,
+  ArrowLeft,
+  ArrowRight,
   Close,
   Download,
   KeyboardArrowLeft,
@@ -18,6 +20,8 @@ import {
   Button,
   Fab,
   Fade,
+  Slide,
+  Stack,
   styled,
   Typography,
 } from "@mui/material";
@@ -85,6 +89,7 @@ export default function Home() {
     );
   };
 
+  //criar novo terreno
   function createLot({
     id,
     length,
@@ -111,9 +116,9 @@ export default function Home() {
         floor,
         disable: false,
         selected: false,
-        wallTexture:"",
-        topTexture: "",
-        floorTexture: "",
+        wallTexture: undefined,
+        topTexture: undefined,
+        floorTexture: undefined,
         position: { x: 0, y: 0, z: 0 },
         rotation: { x: 0, y: 0, z: 0 },
         angle_Top: { f: 0, l: 0, r: 0, b: 0 },
@@ -136,11 +141,13 @@ export default function Home() {
     _set: Dispatch<SetStateAction<Room[]>>
   ) {
     if (event.target.files && event.target.files.length > 0) {
-      
       const file = event.target.files[0];
+
       const reader = new FileReader();
 
       reader.onload = () => {
+
+
         if (reader.result) {
           try {
             const parsedData = JSON.parse(reader.result as string);
@@ -221,7 +228,7 @@ export default function Home() {
         <Box>
           <Fade in={buttonList}>
             <div>
-              <label htmlFor="file-upload-lot" style={{ cursor: "pointer" }}>
+              <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
                 <Fab
                   sx={{
                     borderRadius: "50%",
@@ -236,7 +243,7 @@ export default function Home() {
                     color: "black",
                   }}
                   onClick={() =>
-                    document.getElementById("file-upload-lot")?.click()
+                    document.getElementById("file-upload-top")?.click()
                   }
                   color="inherit"
                 >
@@ -244,10 +251,11 @@ export default function Home() {
                 </Fab>
               </label>
               <VisuallyHiddenInput
-                id="file-upload-lot"
+                id="file-upload-top"
                 type="file"
                 accept="json/*"
                 onChange={(event) => handleUploadFile(event, setLot)}
+
               />
             </div>
           </Fade>
