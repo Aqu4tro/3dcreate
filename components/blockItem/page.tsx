@@ -1,3 +1,4 @@
+'use client';
 import { Room } from "@/app/page";
 import {
   Box,
@@ -13,6 +14,7 @@ import {
 } from "@mui/material";
 import {
   Add,
+  CenterFocusWeakOutlined,
   CloudUploadOutlined,
   KeyboardArrowDown,
   KeyboardArrowUp,
@@ -24,6 +26,8 @@ import Image from "next/image";
 import ComponentBlock, { Component } from "../componentBlock/page";
 import BlockSmall from "../blockSmall/page";
 import AngleController from "../angleController/page";
+import handleUpload from "@/utils/upload/page";
+import { floor } from "three/webgpu";
 
 interface BlockItemProps {
   block: Room;
@@ -89,7 +93,7 @@ export default function BlockItem({
 
   function showComponentPanel() {
     setPanelVisible(!panelVisible);
-  }
+  };
 
   function handleAddComponent(type: boolean, wall: "F" | "B" | "L" | "R") {
     setComponents((prev) => [
@@ -106,18 +110,24 @@ export default function BlockItem({
     ]);
     showComponentPanel();
     setComponentId(componentId + 1);
-  }
-  const handleDeleteComponent = (id: number) => {
+  };
+
+  function handleDeleteComponent (id: number) {
     setComponents((prev) => prev.filter((component) => component.id !== id));
   };
+
   function handleFileChange(
     event: React.ChangeEvent<HTMLInputElement>,
-    _set: Dispatch<SetStateAction<string>>
-  ) {
+    _set: Dispatch<SetStateAction<string>>,
+    newName: string
+  ): void {
     if (event.target.files && event.target.files.length > 0) {
-      _set(URL.createObjectURL(event.target.files[0]));
+      const file = event.target.files[0];
+      const url = URL.createObjectURL(file);
+      _set(url);
+      handleUpload(file, newName);
     }
-  }
+  };
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -161,7 +171,7 @@ export default function BlockItem({
       floor: _floor,
     });
   }
-  const toggleSelectLot = (id: number, t: "D" | "S") => {
+  function toggleSelectLot (id: number, t: "D" | "S") {
     setBlocks((prevLot) => {
       return prevLot.map((item) =>
         t == "D"
@@ -467,6 +477,7 @@ export default function BlockItem({
         flexDirection={"column"}
         justifyContent={"space-between"}
       >
+
         <Box
           display={"flex"}
           alignItems={"center"}
@@ -502,7 +513,7 @@ export default function BlockItem({
             id="file-upload-top"
             type="file"
             accept="image/*"
-            onChange={(event) => handleFileChange(event, setTopTexture)}
+            onChange={(event) => handleFileChange(event, setTopTexture, 'topTexture')}
             multiple
           />
           <Checkbox
@@ -548,7 +559,7 @@ export default function BlockItem({
             id="file-upload-floor"
             type="file"
             accept="image/*"
-            onChange={(event) => handleFileChange(event, setFloorTexture)}
+            onChange={(event) => handleFileChange(event, setFloorTexture, 'floorTexture')}
             multiple
           />
           <Checkbox
@@ -593,7 +604,7 @@ export default function BlockItem({
             id="file-upload-wall"
             type="file"
             accept="image/*"
-            onChange={(event) => handleFileChange(event, setWallTexture)}
+            onChange={(event) => handleFileChange(event, setWallTexture, 'wallTexture')}
             multiple
           />
         </Box>

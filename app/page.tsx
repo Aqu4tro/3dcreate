@@ -89,7 +89,7 @@ export default function Home() {
     );
   };
 
-  //criar novo terreno
+
   function createLot({
     id,
     length,
@@ -140,40 +140,67 @@ export default function Home() {
     event: React.ChangeEvent<HTMLInputElement>,
     _set: Dispatch<SetStateAction<Room[]>>
   ) {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-
-      const reader = new FileReader();
-
-      reader.onload = () => {
-
-
-        if (reader.result) {
-          try {
-            const parsedData = JSON.parse(reader.result as string);
-
-
-            if (Array.isArray(parsedData)) {
-              _set((preview) => [...(preview || []), ...parsedData]);
+    const files = event.target.files;
+  
+    if (files && files.length > 0) {
+      // Processando cada arquivo selecionado
+      Array.from(files).forEach((file) => {
+        const fileExtension = file.name.split('.').pop()?.toLowerCase(); // Pegando a extensão do arquivo
+  
+        // Se o arquivo for JSON, vamos ler e adicionar ao _set
+        if (fileExtension === 'json') {
+          const reader = new FileReader();
+  
+          reader.onload = () => {
+            if (reader.result) {
+              try {
+                const parsedData = JSON.parse(reader.result as string);
+                if (Array.isArray(parsedData)) {
+                  _set((preview) => [...(preview || []), ...parsedData]);
+                } else {
+                  console.error('Os dados não são um array.');
+                }
+              } catch (error) {
+                console.error('Erro ao parsear JSON:', error);
+              }
             } else {
-              console.error('Os dados não são um array.');
+              console.error('Nenhum resultado encontrado ao ler o arquivo.');
             }
-          } catch (error) {
-            console.error('Erro ao parsear JSON:', error);
-          }
+          };
+  
+          reader.onerror = () => {
+            console.error('Erro ao ler o arquivo.');
+          };
+  
+          reader.readAsText(file); // Lendo o arquivo como texto
+  
+        } else if (fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg') {
+          // Se o arquivo for uma imagem (png, jpg, jpeg), enviamos para a API
+          const formData = new FormData();
+          formData.append("file", file);
+  
+          // Enviando o arquivo para a API
+          fetch('http://localhost:3000/api/uploads', {
+            method: 'POST',
+            body: formData,
+          })
+            .then(response => response.json())
+            .then((data) => {
+              console.log('Arquivo de imagem enviado com sucesso:', data);
+              // Aqui você pode manipular a resposta da API (ex: salvar a URL da imagem no estado, se necessário)
+            })
+            .catch((error) => {
+              console.error('Erro ao enviar arquivo de imagem:', error);
+            });
         } else {
-          console.error('Nenhum resultado encontrado ao ler o arquivo.');
+          console.error('Formato de arquivo não suportado.');
         }
-      };
-
-      reader.onerror = () => {
-        console.error('Erro ao ler o arquivo.');
-      };
-
-      reader.readAsText(file);
+      });
+    } else {
+      console.error('Nenhum arquivo selecionado.');
     }
   }
-
+  
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -228,7 +255,7 @@ export default function Home() {
         <Box>
           <Fade in={buttonList}>
             <div>
-              <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
+              <label htmlFor="file-upload-room" style={{ cursor: "pointer" }}>
                 <Fab
                   sx={{
                     borderRadius: "50%",
@@ -243,7 +270,7 @@ export default function Home() {
                     color: "black",
                   }}
                   onClick={() =>
-                    document.getElementById("file-upload-top")?.click()
+                    document.getElementById("file-upload-room")?.click()
                   }
                   color="inherit"
                 >
@@ -251,11 +278,12 @@ export default function Home() {
                 </Fab>
               </label>
               <VisuallyHiddenInput
-                id="file-upload-top"
+                id="file-upload-room"
                 type="file"
                 accept="json/*"
                 onChange={(event) => handleUploadFile(event, setLot)}
-
+                webkitdirectory
+                multiple
               />
             </div>
           </Fade>
