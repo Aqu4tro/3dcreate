@@ -26,8 +26,7 @@ import Image from "next/image";
 import ComponentBlock, { Component } from "../componentBlock/page";
 import BlockSmall from "../blockSmall/page";
 import AngleController from "../angleController/page";
-import handleUpload from "@/utils/upload/page";
-import { floor } from "three/webgpu";
+import { handleUpload } from "@/utils/upload/page";
 
 interface BlockItemProps {
   block: Room;
@@ -123,8 +122,7 @@ export default function BlockItem({
   ): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      const url = URL.createObjectURL(file);
-      _set(url);
+      _set(`/assets/uploads/${newName}`);
       handleUpload(file, newName);
     }
   };

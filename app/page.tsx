@@ -2,12 +2,10 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Sky } from "@react-three/drei";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   Add,
   ArrowBack,
-  ArrowLeft,
-  ArrowRight,
   Close,
   Download,
   KeyboardArrowLeft,
@@ -20,8 +18,6 @@ import {
   Button,
   Fab,
   Fade,
-  Slide,
-  Stack,
   styled,
   Typography,
 } from "@mui/material";
@@ -30,7 +26,8 @@ import Panel from "@/components/panel/page";
 import BlockItem from "@/components/blockItem/page";
 import BlockSmall from "@/components/blockSmall/page";
 import { Component } from "@/components/componentBlock/page";
-import { downloadRoomsAsJson } from "@/utils/download/page";
+import downloadRoomsAsJson from "@/utils/download/page";
+import { handleUploadAmbience } from "@/utils/upload/page";
 export type Room = {
   id: number;
   byLot?: true;
@@ -136,71 +133,8 @@ export default function Home() {
     setButtonList(!buttonList);
     setPanelVisible(false);
   }
-  function handleUploadFile(
-    event: React.ChangeEvent<HTMLInputElement>,
-    _set: Dispatch<SetStateAction<Room[]>>
-  ) {
-    const files = event.target.files;
-  
-    if (files && files.length > 0) {
-      // Processando cada arquivo selecionado
-      Array.from(files).forEach((file) => {
-        const fileExtension = file.name.split('.').pop()?.toLowerCase(); // Pegando a extensão do arquivo
-  
-        // Se o arquivo for JSON, vamos ler e adicionar ao _set
-        if (fileExtension === 'json') {
-          const reader = new FileReader();
-  
-          reader.onload = () => {
-            if (reader.result) {
-              try {
-                const parsedData = JSON.parse(reader.result as string);
-                if (Array.isArray(parsedData)) {
-                  _set((preview) => [...(preview || []), ...parsedData]);
-                } else {
-                  console.error('Os dados não são um array.');
-                }
-              } catch (error) {
-                console.error('Erro ao parsear JSON:', error);
-              }
-            } else {
-              console.error('Nenhum resultado encontrado ao ler o arquivo.');
-            }
-          };
-  
-          reader.onerror = () => {
-            console.error('Erro ao ler o arquivo.');
-          };
-  
-          reader.readAsText(file); // Lendo o arquivo como texto
-  
-        } else if (fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg') {
-          // Se o arquivo for uma imagem (png, jpg, jpeg), enviamos para a API
-          const formData = new FormData();
-          formData.append("file", file);
-  
-          // Enviando o arquivo para a API
-          fetch('http://localhost:3000/api/uploads', {
-            method: 'POST',
-            body: formData,
-          })
-            .then(response => response.json())
-            .then((data) => {
-              console.log('Arquivo de imagem enviado com sucesso:', data);
-              // Aqui você pode manipular a resposta da API (ex: salvar a URL da imagem no estado, se necessário)
-            })
-            .catch((error) => {
-              console.error('Erro ao enviar arquivo de imagem:', error);
-            });
-        } else {
-          console.error('Formato de arquivo não suportado.');
-        }
-      });
-    } else {
-      console.error('Nenhum arquivo selecionado.');
-    }
-  }
-  
+
+
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -255,36 +189,42 @@ export default function Home() {
         <Box>
           <Fade in={buttonList}>
             <div>
-              <label htmlFor="file-upload-room" style={{ cursor: "pointer" }}>
-                <Fab
-                  sx={{
-                    borderRadius: "50%",
-                    width: "46px",
-                    height: "46px",
-                    minWidth: "0",
-                    borderWidth: 3,
-                    position: "absolute",
-                    bottom: "12vh",
-                    left: "3vh",
-                    zIndex: 2,
-                    color: "black",
-                  }}
-                  onClick={() =>
-                    document.getElementById("file-upload-room")?.click()
-                  }
-                  color="inherit"
-                >
-                  <UploadFile fontSize="large" />
-                </Fab>
-              </label>
-              <VisuallyHiddenInput
-                id="file-upload-room"
-                type="file"
-                accept="json/*"
-                onChange={(event) => handleUploadFile(event, setLot)}
-                webkitdirectory
-                multiple
-              />
+            <input
+  type="file"
+  id="file-upload-room"
+  webkitdirectory="true"
+  onChange={async (event) => {
+    await handleUploadAmbience(event, setLot); // Executa primeiro
+    console.log("Upload finalizado!"); // Só executa depois do upload
+  }}
+   style={{ display: 'none' }}
+/>
+<Fab
+  sx={{
+    borderRadius: "50%",
+    width: "46px",
+    height: "46px",
+    minWidth: "0",
+    borderWidth: 3,
+    position: "absolute",
+    bottom: "12vh",
+    left: "3vh",
+    zIndex: 2,
+    color: "black",
+  }}
+  onClick={() => document.getElementById("file-upload-room")?.click()}
+  color="inherit"
+>
+  <UploadFile fontSize="large" />
+</Fab>
+              
+               
+              
+           
+
+
+
+
             </div>
           </Fade>
 
