@@ -122,7 +122,7 @@ export default function BlockItem({
   ): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      _set(`/assets/uploads/${newName}`);
+      _set(`/assets/uploads/${newName}.png`);
       handleUpload(file, newName);
     }
   };
@@ -511,7 +511,9 @@ export default function BlockItem({
             id="file-upload-top"
             type="file"
             accept="image/*"
-            onChange={(event) => handleFileChange(event, setTopTexture, 'topTexture')}
+            onChange={async (event) => {
+              await handleFileChange(event, setTopTexture, 'topTexture');
+            }}
             multiple
           />
           <Checkbox
@@ -557,7 +559,8 @@ export default function BlockItem({
             id="file-upload-floor"
             type="file"
             accept="image/*"
-            onChange={(event) => handleFileChange(event, setFloorTexture, 'floorTexture')}
+            onChange={async (event) => {
+              await handleFileChange(event, setFloorTexture, 'floorTexture')}}
             multiple
           />
           <Checkbox
@@ -602,7 +605,8 @@ export default function BlockItem({
             id="file-upload-wall"
             type="file"
             accept="image/*"
-            onChange={(event) => handleFileChange(event, setWallTexture, 'wallTexture')}
+            onChange={async (event) => {
+              await handleFileChange(event, setWallTexture, 'wallTexture')}}
             multiple
           />
         </Box>

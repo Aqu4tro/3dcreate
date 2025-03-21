@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Sky } from "@react-three/drei";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Add,
   ArrowBack,
@@ -28,6 +28,7 @@ import BlockSmall from "@/components/blockSmall/page";
 import { Component } from "@/components/componentBlock/page";
 import downloadRoomsAsJson from "@/utils/download/page";
 import { handleUploadAmbience } from "@/utils/upload/page";
+import clearUploads from "@/utils/clearUploads/page";
 export type Room = {
   id: number;
   byLot?: true;
@@ -150,6 +151,8 @@ export default function Home() {
     whiteSpace: "nowrap",
     width: 1,
   });
+  
+
 
   return (
     <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
@@ -192,7 +195,11 @@ export default function Home() {
             <input
   type="file"
   id="file-upload-room"
-  webkitdirectory="true"
+  ref={(input) => {
+    if (input) {
+      input.setAttribute("webkitdirectory", "true");
+    }
+  }}
   onChange={async (event) => {
     await handleUploadAmbience(event, setLot); // Executa primeiro
     console.log("Upload finalizado!"); // Só executa depois do upload
