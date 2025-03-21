@@ -12,7 +12,7 @@ export async function handleUpload(file: File, name: string): Promise<string> {
   });
 
   if (!response.ok) {
-    throw new Error("Falha ao fazer upload do arquivo");
+    throw new Error("Failed to upload file");
   }
 
   const data = await response.json();
@@ -26,12 +26,12 @@ export async function handleUploadAmbience(
   const files = event.target.files;
 
   if (!files || files.length === 0) {
-    console.warn("Nenhum arquivo selecionado.");
+    console.warn("No files selected.");
     return;
   }
 
   const fileArray = Array.from(files);
-  console.log("Arquivos selecionados:", fileArray.map((f) => f.name));
+  console.log("Selected files:", fileArray.map((f) => f.name));
 
   const validFiles = fileArray.filter((file) => {
     const fileExtension = file.name.split(".").pop()?.toLowerCase();
@@ -39,7 +39,7 @@ export async function handleUploadAmbience(
   });
 
   if (validFiles.length === 0) {
-    console.warn("Nenhum arquivo válido encontrado.");
+    console.warn("No valid files found.");
     return;
   }
 
@@ -53,25 +53,25 @@ export async function handleUploadAmbience(
           const parsedData = JSON.parse(jsonData);
           if (Array.isArray(parsedData)) {
             setLots((prev) => [...(prev || []), ...parsedData]);
-            return "JSON processado";
+            return "JSON processed";
           } else {
-            console.error("O JSON não contém um array.");
+            console.error("JSON does not contain an array.");
           }
         } catch (error) {
-          console.error("Erro ao processar JSON:", error);
+          console.error("Error processing JSON:", error);
         }
       } else if (fileExtension && ["png", "jpg", "jpeg"].includes(fileExtension)) {
         try {
           return await handleUpload(file, file.name);
         } catch (error) {
-          console.error("Erro ao fazer upload:", error);
+          console.error("Error uploading file:", error);
         }
       } else {
-        console.warn(`Arquivo ignorado: ${file.name}`);
+        console.warn(`File ignored: ${file.name}`);
       }
       return null;
     })
   );
 
-  console.log("Arquivos enviados:", uploadedFileUrls.filter(Boolean));
+  console.log("Uploaded files:", uploadedFileUrls.filter(Boolean));
 }

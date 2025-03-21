@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Sky } from "@react-three/drei";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useState } from "react";
 import {
   Add,
   ArrowBack,
@@ -151,8 +151,14 @@ export default function Home() {
     whiteSpace: "nowrap",
     width: 1,
   });
-  
 
+  useLayoutEffect(() => {
+    async function executeAsync() {
+      await clearUploads();
+    };
+
+    executeAsync();
+  }, []);
 
   return (
     <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
@@ -192,46 +198,38 @@ export default function Home() {
         <Box>
           <Fade in={buttonList}>
             <div>
-            <input
-  type="file"
-  id="file-upload-room"
-  ref={(input) => {
-    if (input) {
-      input.setAttribute("webkitdirectory", "true");
-    }
-  }}
-  onChange={async (event) => {
-    await handleUploadAmbience(event, setLot); // Executa primeiro
-    console.log("Upload finalizado!"); // Só executa depois do upload
-  }}
-   style={{ display: 'none' }}
-/>
-<Fab
-  sx={{
-    borderRadius: "50%",
-    width: "46px",
-    height: "46px",
-    minWidth: "0",
-    borderWidth: 3,
-    position: "absolute",
-    bottom: "12vh",
-    left: "3vh",
-    zIndex: 2,
-    color: "black",
-  }}
-  onClick={() => document.getElementById("file-upload-room")?.click()}
-  color="inherit"
->
-  <UploadFile fontSize="large" />
-</Fab>
-              
-               
-              
-           
+              <input
+                type="file"
+                id="file-upload-room"
+                ref={(input) => {
+                  if (input) {
+                    input.setAttribute("webkitdirectory", "true");
+                  }
+                }}
+                onChange={async (event) => {
+                  await handleUploadAmbience(event, setLot);
 
-
-
-
+                }}
+                style={{ display: 'none' }}
+              />
+              <Fab
+                sx={{
+                  borderRadius: "50%",
+                  width: "46px",
+                  height: "46px",
+                  minWidth: "0",
+                  borderWidth: 3,
+                  position: "absolute",
+                  bottom: "12vh",
+                  left: "3vh",
+                  zIndex: 2,
+                  color: "black",
+                }}
+                onClick={() => document.getElementById("file-upload-room")?.click()}
+                color="inherit"
+              >
+                <UploadFile fontSize="large" />
+              </Fab>
             </div>
           </Fade>
 

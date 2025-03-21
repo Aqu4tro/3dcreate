@@ -32,13 +32,12 @@ export default function AddWall({
       (f.wall === "R" && name === "R") ||
       (f.wall === "L" && name === "L")
     ) {
-      console.log(f.wall);
-console.log(f)
       commonMesh.scale.set(
         f.type ? (f.wall === "L" || f.wall === "R" ? 0.15 : 0.97) : (f.wall === "L" || f.wall === "R" ? 0.15 : 1.4),
         f.type ? 2.05 : 1.1,
         f.wall === "L" || f.wall === "R" ? 0.8 : 0.15
       );
+      
       commonMesh.position.set((f.wall === "R" || f.wall === "L") ? 0 : f.position[0], f.position[1], (f.wall === "B" || f.wall === "F") ? 0 : f.position[2]);
 
       commonMesh.updateMatrix();
