@@ -106,7 +106,7 @@ export default function ComponentBlock({
               
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const value = Number(e.target.value);
-                if (value >= 0 && value <= 1) {
+                if (value >= 0) {
                 
                 setScale([ Number(e.target.value) , scale[1], scale[2]]);
                 _updateBlock();
@@ -132,7 +132,7 @@ export default function ComponentBlock({
               value={component.scale[1]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const value = Number(e.target.value);
-                if (value >= 0 && value <= 1) {
+                if (value >= 0) {
                   setScale([scale[0], value, scale[2]]);
                   _updateBlock();
                 }

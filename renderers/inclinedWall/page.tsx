@@ -59,25 +59,25 @@ export default function InclinedWall({
         angle_Top.b
           ? [
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 - size / 2,
               -size / 2,
-              (length + size) * Math.tan(angle_Top.b) - tickLot / 2 + height / 2 ,
+              (length + size) * Math.tan(angle_Top.b)  + height / 2 ,
               length / 2 - size / 2,
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 - size / 2,
             ]
           : angle_Top.f
           ? [
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 + size / 2,
               -size / 2,
-              (length + size) * Math.tan(angle_Top.f) - tickLot / 2 + height / 2,
+              (length + size) * Math.tan(angle_Top.f)  + height / 2,
               -length / 2 + size / 2,
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 + size / 2,
             ]
           : []
@@ -87,25 +87,25 @@ export default function InclinedWall({
         angle_Top.b
           ? [
               size / 2,
-              (length + size) * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
+              (length + size) * Math.tan(angle_Top.b)  + height / 2,
               length / 2 - size / 2,
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 - size / 2,
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 - size / 2,
             ]
           : angle_Top.f
           ? [
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 + size / 2,
               size / 2,
-              height / 2 - tickLot / 2 + (length + size)* Math.tan(angle_Top.f),
+              height / 2  + (length + size)* Math.tan(angle_Top.f),
               -length / 2 + size / 2,
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 + size / 2,
             ]
           : []
@@ -117,25 +117,25 @@ export default function InclinedWall({
         angle_Top.b
           ? [
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 - size / 2,
               -size / 2,
-              (length + size) * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
+              (length + size) * Math.tan(angle_Top.b)  + height / 2,
               length / 2 - size / 2,
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 + size / 2,
             ]
           : angle_Top.f
           ? [
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 + size / 2,
               -size / 2,
-              (length + size) * Math.tan(angle_Top.f) - tickLot / 2 + height / 2,
+              (length + size) * Math.tan(angle_Top.f)  + height / 2,
               -length / 2 + size / 2,
               -size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 + size / 2,
             ]
           : []
@@ -145,25 +145,25 @@ export default function InclinedWall({
         angle_Top.b
           ? [
               size / 2,
-              (length + size) * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
+              (length + size) * Math.tan(angle_Top.b)  + height / 2,
               length / 2 - size / 2,
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 - size / 2,
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 - size / 2,
             ]
           : angle_Top.f
           ? [
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -length / 2 + size / 2,
               size / 2,
-              (length + size) * Math.tan(angle_Top.f) - tickLot / 2 + height / 2,
+              (length + size) * Math.tan(angle_Top.f)  + height / 2,
               -length / 2 + size / 2,
               size / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               length / 2 + size / 2,
             ]
           : []
@@ -175,25 +175,25 @@ export default function InclinedWall({
         angle_Top.r
           ? [
               -width / 2 + size,
-              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.r)  + height / 2,
               -size / 2,
               width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
               -width / 2 + size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
             ]
           : angle_Top.l
           ? [
               -width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
               width / 2 - size,
-              width * Math.tan(angle_Top.l) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.l)  + height / 2,
               -size / 2,
               width / 2 - size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
             ]
           : []
@@ -203,25 +203,25 @@ export default function InclinedWall({
         angle_Top.r
           ? [
               -width / 2 + size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
               width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
               -width / 2 + size,
-              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.r)  + height / 2,
               size / 2,
             ]
           : angle_Top.l
           ? [
               width / 2 - size,
-              width * Math.tan(angle_Top.l) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.l)  + height / 2,
               size / 2,
               -width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
               width / 2 - size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
             ]
           : []
@@ -233,25 +233,25 @@ export default function InclinedWall({
         angle_Top.r
           ? [
               -width / 2 + size,
-              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.r)  + height / 2,
               -size / 2,
               width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
               -width / 2 + size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
             ]
           : angle_Top.l
           ? [
               -width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
               width / 2 - size,
-              width * Math.tan(angle_Top.l) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.l)  + height / 2,
               -size / 2,
               width / 2 - size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               -size / 2,
             ]
           : []
@@ -261,25 +261,25 @@ export default function InclinedWall({
         angle_Top.r
           ? [
               -width / 2 + size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
               width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
               -width / 2 + size,
-              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.r) + height / 2,
               size / 2,
             ]
           : angle_Top.l
           ? [
               width / 2 - size,
-              width * Math.tan(angle_Top.l) - tickLot / 2 + height / 2,
+              width * Math.tan(angle_Top.l) + height / 2,
               size / 2,
               -width / 2,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
               width / 2 - size,
-              height / 2 - tickLot / 2,
+              height / 2 ,
               size / 2,
             ]
           : []
@@ -337,8 +337,8 @@ export default function InclinedWall({
       </mesh>
       <Plane
         args={[
-          (angle_Top.r || angle_Top.l ? width / Math.cos(angle_Top.l || angle_Top.r) + size/2 : size),
-          (angle_Top.f || angle_Top.b ? length / Math.cos(angle_Top.f || angle_Top.b) + size/2 : size),
+          (angle_Top.r || angle_Top.l ? width / Math.cos(angle_Top.l || angle_Top.r)  : size),
+          (angle_Top.f || angle_Top.b ? length / Math.cos(angle_Top.f || angle_Top.b) : size),
         ]}
         rotation={
           new THREE.Euler(
@@ -350,7 +350,7 @@ export default function InclinedWall({
         }
         position={[
           0,
-          height / 2 - 0.04 + (length * Math.tan(angle_Top.f) / 2 || length * Math.tan(angle_Top.b) / 2 || width * Math.tan(angle_Top.r) / 2 || width * Math.tan(angle_Top.l) / 2) ,
+          height / 2  + (length * Math.tan(angle_Top.f) / 2 || length * Math.tan(angle_Top.b) / 2 || width * Math.tan(angle_Top.r) / 2 || width * Math.tan(angle_Top.l) / 2) ,
           angle_Top.f ? size / 5 : angle_Top.b ? size / 5 : 0,
         ]
         }

@@ -10,6 +10,7 @@ export default function AddWall({
   components,
   name,
   texture,
+  size,
 }: {
   H: number;
   W: number;
@@ -17,6 +18,7 @@ export default function AddWall({
   components: Component[];
   name: string;
   texture: THREE.Texture;
+  size: number;
 }) {
 
   const wallGeometry = new THREE.BoxGeometry(W, H, L);
@@ -33,7 +35,7 @@ export default function AddWall({
       commonMesh.scale.set(
         f.scale[0],
         f.scale[1],
-         !f.type ? f.scale[0] : f.wall === "F" || f.wall==="B" ? f.scale[2]*1.5 : f.scale[0],
+         !f.type ? f.scale[0] : f.wall === "F" || f.wall==="B" ? f.scale[2]*size*10 : f.scale[0],
       );
       
       commonMesh.position.set((f.wall === "R" || f.wall === "L") ? 0 : f.position[0], f.position[1], (f.wall === "B" || f.wall === "F") ? 0 : f.position[2]);

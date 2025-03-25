@@ -14,6 +14,7 @@ export default function Block({
   name,
   height,
   size,
+  heightY,
   tickLot,
   setSelected,
   disable,
@@ -86,8 +87,7 @@ export default function Block({
         <mesh
           position={[
             topPosition.x,
-            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2 + topHeight / 2,
-
+            (heightY ? heightY : 0) ,
             topPosition.z,
           ]}
           rotation={
@@ -145,6 +145,7 @@ export default function Block({
               components={components}
               name={e.N}
               texture={_wallTexture}
+              size={size}
             />
           </mesh>
         ))}

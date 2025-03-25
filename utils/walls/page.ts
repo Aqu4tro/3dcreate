@@ -29,36 +29,36 @@ export default function walls({
 
   walls.push({
     x: 0,
-    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.b) / 2,
+    y: height / 2 + tickLot  + length * Math.tan(angle_Top.b) / 2,
     z: length / 2 - sizePin,
-    H: height - tickLot + length * Math.tan(angle_Top.b),
+    H: height + length * Math.tan(angle_Top.b),
     W: width,
     L: size,
     N: "F",
   });
   walls.push({
     x: 0,
-    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.f) / 2,
+    y: height / 2 + tickLot + length * Math.tan(angle_Top.f) / 2,
     z: -length / 2 + sizePin,
-    H: height - tickLot + length * Math.tan(angle_Top.f),
+    H: height + length * Math.tan(angle_Top.f),
     W: width,
     L: size,
     N: "B",
   });
   walls.push({
     x: width / 2 - sizePin,
-    y: height / 2 + tickLot / 2 + width * Math.tan(angle_Top.l) / 2,
+    y: height / 2 + tickLot + width * Math.tan(angle_Top.l) / 2,
     z: 0,
-    H: height - tickLot + width * Math.tan(angle_Top.l),
+    H: height + width * Math.tan(angle_Top.l),
     W: size,
     L: length,
     N: "R",
   });
   walls.push({
     x: -width / 2 + sizePin,
-    y: height / 2 + tickLot / 2 + width * Math.tan(angle_Top.r) / 2,
+    y: height / 2 + tickLot + width * Math.tan(angle_Top.r) / 2,
     z: 0,
-    H: height - tickLot + width * Math.tan(angle_Top.r),
+    H: height + width * Math.tan(angle_Top.r),
     W: size,
     L: length,
     N: "L",

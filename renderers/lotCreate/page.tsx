@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import AddWall from "../addWall/page";
 
 export interface LotProps extends Room {
+  heightY?: number;
   selected: boolean | undefined;
   setSelected: () => void;
 }
@@ -20,6 +21,7 @@ export default function Lot({
   name,
   height,
   size,
+  heightY,
   tickLot,
   objects,
   setSelected,
@@ -40,7 +42,8 @@ export default function Lot({
 
 
   const [_objects, _setObjects] = useState<Room[] | undefined>(objects);
-
+  const [countLot, setCountLot] = useState<number>(0);
+  
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
@@ -100,6 +103,7 @@ export default function Lot({
           position={[0, tickLot / 2, 0]}
           rotation={new THREE.Euler(0, 0, 0)}
           name="floor"
+          
         >
           <boxGeometry args={[width, tickLot, length]} />
           <meshStandardMaterial map={_floorTexture} />
@@ -110,7 +114,7 @@ export default function Lot({
         <mesh
           position={[
             topPosition.x,
-            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2 + topHeight / 2,
+            (heightY ? heightY : 0) ,
             topPosition.z,
           ]}
           rotation={
@@ -121,6 +125,7 @@ export default function Lot({
             )
           }
           name="top-surface"
+          
         >
           <boxGeometry args={[(angle_Top.l || angle_Top.r ? width / Math.cos(angle_Top.r || angle_Top.l) : width) + upperGap.x, topHeight, ((angle_Top.f || angle_Top.b) ? length / Math.cos(angle_Top.f || angle_Top.b) : length) + upperGap.z]} />
           <meshStandardMaterial map={_topTexture} />
@@ -167,6 +172,7 @@ export default function Lot({
               components={components}
               name={e.N}
               texture={_wallTexture}
+              size={size}
             />
           </mesh>
         ))}
@@ -178,6 +184,7 @@ export default function Lot({
           id={e.id}
           size={e.size}
           height={e.height}
+          heightY={heightY}
           tickLot={e.tickLot}
           name={e.name}
           length={e.length}

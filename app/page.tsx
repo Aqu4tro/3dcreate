@@ -300,6 +300,7 @@ export default function Home() {
               size={item.size}
               name={item.name}
               height={item.height}
+              heightY={item.height + (item.length * Math.tan(item.angle_Top.f) / 2 || item.length * Math.tan(item.angle_Top.b) / 2 || item.width * Math.tan(item.angle_Top.r) / 2 || item.width * Math.tan(item.angle_Top.l) / 2) + item.tickLot}
               objects={item.objects}
               tickLot={item.tickLot}
               disable={item.disable}
@@ -322,7 +323,7 @@ export default function Home() {
 
           <OrbitControls rotateSpeed={0.2} />
           <ambientLight intensity={0.5} />
-          <directionalLight position={[5, -50, 5]} color="white" />
+          
           <Sky
             distance={40000}
             sunPosition={[0, 5, 0]}

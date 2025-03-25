@@ -377,7 +377,7 @@ export default function BlockItem({
             sx={{ alignItems: "center", width: "100%", color: "white" }}
             onClick={() =>
               createBlock({
-                id: 0,
+                id: countBlock,
                 length: length,
                 width: width,
                 size: size,
