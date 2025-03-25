@@ -51,7 +51,7 @@ export default function Block({
     components;
   }, [components]);
 
-  
+
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -86,7 +86,7 @@ export default function Block({
         <mesh
           position={[
             topPosition.x,
-            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2 + topHeight/2,
+            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2 + topHeight / 2,
 
             topPosition.z,
           ]}
@@ -134,7 +134,7 @@ export default function Block({
                 size={size}
                 _wallTexture={_wallTexture}
                 tickLot={tickLot}
-               
+
               />
             )}
 

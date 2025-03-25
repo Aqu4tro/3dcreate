@@ -33,7 +33,7 @@ export function BlockController({
           onChange={(e) => {
             const inputValue = Number(e.target.value);
             if (type) {
-              if (inputValue >= 0 && inputValue <= 1) {
+              if (inputValue >= 0 ) {
                 setValue(inputValue);
               }
             } else {

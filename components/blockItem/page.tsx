@@ -205,7 +205,7 @@ export default function BlockItem({
     floorTexture,
     components,
     blocks,
-    updateBlock,
+    //updateBlock,
   ]);
 
 

@@ -73,7 +73,7 @@ export default function BlockControllerPanel ({
     handleDeleteComponent,
 }: BlockControllerPanelProps) {
     return (
-        <Box display={"flex"} flexDirection={"column"}>
+        <Box display={"flex"} flexDirection={"column"} >
             <BlockController name="Width" value={width} setValue={setWidth} type={true} />
             <BlockController name="Length" value={length} setValue={setLength} type={true} />
             <BlockController name="Wall Size" value={size} setValue={setSize} type={true} />

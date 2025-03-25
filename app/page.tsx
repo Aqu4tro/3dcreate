@@ -368,7 +368,7 @@ export default function Home() {
           <div
             style={{
               width: "25vw",
-              overflowY: "auto",
+              overflow: "auto",
               height: "100%",
 
               backgroundColor: "black",

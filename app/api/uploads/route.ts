@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
 
-const uploadDir = path.join(process.cwd(), "public/assets/uploads");
+const uploadDir = path.join(process.cwd(), "./public/assets/uploads");
 
 export async function DELETE() {
   try {
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
     const filePath = path.join(uploadDir, `${name}`);
     await fs.writeFile(filePath, buffer);
 
-    return NextResponse.json({ url: `/assets/uploads/${name}.png` }, { status: 200 });
+    return NextResponse.json({ url: `./assets/uploads/${name}.png` }, { status: 200 });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json({ error: "Internal error during upload." }, { status: 500 });

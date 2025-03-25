@@ -12,7 +12,7 @@ export async function handleUpload(file: File, name: string): Promise<string> {
   formData.append("file", file);
   formData.append("name", fileName);
 
-  const response = await fetch("/api/uploads", {
+  const response = await fetch("./api/uploads", {
     method: "POST",
     body: formData,
   });

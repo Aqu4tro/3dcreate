@@ -337,21 +337,23 @@ export default function InclinedWall({
       </mesh>
       <Plane
         args={[
-          (angle_Top.r || angle_Top.l ? width / Math.cos(angle_Top.l || angle_Top.r) : size),
-          (angle_Top.f || angle_Top.b ? length / Math.cos(angle_Top.f || angle_Top.b) : size),
+          (angle_Top.r || angle_Top.l ? width / Math.cos(angle_Top.l || angle_Top.r) + size/2 : size),
+          (angle_Top.f || angle_Top.b ? length / Math.cos(angle_Top.f || angle_Top.b) + size/2 : size),
         ]}
         rotation={
           new THREE.Euler(
-            -1.575 + (angle_Top.f || -angle_Top.b),
+            -Math.PI / 2 + (angle_Top.f || -angle_Top.b) + 0.001,
             (angle_Top.l || angle_Top.r) ? (-angle_Top.l || angle_Top.r) : 0,
             0
           )
+          
         }
         position={[
           0,
-          height / 2 + (length * Math.tan(angle_Top.f) / 2 || length * Math.tan(angle_Top.b) / 2 || width * Math.tan(angle_Top.r) / 2 || width * Math.tan(angle_Top.l) / 2) - tickLot/3,
+          height / 2 - 0.04 + (length * Math.tan(angle_Top.f) / 2 || length * Math.tan(angle_Top.b) / 2 || width * Math.tan(angle_Top.r) / 2 || width * Math.tan(angle_Top.l) / 2) ,
           angle_Top.f ? size / 5 : angle_Top.b ? size / 5 : 0,
-        ]}
+        ]
+        }
       >
         <meshStandardMaterial map={_wallTexture instanceof THREE.Texture ? _wallTexture : null} />
       </Plane>
