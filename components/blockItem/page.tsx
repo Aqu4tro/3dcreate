@@ -74,6 +74,9 @@ export default function BlockItem({
     r: number;
     b: number;
   }>(block.angle_Top);
+  const [upperGap, setUpperGap] = useState<{ x: number; z: number; }>(block.upperGap);
+  const [topHeight, setTopHeight] = useState<number>(block.topHeight);
+  const [topPosition, setTopPosition] = useState<{ x: number; z: number; }>(block.topPosition);
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []);
   const [wallTexture, setWallTexture] = useState<string>(
     block.wallTexture || ""
@@ -111,7 +114,7 @@ export default function BlockItem({
     setComponentId(componentId + 1);
   };
 
-  function handleDeleteComponent (id: number) {
+  function handleDeleteComponent(id: number) {
     setComponents((prev) => prev.filter((component) => component.id !== id));
   };
 
@@ -150,6 +153,9 @@ export default function BlockItem({
   block.components = components;
   block.rotation = rotation;
   block.angle_Top = angle_Top;
+  block.upperGap = upperGap;
+  block.topHeight = topHeight;
+  block.topPosition = topPosition;
   block.floorTexture = floorTexture;
   block.topTexture = topTexture;
   block.wallTexture = wallTexture;
@@ -169,7 +175,7 @@ export default function BlockItem({
       floor: _floor,
     });
   }
-  function toggleSelectLot (id: number, t: "D" | "S") {
+  function toggleSelectLot(id: number, t: "D" | "S") {
     setBlocks((prevLot) => {
       return prevLot.map((item) =>
         t == "D"
@@ -208,6 +214,9 @@ export default function BlockItem({
     position,
     rotation,
     angle_Top,
+    upperGap,
+    topHeight,
+    topPosition,
     disable,
     select,
     wallTexture,
@@ -233,6 +242,7 @@ export default function BlockItem({
     rotation,
     angle_Top,
     components,
+    upperGap,
   }: Room) {
     updateBlock();
     if (
@@ -254,6 +264,9 @@ export default function BlockItem({
         position,
         rotation,
         angle_Top,
+        upperGap,
+        topHeight,
+        topPosition,
         byLot: true,
       });
       setCountBlock(Number(countBlock + 1));
@@ -347,6 +360,47 @@ export default function BlockItem({
                   setRotation((prev) => ({ ...prev, z: newZ as number }))
                 }
               />
+            </Box>
+            <Box>
+              <Typography color="white">Top Control</Typography>
+              <br />
+              <BlockController
+                name="Upper Gap X"
+                value={upperGap.x}
+                setValue={(newX) =>
+                  setUpperGap((preview) => ({ ...preview, x: newX as number }))
+                }
+              />
+              <BlockController
+                name="Upper Gap Z"
+                value={upperGap.z}
+                setValue={(newZ) =>
+                  setUpperGap((preview) => ({ ...preview, z: newZ as number }))
+                }
+              />
+              
+              <BlockController
+                name="Top Height"
+                value={topHeight}
+                setValue={(newH) =>
+                  setTopHeight(newH)
+                }
+              />
+              <BlockController
+                name="X Top"
+                value={topPosition.x}
+                setValue={(newX) =>
+                  setTopPosition((preview) => ({ ...preview, x: newX as number }))
+                }
+              />
+              <BlockController
+                name="Z Top"
+                value={topPosition.z}
+                setValue={(newZ) =>
+                  setTopPosition((preview) => ({ ...preview, z: newZ as number }))
+                }
+              />
+
             </Box>
             <Box>
               <Typography color="white">Angle Top</Typography>
@@ -560,7 +614,8 @@ export default function BlockItem({
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setFloorTexture, 'floorTexture')}}
+              await handleFileChange(event, setFloorTexture, 'floorTexture')
+            }}
             multiple
           />
           <Checkbox
@@ -606,7 +661,8 @@ export default function BlockItem({
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setWallTexture, 'wallTexture')}}
+              await handleFileChange(event, setWallTexture, 'wallTexture')
+            }}
             multiple
           />
         </Box>
@@ -661,6 +717,9 @@ export default function BlockItem({
                 rotation: rotation,
                 angle_Top: angle_Top,
                 components: components,
+                upperGap: upperGap,
+                topHeight: topHeight,
+                topPosition: topPosition,
               })
             }
           >

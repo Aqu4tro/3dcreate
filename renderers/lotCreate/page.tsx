@@ -32,8 +32,13 @@ export default function Lot({
   wallTexture,
   topTexture,
   floorTexture,
-  components
+  components,
+  upperGap,
+  topHeight,
+  topPosition,
 }: LotProps) {
+  
+
   const [_objects, _setObjects] = useState<Room[] | undefined>(objects);
 
   const _wallTexture = useTexture(
@@ -104,9 +109,9 @@ export default function Lot({
       {height && top && (
         <mesh
           position={[
-            0,
-            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2,
-            0,
+            topPosition.x,
+            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2 + topHeight/2,
+            topPosition.z,
           ]}
           rotation={
             new THREE.Euler(
@@ -117,7 +122,7 @@ export default function Lot({
           }
           name="top-surface"
         >
-          <boxGeometry args={[(angle_Top.l || angle_Top.r ? width / Math.cos(angle_Top.r || angle_Top.l) : width) + 0.3, 0.1, ((angle_Top.f || angle_Top.b) ? length / Math.cos(angle_Top.f || angle_Top.b) : length) + 0.3]} />
+          <boxGeometry args={[(angle_Top.l || angle_Top.r ? width / Math.cos(angle_Top.r || angle_Top.l) : width) + upperGap.x, topHeight, ((angle_Top.f || angle_Top.b) ? length / Math.cos(angle_Top.f || angle_Top.b) : length) + upperGap.z]} />
           <meshStandardMaterial map={_topTexture} />
         </mesh>
       )}
@@ -150,14 +155,8 @@ export default function Lot({
                 angle_Top={angle_Top}
                 size={size}
                 _wallTexture={_wallTexture}
-                name={name}
                 tickLot={tickLot}
-                top={top}
-                floor={floor}
-                position={position}
-                rotation={rotation}
-                disable={disable}
-                components={components}
+                
               />
             )}
 
@@ -189,6 +188,9 @@ export default function Lot({
           position={e.position}
           rotation={e.rotation}
           angle_Top={e.angle_Top}
+          upperGap={e.upperGap}
+          topHeight={e.topHeight}
+          topPosition={e.topPosition}
           wallTexture={e.wallTexture}
           topTexture={e.topTexture}
           floorTexture={e.floorTexture}

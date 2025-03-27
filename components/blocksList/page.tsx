@@ -1,7 +1,7 @@
 import { Room } from "@/app/page";
 import { Box } from "@mui/material";
 import { useState } from "react";
-import BlockItem from "../blockItem/page"; // Importa o novo componente
+import BlockItem from "../blockItem/page"; 
 
 export default function BlocksList({ blockList }: { blockList: Room[] }) {
   const [objects, setObjects] = useState<Room[]>(blockList);

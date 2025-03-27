@@ -1,9 +1,15 @@
 import * as THREE from "three";
 import { Plane } from "@react-three/drei";
-import { Room } from "@/app/page";
 import { wall } from "../../utils/walls/page";
 
-interface InclinedWallProps extends Room {
+interface InclinedWallProps {
+  id: number;
+  width: number;
+  length: number;
+  size: number;
+  height: number;
+  angle_Top: { f: number; l: number; r: number; b: number };
+  tickLot: number;
   wall: wall;
   _wallTexture: THREE.Texture;
 }
@@ -19,35 +25,32 @@ export default function InclinedWall({
   tickLot,
 }: InclinedWallProps) {
   let vertices = new Float32Array([]);
-
   let vertices_2 = new Float32Array([]);
 
-  const indices = new Uint16Array([
-    0, 1, 2,
-
-  ]);
+  const indices = new Uint16Array([0, 1, 2]);
 
   const uvs = new Float32Array(
     angle_Top.f
       ? [1, 0, 0, 0.25, 0, 0]
       : angle_Top.b
-        ? [0, 0.25, 0, 0, 1, 0]
-        : angle_Top.l
-          ? [1, 0, 0, 0.25, 0, 0]
-          : angle_Top.r
-            ? [0, 0.25, 1, 0, 0, 0]
-            : []
+      ? [0, 0.25, 0, 0, 1, 0]
+      : angle_Top.l
+      ? [1, 0, 0, 0.25, 0, 0]
+      : angle_Top.r
+      ? [0, 0.25, 1, 0, 0, 0]
+      : []
   );
+
   const uvs_2 = new Float32Array(
     angle_Top.b
       ? [0, 0.25, 0, 0, 1, 0]
       : angle_Top.f
-        ? [0, 0, 0, 0.25, 1, 0]
-        : angle_Top.l
-          ? [0, 0.25, 1, 0, 0, 0]
-          : angle_Top.r
-            ? [0, 0, 1, 0, 0, 0.25]
-            : []
+      ? [0, 0, 0, 0.25, 1, 0]
+      : angle_Top.l
+      ? [0, 0.25, 1, 0, 0, 0]
+      : angle_Top.r
+      ? [0, 0, 1, 0, 0, 0.25]
+      : []
   );
 
   switch (wall.N) {
@@ -55,18 +58,18 @@ export default function InclinedWall({
       vertices = new Float32Array(
         angle_Top.b
           ? [
-            -size / 2,
-            height / 2 - tickLot / 2,
-            length / 2 - size / 2,
-            -size / 2,
-            length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
-            length / 2 - size / 2,
-            -size / 2,
-            height / 2 - tickLot / 2,
-            -length / 2 - size / 2,
-          ]
+              -size / 2,
+              height / 2 - tickLot / 2,
+              length / 2 - size / 2,
+              -size / 2,
+              length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
+              length / 2 - size / 2,
+              -size / 2,
+              height / 2 - tickLot / 2,
+              -length / 2 - size / 2,
+            ]
           : angle_Top.f
-            ? [
+          ? [
               -size / 2,
               height / 2 - tickLot / 2,
               length / 2 + size / 2,
@@ -77,23 +80,24 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               -length / 2 + size / 2,
             ]
-            : []
+          : []
       );
+
       vertices_2 = new Float32Array(
         angle_Top.b
           ? [
-            size / 2,
-            length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
-            length / 2 - size / 2,
-            size / 2,
-            height / 2 - tickLot / 2,
-            length / 2 - size / 2,
-            size / 2,
-            height / 2 - tickLot / 2,
-            -length / 2 - size / 2,
-          ]
+              size / 2,
+              length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
+              length / 2 - size / 2,
+              size / 2,
+              height / 2 - tickLot / 2,
+              length / 2 - size / 2,
+              size / 2,
+              height / 2 - tickLot / 2,
+              -length / 2 - size / 2,
+            ]
           : angle_Top.f
-            ? [
+          ? [
               size / 2,
               height / 2 - tickLot / 2,
               -length / 2 + size / 2,
@@ -104,26 +108,26 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               length / 2 + size / 2,
             ]
-            : []
+          : []
       );
-
       break;
+
     case "L":
       vertices = new Float32Array(
         angle_Top.b
           ? [
-            -size / 2,
-            height / 2 - tickLot / 2,
-            length / 2 - size / 2,
-            -size / 2,
-            length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
-            length / 2 - size / 2,
-            -size / 2,
-            height / 2 - tickLot / 2,
-            -length / 2 + size / 2,
-          ]
+              -size / 2,
+              height / 2 - tickLot / 2,
+              length / 2 - size / 2,
+              -size / 2,
+              length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
+              length / 2 - size / 2,
+              -size / 2,
+              height / 2 - tickLot / 2,
+              -length / 2 + size / 2,
+            ]
           : angle_Top.f
-            ? [
+          ? [
               -size / 2,
               height / 2 - tickLot / 2,
               length / 2 + size / 2,
@@ -134,23 +138,24 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               -length / 2 + size / 2,
             ]
-            : []
+          : []
       );
+
       vertices_2 = new Float32Array(
         angle_Top.b
           ? [
-            size / 2,
-            length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
-            length / 2 - size / 2,
-            size / 2,
-            height / 2 - tickLot / 2,
-            length / 2 - size / 2,
-            size / 2,
-            height / 2 - tickLot / 2,
-            -length / 2 - size / 2,
-          ]
+              size / 2,
+              length * Math.tan(angle_Top.b) - tickLot / 2 + height / 2,
+              length / 2 - size / 2,
+              size / 2,
+              height / 2 - tickLot / 2,
+              length / 2 - size / 2,
+              size / 2,
+              height / 2 - tickLot / 2,
+              -length / 2 - size / 2,
+            ]
           : angle_Top.f
-            ? [
+          ? [
               size / 2,
               height / 2 - tickLot / 2,
               -length / 2 + size / 2,
@@ -161,26 +166,26 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               length / 2 + size / 2,
             ]
-            : []
+          : []
       );
-
       break;
+
     case "F":
       vertices = new Float32Array(
         angle_Top.r
           ? [
-            -width / 2 + size,
-            width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
-            -size / 2,
-            width / 2,
-            height / 2 - tickLot / 2,
-            -size / 2,
-            -width / 2 + size,
-            height / 2 - tickLot / 2,
-            -size / 2,
-          ]
+              -width / 2 + size,
+              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              -size / 2,
+              width / 2,
+              height / 2 - tickLot / 2,
+              -size / 2,
+              -width / 2 + size,
+              height / 2 - tickLot / 2,
+              -size / 2,
+            ]
           : angle_Top.l
-            ? [
+          ? [
               -width / 2,
               height / 2 - tickLot / 2,
               -size / 2,
@@ -191,23 +196,24 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               -size / 2,
             ]
-            : []
+          : []
       );
+
       vertices_2 = new Float32Array(
         angle_Top.r
           ? [
-            -width / 2 + size,
-            height / 2 - tickLot / 2,
-            size / 2,
-            width / 2,
-            height / 2 - tickLot / 2,
-            size / 2,
-            -width / 2 + size,
-            width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
-            size / 2,
-          ]
+              -width / 2 + size,
+              height / 2 - tickLot / 2,
+              size / 2,
+              width / 2,
+              height / 2 - tickLot / 2,
+              size / 2,
+              -width / 2 + size,
+              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              size / 2,
+            ]
           : angle_Top.l
-            ? [
+          ? [
               width / 2 - size,
               width * Math.tan(angle_Top.l) - tickLot / 2 + height / 2,
               size / 2,
@@ -218,25 +224,26 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               size / 2,
             ]
-            : []
+          : []
       );
       break;
+
     case "B":
       vertices = new Float32Array(
         angle_Top.r
           ? [
-            -width / 2 + size,
-            width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
-            -size / 2,
-            width / 2,
-            height / 2 - tickLot / 2,
-            -size / 2,
-            -width / 2 + size,
-            height / 2 - tickLot / 2,
-            -size / 2,
-          ]
+              -width / 2 + size,
+              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              -size / 2,
+              width / 2,
+              height / 2 - tickLot / 2,
+              -size / 2,
+              -width / 2 + size,
+              height / 2 - tickLot / 2,
+              -size / 2,
+            ]
           : angle_Top.l
-            ? [
+          ? [
               -width / 2,
               height / 2 - tickLot / 2,
               -size / 2,
@@ -247,23 +254,24 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               -size / 2,
             ]
-            : []
+          : []
       );
+
       vertices_2 = new Float32Array(
         angle_Top.r
           ? [
-            -width / 2 + size,
-            height / 2 - tickLot / 2,
-            size / 2,
-            width / 2,
-            height / 2 - tickLot / 2,
-            size / 2,
-            -width / 2 + size,
-            width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
-            size / 2,
-          ]
+              -width / 2 + size,
+              height / 2 - tickLot / 2,
+              size / 2,
+              width / 2,
+              height / 2 - tickLot / 2,
+              size / 2,
+              -width / 2 + size,
+              width * Math.tan(angle_Top.r) - tickLot / 2 + height / 2,
+              size / 2,
+            ]
           : angle_Top.l
-            ? [
+          ? [
               width / 2 - size,
               width * Math.tan(angle_Top.l) - tickLot / 2 + height / 2,
               size / 2,
@@ -274,7 +282,7 @@ export default function InclinedWall({
               height / 2 - tickLot / 2,
               size / 2,
             ]
-            : []
+          : []
       );
       break;
   }
@@ -329,15 +337,13 @@ export default function InclinedWall({
       </mesh>
       <Plane
         args={[
-          angle_Top.r || angle_Top.l ? width / Math.cos(angle_Top.l || angle_Top.r) : size,
-          angle_Top.f || angle_Top.b ? length / Math.cos(angle_Top.f || angle_Top.b) : size
+          (angle_Top.r || angle_Top.l ? width / Math.cos(angle_Top.l || angle_Top.r) : size),
+          (angle_Top.f || angle_Top.b ? length / Math.cos(angle_Top.f || angle_Top.b) : size),
         ]}
         rotation={
           new THREE.Euler(
-            -1.57 + (angle_Top.f || -angle_Top.b)
-            ,
-            (angle_Top.l || angle_Top.r) ? (-angle_Top.l   || angle_Top.r ) : 0 
-            ,
+            -1.57 + (angle_Top.f || -angle_Top.b),
+            (angle_Top.l || angle_Top.r) ? (-angle_Top.l || angle_Top.r) : 0,
             0
           )
         }

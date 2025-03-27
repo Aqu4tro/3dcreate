@@ -50,30 +50,38 @@ export function SmallBlockController({
   value,
   setValue,
   disable,
-  maxValue
+  maxValue,
+  minValue
 }: {
   name: string;
   value: number;
   setValue: Dispatch<SetStateAction<number>>;
   disable?: boolean;
   maxValue?: number;
+  minValue?: number;
 }) {
   return (
     <TextField
-      value={value}
-      label={name}
-      onChange={(e) => {
-        setValue(Number(e.target.value));
-      }}
-      sx={{
-        alignSelf: "end",
-        "& .MuiFilledInput-root": { color: "white" },
-      }}
-      size="small"
-      type="number"
-      variant="filled"
-      disabled={disable}
-
-    />
+    value={value}
+    label={name}
+    onChange={(e) => {
+      setValue(Number(e.target.value));
+    }}
+    sx={{
+      alignSelf: "end",
+      "& .MuiFilledInput-root": { color: "white" },
+    }}
+    type="number"
+    InputProps={{
+      inputProps: {
+        min: minValue,  
+        max: maxValue,  
+      },
+    }}
+    size="small"
+    variant="filled"
+    disabled={disable}
+  />
+  
   );
 }

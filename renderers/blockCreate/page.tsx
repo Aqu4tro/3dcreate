@@ -26,6 +26,9 @@ export default function Block({
   topTexture,
   floorTexture,
   components,
+  upperGap,
+  topPosition,
+  topHeight,
 }: LotProps) {
 
   const _wallTexture = useTexture(
@@ -48,7 +51,7 @@ export default function Block({
     components;
   }, [components]);
 
-console.log(components)
+  console.log(components)
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -82,10 +85,10 @@ console.log(components)
       {height && top && (
         <mesh
           position={[
-            0,
-            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2,
+            topPosition.x,
+            height + (angle_Top.r || angle_Top.l ? width * Math.tan(angle_Top.r || angle_Top.l) : length * Math.tan(angle_Top.f || angle_Top.b)) / 2 + topHeight/2,
 
-            0,
+            topPosition.z,
           ]}
           rotation={
             new THREE.Euler(
@@ -96,7 +99,7 @@ console.log(components)
           }
           name="top-surface"
         >
-          <boxGeometry args={[width + 0.3, 0.1, length + 0.3]} />
+          <boxGeometry args={[(angle_Top.l || angle_Top.r ? width / Math.cos(angle_Top.r || angle_Top.l) : width) + upperGap.x, topHeight, ((angle_Top.f || angle_Top.b) ? length / Math.cos(angle_Top.f || angle_Top.b) : length) + upperGap.z]} />
           <meshStandardMaterial map={_topTexture} />
         </mesh>
       )}
@@ -130,14 +133,8 @@ console.log(components)
                 angle_Top={angle_Top}
                 size={size}
                 _wallTexture={_wallTexture}
-                name={name}
                 tickLot={tickLot}
-                top={top}
-                floor={floor}
-                position={position}
-                rotation={rotation}
-                disable={disable}
-                components={components}
+               
               />
             )}
 

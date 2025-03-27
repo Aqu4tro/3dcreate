@@ -38,7 +38,6 @@ export type Room = {
   height: number;
   name: string;
   tickLot: number;
-  topSize?: number | 0.1;
   objects?: Room[];
   top: boolean;
   floor: boolean;
@@ -48,6 +47,9 @@ export type Room = {
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
   angle_Top: { f: number; l: number; r: number; b: number };
+  upperGap: { x: number; z: number; };
+  topHeight: number;
+  topPosition: { x: number; z: number };
   wallTexture?: string;
   topTexture?: string;
   floorTexture?: string;
@@ -98,6 +100,12 @@ export default function Home() {
     tickLot,
     top,
     floor,
+    position,
+    rotation,
+    angle_Top,
+    upperGap,
+    topHeight,
+    topPosition,
   }: Room) {
     setLot((preview) => [
       ...preview,
@@ -117,9 +125,12 @@ export default function Home() {
         wallTexture: undefined,
         topTexture: undefined,
         floorTexture: undefined,
-        position: { x: 0, y: 0, z: 0 },
-        rotation: { x: 0, y: 0, z: 0 },
-        angle_Top: { f: 0, l: 0, r: 0, b: 0 },
+        upperGap,
+        topHeight,
+        topPosition,
+        position,
+        rotation,
+        angle_Top,
         components: [],
       },
     ]);
@@ -140,17 +151,6 @@ export default function Home() {
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
 
   useLayoutEffect(() => {
     async function executeAsync() {
@@ -179,6 +179,9 @@ export default function Home() {
                 top: true,
                 position: { x: 0, y: 0, z: 0 },
                 angle_Top: { f: 0, l: 0, r: 0, b: 0 },
+                upperGap: { x: 0.3, z: 0.3 },
+                topHeight: 0.1,
+                topPosition: { x: 0, z: 0 },
                 rotation: { x: 0, y: 0, z: 0 },
                 components: [],
               })
@@ -191,7 +194,7 @@ export default function Home() {
             setThickLot={setTickLot}
             setWidth={setWidth}
             thick={thick}
-            togglePanel={() => togglePanel()}
+            togglePanel={toggleButton}
           />
         )}
 
@@ -199,36 +202,37 @@ export default function Home() {
           <Fade in={buttonList}>
             <div>
               <input
-                type="file"
-                id="file-upload-room"
-                ref={(input) => {
-                  if (input) {
-                    input.setAttribute("webkitdirectory", "true");
-                  }
-                }}
-                onChange={async (event) => {
-                  await handleUploadAmbience(event, setLot);
-
-                }}
-                style={{ display: 'none' }}
+              type="file"
+              id="file-upload-room"
+              ref={(input) => {
+                if (input) {
+                input.setAttribute("webkitdirectory", "true");
+                input.setAttribute("accept", ".json");
+                }
+              }}
+              onChange={async (event) => {
+                await handleUploadAmbience(event, setLot);
+                toggleButton();
+              }}
+              style={{ display: 'none' }}
               />
               <Fab
-                sx={{
-                  borderRadius: "50%",
-                  width: "46px",
-                  height: "46px",
-                  minWidth: "0",
-                  borderWidth: 3,
-                  position: "absolute",
-                  bottom: "12vh",
-                  left: "3vh",
-                  zIndex: 2,
-                  color: "black",
-                }}
-                onClick={() => document.getElementById("file-upload-room")?.click()}
-                color="inherit"
+              sx={{
+                borderRadius: "50%",
+                width: "46px",
+                height: "46px",
+                minWidth: "0",
+                borderWidth: 3,
+                position: "absolute",
+                bottom: "12vh",
+                left: "3vh",
+                zIndex: 2,
+                color: "black",
+              }}
+              onClick={() => document.getElementById("file-upload-room")?.click()}
+              color="inherit"
               >
-                <UploadFile fontSize="large" />
+              <UploadFile fontSize="large" />
               </Fab>
             </div>
           </Fade>
@@ -306,6 +310,9 @@ export default function Home() {
               floorTexture={item.floorTexture}
               topTexture={item.topTexture}
               components={item.components}
+              upperGap={item.upperGap}
+              topHeight={item.topHeight}
+              topPosition={item.topPosition}
             />
           ))}
 

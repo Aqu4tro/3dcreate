@@ -57,7 +57,7 @@ export default function Panel({
         }}
       >
         <Typography variant="h6" color="textPrimary">
-          Terreno
+          Terrain
         </Typography>
         <List>
           <ListItem>
@@ -74,7 +74,7 @@ export default function Panel({
               type="number"
               size="small"
               onChange={(e) => setWidth(Number(e.target.value))}
-              sx={{ marginBottom: 1 }} // Adiciona margem inferior
+              sx={{ marginBottom: 1 }}
             />
           </ListItem>
           <ListItem>
@@ -83,7 +83,7 @@ export default function Panel({
               type="number"
               size="small"
               onChange={(e) => setLength(Number(e.target.value))}
-              sx={{ marginBottom: 1 }} // Adiciona margem inferior
+              sx={{ marginBottom: 1 }} 
             />
           </ListItem>
           <ListItem>
@@ -92,7 +92,7 @@ export default function Panel({
               type="number"
               size="small"
               onChange={(e) => setThickLot(Number(e.target.value))}
-              sx={{ marginBottom: 1 }} // Adiciona margem inferior
+              sx={{ marginBottom: 1 }} 
             />
           </ListItem>
           <ListItem>
