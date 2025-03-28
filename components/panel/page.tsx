@@ -108,7 +108,7 @@ export default function Panel({
                 <TextField
                   variant="outlined"
                   type="number"
-                  label="Size"
+                  label="Thick Wall"
                   size="small"
                   onChange={(e) => setSize(Number(e.target.value))}
                 />

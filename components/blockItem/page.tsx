@@ -125,7 +125,8 @@ export default function BlockItem({
   ): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      _set(`/assets/uploads/${newName}.png`);
+      _set(`/assets/uploads/${newName}`);
+      
       handleUpload(file, newName);
     }
   };
@@ -566,7 +567,7 @@ export default function BlockItem({
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setTopTexture, 'topTexture');
+              await handleFileChange(event, setTopTexture, 'topTexture.png');
             }}
             multiple
           />
@@ -614,7 +615,7 @@ export default function BlockItem({
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setFloorTexture, 'floorTexture')
+              await handleFileChange(event, setFloorTexture, 'floorTexture.png')
             }}
             multiple
           />
@@ -661,7 +662,7 @@ export default function BlockItem({
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setWallTexture, 'wallTexture')
+              await handleFileChange(event, setWallTexture, 'wallTexture.png')
             }}
             multiple
           />

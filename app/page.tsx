@@ -18,7 +18,6 @@ import {
   Button,
   Fab,
   Fade,
-  styled,
   Typography,
 } from "@mui/material";
 import Lot from "@/renderers/lotCreate/page";
@@ -207,7 +206,6 @@ export default function Home() {
               ref={(input) => {
                 if (input) {
                 input.setAttribute("webkitdirectory", "true");
-                input.setAttribute("accept", ".json");
                 }
               }}
               onChange={async (event) => {

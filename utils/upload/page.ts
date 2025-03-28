@@ -2,9 +2,15 @@ import { Room } from "@/app/page";
 import { Dispatch, SetStateAction } from "react";
 
 export async function handleUpload(file: File, name: string): Promise<string> {
+  let fileName = name;
+
+  if (!fileName.includes(".")) {
+    fileName += ".png";
+  }
+
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("name", name);
+  formData.append("name", fileName);
 
   const response = await fetch("/api/uploads", {
     method: "POST",
@@ -31,7 +37,7 @@ export async function handleUploadAmbience(
   }
 
   const fileArray = Array.from(files);
-  console.log("Selected files:", fileArray.map((f) => f.name));
+  console.log("Selected files:", fileArray.map((f) => f));
 
   const validFiles = fileArray.filter((file) => {
     const fileExtension = file.name.split(".").pop()?.toLowerCase();
