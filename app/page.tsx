@@ -59,12 +59,12 @@ export default function Home() {
   const [nameObject, setNameObject] = useState<string>("");
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
-  const [size, setSize] = useState<number>(0);
+  const [thickWall, setThickWall] = useState<number>(0);
   const [length, setLength] = useState<number>(0);
   const [thick, setThick] = useState<boolean>(false);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
   const [lot, setLot] = useState<Room[]>([]);
-  const [tickLot, setTickLot] = useState<number>(0);
+  const [thickLot, setThickLot] = useState<number>(0);
   const [countLot, setCountLot] = useState<number>(0);
   const [buttonList, setButtonList] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -169,10 +169,10 @@ export default function Home() {
                 id: countLot,
                 length: length,
                 width: width,
-                size: size,
+                size: thickWall,
                 height: height,
                 name: nameObject,
-                tickLot: tickLot,
+                tickLot: thickLot,
                 disable: false,
                 floor: true,
                 top: true,
@@ -185,12 +185,18 @@ export default function Home() {
                 components: [],
               })
             }
+            width={width}
+            height={height}
+            thickWall={thickWall}
+            nameObject={nameObject}
+            length={length}
+            thickLot={thickLot}
             setHeight={setHeight}
             setLength={setLength}
             setNameObject={setNameObject}
-            setSize={setSize}
+            setSize={setThickWall}
             setThick={setThick}
-            setThickLot={setTickLot}
+            setThickLot={setThickLot}
             setWidth={setWidth}
             thick={thick}
             togglePanel={toggleButton}
@@ -201,36 +207,36 @@ export default function Home() {
           <Fade in={buttonList}>
             <div>
               <input
-              type="file"
-              id="file-upload-room"
-              ref={(input) => {
-                if (input) {
-                input.setAttribute("webkitdirectory", "true");
-                }
-              }}
-              onChange={async (event) => {
-                await handleUploadAmbience(event, setLot);
-                toggleButton();
-              }}
-              style={{ display: 'none' }}
+                type="file"
+                id="file-upload-room"
+                ref={(input) => {
+                  if (input) {
+                    input.setAttribute("webkitdirectory", "true");
+                  }
+                }}
+                onChange={async (event) => {
+                  await handleUploadAmbience(event, setLot);
+                  toggleButton();
+                }}
+                style={{ display: 'none' }}
               />
               <Fab
-              sx={{
-                borderRadius: "50%",
-                width: "46px",
-                height: "46px",
-                minWidth: "0",
-                borderWidth: 3,
-                position: "absolute",
-                bottom: "12vh",
-                left: "3vh",
-                zIndex: 2,
-                color: "black",
-              }}
-              onClick={() => document.getElementById("file-upload-room")?.click()}
-              color="inherit"
+                sx={{
+                  borderRadius: "50%",
+                  width: "46px",
+                  height: "46px",
+                  minWidth: "0",
+                  borderWidth: 3,
+                  position: "absolute",
+                  bottom: "12vh",
+                  left: "3vh",
+                  zIndex: 2,
+                  color: "black",
+                }}
+                onClick={() => document.getElementById("file-upload-room")?.click()}
+                color="inherit"
               >
-              <UploadFile fontSize="large" />
+                <UploadFile fontSize="large" />
               </Fab>
             </div>
           </Fade>

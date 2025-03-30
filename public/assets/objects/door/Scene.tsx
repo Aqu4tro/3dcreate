@@ -15,7 +15,7 @@ export default function Door(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('assets/objects/door/scene.gltf')
   return (
     <group {...props} dispose={null}>
-      <mesh geometry={(nodes.Door_Default_0 as THREE.Mesh).geometry} material={materials.Default} />
+      <mesh geometry={(nodes.Door_Default_0 as THREE.Mesh).geometry} scale={[.1,.005,1]} material={materials.Default} />
     </group>
   )
 }

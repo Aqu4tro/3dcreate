@@ -9,9 +9,13 @@ export default async function downloadRoomsAsJson(lot: Room[]) {
 
   const imagesFolder = zip.folder('images');
 
-  const imageUrls = lot.flatMap(room => 
-    [room.wallTexture, room.topTexture, room.floorTexture].filter(url => url != null)
-  );
+  const imageUrls = lot.flatMap(room => {
+    const roomTextures = [room.wallTexture, room.topTexture, room.floorTexture].filter(url => url != null);
+    const blockTextures = room.objects?.flatMap(block => 
+      [block.wallTexture, block.topTexture, block.floorTexture].filter(url => url != null)
+    ) || [];
+    return [...roomTextures, ...blockTextures];
+  });
 
   const imagePromises = imageUrls.map(async (url) => {
     try {

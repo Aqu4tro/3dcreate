@@ -3,31 +3,22 @@ import { Room } from "@/app/page";
 import {
   Box,
   Button,
-  Checkbox,
-  IconButton,
-  List,
-  ListItem,
-  MenuItem,
-  Select,
   styled,
-  Typography,
 } from "@mui/material";
 import {
   Add,
-  CenterFocusWeakOutlined,
-  CloudUploadOutlined,
   KeyboardArrowDown,
   KeyboardArrowUp,
 } from "@mui/icons-material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
-import { BlockController, SmallBlockController } from "../blockController/page";
-import Image from "next/image";
-import ComponentBlock, { Component } from "../componentBlock/page";
-import BlockSmall from "../blockSmall/page";
-import AngleController from "../angleController/page";
+import { SmallBlockController } from "../blockController/page";
+import  { Component } from "../componentBlock/page";
 import { handleUpload } from "@/utils/upload/page";
-import ComponentSelect, { WallType } from "../componentSelect/page";
+import  { WallType } from "../componentSelect/page";
+import BlockControllerPanel from "../blockControllerPanel/page";
+import TexturePanel from "../texturePanel/page";
+import BlockSmall from "../blockSmall/page";
 
 interface BlockItemProps {
   block: Room;
@@ -125,7 +116,7 @@ export default function BlockItem({
   ): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-
+      console.log(newName)
       _set(`/assets/uploads/${newName}`);
 
       handleUpload(file, newName);
@@ -298,184 +289,38 @@ export default function BlockItem({
       />
       {showModal ? (
         <>
-          <Box display={"flex"} flexDirection={"column"}>
-            <BlockController name="Width" value={width} setValue={setWidth} />
-            <BlockController
-              name="Length"
-              value={length}
-              setValue={setLength}
-            />
-            <BlockController name="Wall Size" value={size} setValue={setSize} />
-            <BlockController
-              name="Wall Height"
-              value={height}
-              setValue={setHeight}
-            />
-            <BlockController
-              name="Lot Thick"
-              value={tickLot}
-              setValue={setTickLot}
-            />
-            <Box>
-              <Typography color="white">Position</Typography>
-              <br />
-              <BlockController
-                name="X"
-                value={position.x}
-                setValue={(newX) =>
-                  setPosition((prev) => ({ ...prev, x: newX as number }))
-                }
-              />
-              <BlockController
-                name="Y"
-                value={position.y}
-                setValue={(newY) =>
-                  setPosition((prev) => ({ ...prev, y: newY as number }))
-                }
-              />
-              <BlockController
-                name="Z"
-                value={position.z}
-                setValue={(newZ) =>
-                  setPosition((prev) => ({ ...prev, z: newZ as number }))
-                }
-              />
-            </Box>
-            <Box>
-              <Typography color="white">Rotation</Typography>
-              <br />
-              <BlockController
-                name="X"
-                value={rotation.x}
-                setValue={(newX) =>
-                  setRotation((prev) => ({ ...prev, x: newX as number }))
-                }
-              />
-              <BlockController
-                name="Y"
-                value={rotation.y}
-                setValue={(newY) =>
-                  setRotation((prev) => ({ ...prev, y: newY as number }))
-                }
-              />
-              <BlockController
-                name="Z"
-                value={rotation.z}
-                setValue={(newZ) =>
-                  setRotation((prev) => ({ ...prev, z: newZ as number }))
-                }
-              />
-            </Box>
-            <Box>
-              <Typography color="white">Top Control</Typography>
-              <br />
-              <BlockController
-                name="Upper Gap X"
-                value={upperGap.x}
-                setValue={(newX) =>
-                  setUpperGap((preview) => ({ ...preview, x: newX as number }))
-                }
-              />
-              <BlockController
-                name="Upper Gap Z"
-                value={upperGap.z}
-                setValue={(newZ) =>
-                  setUpperGap((preview) => ({ ...preview, z: newZ as number }))
-                }
-              />
-
-              <BlockController
-                name="Top Height"
-                value={topHeight}
-                setValue={(newH) =>
-                  setTopHeight(newH)
-                }
-              />
-              <BlockController
-                name="X Top"
-                value={topPosition.x}
-                setValue={(newX) =>
-                  setTopPosition((preview) => ({ ...preview, x: newX as number }))
-                }
-              />
-              <BlockController
-                name="Z Top"
-                value={topPosition.z}
-                setValue={(newZ) =>
-                  setTopPosition((preview) => ({ ...preview, z: newZ as number }))
-                }
-              />
-
-            </Box>
-            <Box>
-              <Typography color="white">Angle Top</Typography>
-              <AngleController angle_Top={angle_Top} setAngle_Top={setAngle_Top} />
-            </Box>
-            <Box>
-              <Button
-                sx={{
-                  alignItems: "center",
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-                onClick={() => {
-                  setShowAddModal(!showAddModal);
-                  panelVisible ? showComponentPanel() : null;
-                }}
-              >
-                <Typography sx={{ color: "white", fontSize: 15 }}>
-                  Components
-                </Typography>
-                {showAddModal ? (
-                  <KeyboardArrowUp fontSize="large" sx={{ color: "white" }} />
-                ) : (
-                  <KeyboardArrowDown fontSize="large" sx={{ color: "white" }} />
-                )}
-              </Button>
-              {showAddModal && (
-                <Box>
-                  <Button
-                    sx={{
-                      width: "100%",
-                      color: "white",
-                    }}
-                    onClick={showComponentPanel}
-                  >
-                    <Add fontSize="medium" />
-                  </Button>
-                  {panelVisible && (
-                    <Box>
-                      <List>
-                       <ComponentSelect handleAddComponent={handleAddComponent} type={0} />
-                       <ComponentSelect handleAddComponent={handleAddComponent} type={1} />
-                       <ComponentSelect handleAddComponent={handleAddComponent} type={2} />
-                      </List>
-                    </Box>
-                  )}
-
-                  <Box>
-                    <List
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "1.5vh",
-                      }}
-                    >
-                      {components.map((component) => (
-                        <ComponentBlock
-                          key={component.id}
-                          updateComponent={updateBlock}
-                          component={component}
-                          onDelete={() => handleDeleteComponent(component.id)}
-                        />
-                      ))}
-                    </List>
-                  </Box>
-                </Box>
-              )}
-            </Box>
-          </Box>
+          <BlockControllerPanel
+            width={width}
+            setWidth={setWidth}
+            length={length}
+            setLength={setLength}
+            size={size}
+            setSize={setSize}
+            height={height}
+            setHeight={setHeight}
+            tickLot={tickLot}
+            setTickLot={setTickLot}
+            position={position}
+            setPosition={setPosition}
+            rotation={rotation}
+            setRotation={setRotation}
+            upperGap={upperGap}
+            setUpperGap={setUpperGap}
+            topHeight={topHeight}
+            setTopHeight={setTopHeight}
+            topPosition={topPosition}
+            setTopPosition={setTopPosition}
+            angle_Top={angle_Top}
+            setAngle_Top={setAngle_Top}
+            showAddModal={showAddModal}
+            setShowAddModal={setShowAddModal}
+            panelVisible={panelVisible}
+            showComponentPanel={showComponentPanel}
+            handleAddComponent={handleAddComponent}
+            components={components}
+            updateBlock={updateBlock}
+            handleDeleteComponent={handleDeleteComponent}
+          />
         </>
       ) : (
         <>
@@ -484,159 +329,31 @@ export default function BlockItem({
               value={width}
               setValue={setWidth}
               name="width"
+              type={1}
             />
             <SmallBlockController
               value={length}
               setValue={setLength}
               name="length"
+              type={1}
             />
           </Box>
         </>
       )}
-      <Box
-        display={"flex"}
-        marginTop={2}
-        flexDirection={"column"}
-        justifyContent={"space-between"}
-      >
-
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          height={"5vh"}
-          justifyContent={"space-between"}
-        >
-          <Typography width={"35%"} color="white">Show Top</Typography>
-
-
-          <label htmlFor={`file-upload-${name}-top`} style={{ cursor: "pointer" }}>
-            {topTexture ? (
-              <Image
-                src={topTexture}
-                alt="Description of the images"
-                width={30}
-                height={30}
-              />
-            ) : (
-              <IconButton
-                size="medium"
-                sx={{ color: "white" }}
-                onClick={() =>
-                  document.getElementById(`file-upload-${name}-top`)?.click()
-                }
-              >
-                <CloudUploadOutlined fontSize="medium" />
-              </IconButton>
-            )}
-          </label>
-
-
-          <VisuallyHiddenInput
-            id={`file-upload-${name}-top`}
-            type="file"
-            accept="image/*"
-            onChange={async (event) => {
-              await handleFileChange(event, setTopTexture, `${name}-topTexture.png`);
-            }}
-            multiple
-          />
-          <Checkbox
-            checked={_top}
-            onChange={(e) => {
-              _setTop(e.target.checked);
-            }}
-            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
-          />
-        </Box>
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          height={"5vh"}
-          justifyContent={"space-between"}
-        >
-          <Typography width={"35%"} color="white">Show Floor</Typography>
-
-
-          <label htmlFor={`file-upload-${name}-floor`} style={{ cursor: "pointer" }}>
-            {floorTexture ? (
-              <Image
-                src={floorTexture}
-                alt="Description of the image"
-                width={30}
-                height={30}
-              />
-            ) : (
-              <IconButton
-                size="medium"
-                sx={{ color: "white" }}
-                onClick={() =>
-                  document.getElementById(`file-upload-${name}-floor`)?.click()
-                }
-              >
-                <CloudUploadOutlined fontSize="medium" />
-              </IconButton>
-            )}
-          </label>
-
-
-          <VisuallyHiddenInput
-            id={`file-upload-${name}-floor`}
-            type="file"
-            accept="image/*"
-            onChange={async (event) => {
-              await handleFileChange(event, setFloorTexture, `${name}-floorTexture.png`)
-            }}
-            multiple
-          />
-          <Checkbox
-            checked={_floor}
-            onChange={(e) => {
-              _setFloor(e.target.checked);
-            }}
-            sx={{ "&.MuiCheckbox-sizeMedium": { color: "white" } }}
-          />
-        </Box>
-        <Box
-          display={"flex"}
-          alignItems={"center"}
-          height={"5vh"}
-          justifyContent={"space-between"}
-        >
-          <Typography width={"35%"} color="white">Wall Texture</Typography>
-
-          <label htmlFor={`file-upload-${name}-wall`} style={{ cursor: "pointer" }}>
-            {wallTexture ? (
-              <Image
-                src={wallTexture}
-                alt="Description of the image"
-                width={30}
-                height={30}
-              />
-            ) : (
-              <IconButton
-                size="medium"
-                sx={{ color: "white" }}
-                onClick={() =>
-                  document.getElementById(`file-upload-${name}-wall`)?.click()
-                }
-              >
-                <CloudUploadOutlined fontSize="medium" />
-              </IconButton>
-            )}
-          </label>
-
-
-          <VisuallyHiddenInput
-            id={`file-upload-${name}-wall`}
-            type="file"
-            accept="image/*"
-            onChange={async (event) => {
-              await handleFileChange(event, setWallTexture, `${name}-wallTexture.png`)
-            }}
-            multiple
-          />
-        </Box>
-      </Box>
+      <TexturePanel
+        name={name}
+        topTexture={topTexture}
+        floorTexture={floorTexture}
+        wallTexture={wallTexture}
+        _top={_top}
+        _floor={_floor}
+        _setTop={_setTop}
+        _setFloor={_setFloor}
+        setTopTexture={setTopTexture}
+        setFloorTexture={setFloorTexture}
+        setWallTexture={setWallTexture}
+        handleFileChange={handleFileChange}
+      />
       {!byLot && (
         <Box>
           {blocks.map((e) =>

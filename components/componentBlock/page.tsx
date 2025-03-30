@@ -29,7 +29,7 @@ export default function ComponentBlock({
 }) {
 
   const [position, setPosition] = useState<[number, number, number]>(() => (component.position[0] === 0 && component.position[1] === 0 && component.position[2] === 0) ? [ 0, 0, component.wall === "F" ? (0.05) : component.wall === "B" ? .1 : 0] : component.position);
-  const [scale, setScale] = useState<[number, number, number]>(component.scale[0] !== 1 && component.scale[1] !== 1 && component.scale[2] !== 1 ? component.scale : [component.type ? .6 : .8, component.type ? .1 : .1, .1]);
+  const [scale, setScale] = useState<[number, number, number]>(component.scale[0] !== 1 && component.scale[1] !== 1 && component.scale[2] !== 1 ? component.scale : [component.type ? .6 : .8, component.type ? .6 : 2.1,  .1]);
   component.position = position;
   component.scale = scale;
   
@@ -102,11 +102,21 @@ export default function ComponentBlock({
           <List sx={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
             <TextField
               label="X"
-              value={component.type ? component.scale[2] : component.scale[0]}
+              value={ component.scale[0]}
               
-              onChange={(e) => {
-                setScale([!component.type ? Number(e.target.value) : scale[0], scale[1], !component.type ? scale[2] : Number(e.target.value)]);
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const value = Number(e.target.value);
+                if (value >= 0 && value <= 1) {
+                
+                setScale([ Number(e.target.value) , scale[1], scale[2]]);
                 _updateBlock();
+                }
+              }}
+              InputProps={{
+                inputProps: {
+                  min: 0,  
+                  max: 100,  
+                },
               }}
               sx={{
                 alignSelf: "end",
@@ -120,9 +130,18 @@ export default function ComponentBlock({
             <TextField
               label="Y"
               value={component.scale[1]}
-              onChange={(e) => {
-                setScale([scale[0], Number(e.target.value), scale[2]]);
-                _updateBlock();
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                const value = Number(e.target.value);
+                if (value >= 0 && value <= 1) {
+                  setScale([scale[0], value, scale[2]]);
+                  _updateBlock();
+                }
+              }}
+              InputProps={{
+                inputProps: {
+                  min: 0,  
+                  max: 100,  
+                },
               }}
               sx={{
                 alignSelf: "end",

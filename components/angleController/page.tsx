@@ -49,10 +49,11 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       name="Front"
       value={angle_Top.f}
       setValue={(newF) => {
-        if (typeof newF === "number" && newF >= 0 && newF <= 1) {
+        
         setAngle_Top((prev) => ({ ...prev, f: newF as number }));
-        }
+        
       }}
+      type={2}
       disable={angleInsertVerify("Front")}
       maxValue={1}
       minValue={0}
@@ -61,10 +62,11 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       name="Left"
       value={angle_Top.l}
       setValue={(newL) => {
-        if (typeof newL === "number" && newL >= 0 && newL <= 1) {
+        
         setAngle_Top((prev) => ({ ...prev, l: newL as number }));
-        }
+        
       }}
+      type={2}
       disable={angleInsertVerify("Left")}
       maxValue={1}
       minValue={0}
@@ -73,10 +75,11 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       name="Right"
       value={angle_Top.r}
       setValue={(newR) => {
-        if (typeof newR === "number" && newR >= 0 && newR <= 1) {
+       
         setAngle_Top((prev) => ({ ...prev, r: newR as number }));
-        }
+        
       }}
+      type={2}
       disable={angleInsertVerify("Right")}
       maxValue={1}
       minValue={0}
@@ -85,10 +88,11 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       name="Back"
       value={angle_Top.b}
       setValue={(newB) => {
-        if ( typeof newB === "number" && newB >= 0 && newB <= 1) {
+        
         setAngle_Top((prev) => ({ ...prev, b: newB as number }));
-        }
+        
       }}
+      type={2}
       disable={angleInsertVerify("Back")}
       maxValue={1}
       minValue={0}

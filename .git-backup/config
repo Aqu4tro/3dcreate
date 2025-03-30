@@ -1,0 +1,12 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = git@github.com:Aqu4tro/3dcreate.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "3dcreate"]
+	remote = origin
+	merge = refs/heads/3dcreate
+	vscode-merge-base = origin/main

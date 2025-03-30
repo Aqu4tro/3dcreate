@@ -15,20 +15,20 @@ export function Window(props : JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('assets/objects/window/scene.gltf')
   return (
     <group {...props} dispose={null}>
-      <group scale={0.01}>
-        <group position={[0, 266.658, 0]}>
+      <group scale={[0.0042, 0.0044,0.01]}>
+        <group position={[0, 74, 0]}>
           <mesh geometry={(nodes.UP_w_0 as THREE.Mesh).geometry} material={materials.material} />
           <mesh geometry={(nodes.UP_g_0 as THREE.Mesh).geometry} material={materials.material_1} />
         </group>
-        <group position={[54.292, 113.554, 5.722]}>
+        <group position={[54.292, 0, 5.722]}>
           <mesh geometry={(nodes.L_w_0 as THREE.Mesh).geometry} material={materials.material} />
           <mesh geometry={(nodes.L_g_0 as THREE.Mesh).geometry} material={materials.material_1} />
         </group>
-        <group position={[-54.292, 113.554, -1.164]}>
+        <group position={[-54.292, 0, -1.164]}>
           <mesh geometry={(nodes.R_w_0 as THREE.Mesh).geometry} material={materials.material} />
           <mesh geometry={(nodes.R_g_0 as THREE.Mesh).geometry} material={materials.material_1} />
         </group>
-        <mesh geometry={(nodes.F_w_0 as THREE.Mesh).geometry} material={materials.material} position={[0, 113.554, 0]} />
+        <mesh geometry={(nodes.F_w_0 as THREE.Mesh).geometry} material={materials.material} position={[0, 0, 0]} />
       </group>
     </group>
   )

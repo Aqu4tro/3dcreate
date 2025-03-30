@@ -13,6 +13,12 @@ import {
 import { Dispatch, SetStateAction } from "react";
 
 export default function Panel({
+  width,
+  height,
+  thickLot,
+  thickWall,
+  nameObject,
+  length,
   setHeight,
   setNameObject,
   setLength,
@@ -24,6 +30,12 @@ export default function Panel({
   togglePanel,
   createLot,
 }: {
+  width: number;
+  height: number;
+  thickLot: number;
+  thickWall: number;
+  nameObject: string;
+  length: number;
   setHeight: Dispatch<SetStateAction<number>>;
   setNameObject: Dispatch<SetStateAction<string>>;
   setLength: Dispatch<SetStateAction<number>>;
@@ -36,7 +48,7 @@ export default function Panel({
   createLot: () => void;
 }) {
   return (
-    
+
     <div
       style={{
         position: "absolute",
@@ -65,6 +77,7 @@ export default function Panel({
               type="text"
               label="name"
               size="small"
+              value={nameObject}
               onChange={(e) => setNameObject(e.target.value)}
             />
           </ListItem>
@@ -73,7 +86,14 @@ export default function Panel({
               label="Width"
               type="number"
               size="small"
-              onChange={(e) => setWidth(Number(e.target.value))}
+              value={width}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+
+                if (value >= 0) {
+                  setWidth(value);
+                }
+              }}
               sx={{ marginBottom: 1 }}
             />
           </ListItem>
@@ -82,8 +102,14 @@ export default function Panel({
               label="Length"
               type="number"
               size="small"
-              onChange={(e) => setLength(Number(e.target.value))}
-              sx={{ marginBottom: 1 }} 
+              value={length}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (value >= 0) {
+                  setLength(value);
+                }
+              }}
+              sx={{ marginBottom: 1 }}
             />
           </ListItem>
           <ListItem>
@@ -91,8 +117,14 @@ export default function Panel({
               label="Thick"
               type="number"
               size="small"
-              onChange={(e) => setThickLot(Number(e.target.value))}
-              sx={{ marginBottom: 1 }} 
+              value={thickLot}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                if (value >= 0) {
+                  setThickLot(value);
+                }
+              }}
+              sx={{ marginBottom: 1 }}
             />
           </ListItem>
           <ListItem>
@@ -104,28 +136,40 @@ export default function Panel({
           {
             thick && (
               <List >
-              <ListItem>
-                <TextField
-                  variant="outlined"
-                  type="number"
-                  label="Thick Wall"
-                  size="small"
-                  onChange={(e) => setSize(Number(e.target.value))}
-                />
-              </ListItem>
-              <ListItem>
-                <TextField
-                  variant="outlined"
-                  type="number"
-                  label="Height"
-                  size="small"
-                  onChange={(e) => setHeight(Number(e.target.value))}
-                />
-              </ListItem>
-            </List>
+                <ListItem>
+                  <TextField
+                    variant="outlined"
+                    type="number"
+                    label="Thick Wall"
+                    size="small"
+                    value={thickWall}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      if (value >= 0) {
+                        setSize(value);
+                      }
+                    }}
+                  />
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    variant="outlined"
+                    type="number"
+                    label="Height"
+                    size="small"
+                    value={height}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      if (value >= 0) {
+                        setHeight(value);
+                      }
+                    }}
+                  />
+                </ListItem>
+              </List>
             )
           }
-        
+
         </List>
         <Button
           variant="outlined"

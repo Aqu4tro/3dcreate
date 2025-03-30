@@ -29,10 +29,11 @@ export default function AddWall({
     if (
       f.wall === name
     ) {
+     
       commonMesh.scale.set(
-        !f.type ? ( f.scale[0]) : (f.scale[0] * 2.2),
-        !f.type ? f.scale[1] * 20 : f.scale[1] * 10,
-        !f.type ? f.scale[2] * 8  : f.scale[2] * 13,
+        f.scale[0],
+        f.scale[1],
+         !f.type ? f.scale[0] : f.wall === "F" || f.wall==="B" ? f.scale[2]*1.5 : f.scale[0],
       );
       
       commonMesh.position.set((f.wall === "R" || f.wall === "L") ? 0 : f.position[0], f.position[1], (f.wall === "B" || f.wall === "F") ? 0 : f.position[2]);
