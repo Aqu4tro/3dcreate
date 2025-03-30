@@ -7,7 +7,7 @@ export async function handleUpload(file: File, name: string): Promise<string> {
   if (!fileName.includes(".")) {
     fileName += ".png";
   }
-
+  
   const formData = new FormData();
   formData.append("file", file);
   formData.append("name", fileName);
@@ -37,7 +37,7 @@ export async function handleUploadAmbience(
   }
 
   const fileArray = Array.from(files);
-  console.log("Selected files:", fileArray.map((f) => f));
+  
 
   const validFiles = fileArray.filter((file) => {
     const fileExtension = file.name.split(".").pop()?.toLowerCase();
@@ -79,5 +79,5 @@ export async function handleUploadAmbience(
     })
   );
 
-  console.log("Uploaded files:", uploadedFileUrls.filter(Boolean));
+  
 }

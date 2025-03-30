@@ -12,7 +12,7 @@ export interface Component {
   id: number;
   name: string;
   wall: string;
-  type: boolean;
+  type: number;
   position: [x: number, y: number, z: number];
   scale: [x: number, y: number, z: number];
   disabled: boolean;
@@ -28,8 +28,8 @@ export default function ComponentBlock({
 
 }) {
 
-  const [position, setPosition] = useState<[number, number, number]>(() => (component.position[0] === 0 && component.position[1] === 0 && component.position[2] === 0) ? [ 0, component.type  ? 0 : -.55, component.wall === "F" ? (component.type ? .1 : 0.05) : component.wall === "B" ? .1 : 0] : component.position);
-  const [scale, setScale] = useState<[number, number, number]>(component.scale[0] !== 1 && component.scale[1] !== 1 && component.scale[2] !== 1 ? component.scale : [component.type ? .6 : .8, component.type ? .1 : .6, .1]);
+  const [position, setPosition] = useState<[number, number, number]>(() => (component.position[0] === 0 && component.position[1] === 0 && component.position[2] === 0) ? [ 0, 0, component.wall === "F" ? (0.05) : component.wall === "B" ? .1 : 0] : component.position);
+  const [scale, setScale] = useState<[number, number, number]>(component.scale[0] !== 1 && component.scale[1] !== 1 && component.scale[2] !== 1 ? component.scale : [component.type ? .6 : .8, component.type ? .1 : .1, .1]);
   component.position = position;
   component.scale = scale;
   
@@ -103,7 +103,7 @@ export default function ComponentBlock({
             <TextField
               label="X"
               value={component.type ? component.scale[2] : component.scale[0]}
-              disabled={component.wall === "L" || component.wall === "R"}
+              
               onChange={(e) => {
                 setScale([!component.type ? Number(e.target.value) : scale[0], scale[1], !component.type ? scale[2] : Number(e.target.value)]);
                 _updateBlock();

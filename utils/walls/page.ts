@@ -26,21 +26,21 @@ export default function walls({
 }) {
   const walls = [];
   const sizePin = size / 2;
-  const _topSize = topSize ? topSize : 0.1;
+
   walls.push({
     x: 0,
-    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.f) / 2,
-    z: -length / 2 + sizePin,
-    H: height - tickLot + length * Math.tan(angle_Top.f),
+    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.b) / 2,
+    z: length / 2 - sizePin,
+    H: height - tickLot + length * Math.tan(angle_Top.b),
     W: width,
     L: size,
     N: "F",
   });
   walls.push({
     x: 0,
-    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.b) / 2,
-    z: length / 2 - sizePin,
-    H: height - tickLot + length * Math.tan(angle_Top.b),
+    y: height / 2 + tickLot / 2 + length * Math.tan(angle_Top.f) / 2,
+    z: -length / 2 + sizePin,
+    H: height - tickLot + length * Math.tan(angle_Top.f),
     W: width,
     L: size,
     N: "B",

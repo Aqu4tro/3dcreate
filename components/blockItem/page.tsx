@@ -27,6 +27,7 @@ import ComponentBlock, { Component } from "../componentBlock/page";
 import BlockSmall from "../blockSmall/page";
 import AngleController from "../angleController/page";
 import { handleUpload } from "@/utils/upload/page";
+import ComponentSelect, { WallType } from "../componentSelect/page";
 
 interface BlockItemProps {
   block: Room;
@@ -89,27 +90,26 @@ export default function BlockItem({
   const [componentId, setComponentId] = useState(0);
   const [components, setComponents] = useState<Component[]>(block.components);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
-  const [wall, setWall] = useState<"F" | "B" | "L" | "R">("F");
-  const [name, setName] = useState<string>(block.name)
 
+  const [name, setName] = useState<string>(block.name)
 
   function showComponentPanel() {
     setPanelVisible(!panelVisible);
   };
 
-  function handleAddComponent(type: boolean, wall: "F" | "B" | "L" | "R") {
+  function handleAddComponent(type: number, wall: WallType) {
     setComponents((prev) => [
-      ...prev,
-      {
-        id: componentId,
-        name: type ? "Door" : "Window",
-        type: type,
-        wall: wall,
-        position: [0, 0, 0],
-        scale: [1, 1, 1],
-        disabled: false,
-      },
-    ]);
+          ...prev,
+          {
+            id: componentId,
+            name: type === 0 ? "Door" : type === 1 ? "Window" : "Hole",
+            type: type,
+            wall: wall,
+            position: [0, 0, 0],
+            scale: [1, 1, 1],
+            disabled: false,
+          },
+        ]);
     showComponentPanel();
     setComponentId(componentId + 1);
   };
@@ -125,8 +125,9 @@ export default function BlockItem({
   ): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
+
       _set(`/assets/uploads/${newName}`);
-      
+
       handleUpload(file, newName);
     }
   };
@@ -268,6 +269,9 @@ export default function BlockItem({
         upperGap,
         topHeight,
         topPosition,
+        topTexture: "",
+        floorTexture: "",
+        wallTexture: "",
         byLot: true,
       });
       setCountBlock(Number(countBlock + 1));
@@ -379,7 +383,7 @@ export default function BlockItem({
                   setUpperGap((preview) => ({ ...preview, z: newZ as number }))
                 }
               />
-              
+
               <BlockController
                 name="Top Height"
                 value={topHeight}
@@ -443,44 +447,9 @@ export default function BlockItem({
                   {panelVisible && (
                     <Box>
                       <List>
-                        <ListItem>
-                          <Typography color="white">Door</Typography>
-                          <Select
-                            sx={{ color: "white" }}
-                            onChange={(e) =>
-                              setWall(e.target.value as "F" | "B" | "L" | "R")
-                            }
-                          >
-                            <MenuItem value={"F"} color="white">Front</MenuItem>
-                            <MenuItem value={"B"} color="white">Back</MenuItem>
-                            <MenuItem value={"L"} color="white">Left</MenuItem>
-                            <MenuItem value={"R"} color="white">Right</MenuItem>
-                          </Select>
-                          <Button
-                            onClick={() => handleAddComponent(true, wall)}
-                          >
-                            <Add fontSize="medium" />
-                          </Button>
-                        </ListItem>
-                        <ListItem>
-                          <Typography color="white">Window</Typography>
-                          <Select
-                            sx={{ color: "white" }}
-                            onChange={(e) =>
-                              setWall(e.target.value as "F" | "B" | "L" | "R")
-                            }
-                          >
-                            <MenuItem value={"F"} color="white">Front</MenuItem>
-                            <MenuItem value={"B"} color="white">Back</MenuItem>
-                            <MenuItem value={"L"} color="white">Left</MenuItem>
-                            <MenuItem value={"R"} color="white">Right</MenuItem>
-                          </Select>
-                          <Button
-                            onClick={() => handleAddComponent(false, wall)}
-                          >
-                            <Add fontSize="medium" />
-                          </Button>
-                        </ListItem>
+                       <ComponentSelect handleAddComponent={handleAddComponent} type={0} />
+                       <ComponentSelect handleAddComponent={handleAddComponent} type={1} />
+                       <ComponentSelect handleAddComponent={handleAddComponent} type={2} />
                       </List>
                     </Box>
                   )}
@@ -540,7 +509,7 @@ export default function BlockItem({
           <Typography width={"35%"} color="white">Show Top</Typography>
 
 
-          <label htmlFor="file-upload-top" style={{ cursor: "pointer" }}>
+          <label htmlFor={`file-upload-${name}-top`} style={{ cursor: "pointer" }}>
             {topTexture ? (
               <Image
                 src={topTexture}
@@ -553,7 +522,7 @@ export default function BlockItem({
                 size="medium"
                 sx={{ color: "white" }}
                 onClick={() =>
-                  document.getElementById("file-upload-top")?.click()
+                  document.getElementById(`file-upload-${name}-top`)?.click()
                 }
               >
                 <CloudUploadOutlined fontSize="medium" />
@@ -563,11 +532,11 @@ export default function BlockItem({
 
 
           <VisuallyHiddenInput
-            id="file-upload-top"
+            id={`file-upload-${name}-top`}
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setTopTexture, 'topTexture.png');
+              await handleFileChange(event, setTopTexture, `${name}-topTexture.png`);
             }}
             multiple
           />
@@ -588,7 +557,7 @@ export default function BlockItem({
           <Typography width={"35%"} color="white">Show Floor</Typography>
 
 
-          <label htmlFor="file-upload-floor" style={{ cursor: "pointer" }}>
+          <label htmlFor={`file-upload-${name}-floor`} style={{ cursor: "pointer" }}>
             {floorTexture ? (
               <Image
                 src={floorTexture}
@@ -601,7 +570,7 @@ export default function BlockItem({
                 size="medium"
                 sx={{ color: "white" }}
                 onClick={() =>
-                  document.getElementById("file-upload-floor")?.click()
+                  document.getElementById(`file-upload-${name}-floor`)?.click()
                 }
               >
                 <CloudUploadOutlined fontSize="medium" />
@@ -611,11 +580,11 @@ export default function BlockItem({
 
 
           <VisuallyHiddenInput
-            id="file-upload-floor"
+            id={`file-upload-${name}-floor`}
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setFloorTexture, 'floorTexture.png')
+              await handleFileChange(event, setFloorTexture, `${name}-floorTexture.png`)
             }}
             multiple
           />
@@ -635,7 +604,7 @@ export default function BlockItem({
         >
           <Typography width={"35%"} color="white">Wall Texture</Typography>
 
-          <label htmlFor="file-upload-wall" style={{ cursor: "pointer" }}>
+          <label htmlFor={`file-upload-${name}-wall`} style={{ cursor: "pointer" }}>
             {wallTexture ? (
               <Image
                 src={wallTexture}
@@ -648,7 +617,7 @@ export default function BlockItem({
                 size="medium"
                 sx={{ color: "white" }}
                 onClick={() =>
-                  document.getElementById("file-upload-wall")?.click()
+                  document.getElementById(`file-upload-${name}-wall`)?.click()
                 }
               >
                 <CloudUploadOutlined fontSize="medium" />
@@ -658,11 +627,11 @@ export default function BlockItem({
 
 
           <VisuallyHiddenInput
-            id="file-upload-wall"
+            id={`file-upload-${name}-wall`}
             type="file"
             accept="image/*"
             onChange={async (event) => {
-              await handleFileChange(event, setWallTexture, 'wallTexture.png')
+              await handleFileChange(event, setWallTexture, `${name}-wallTexture.png`)
             }}
             multiple
           />

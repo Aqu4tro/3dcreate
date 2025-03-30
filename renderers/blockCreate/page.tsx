@@ -51,7 +51,7 @@ export default function Block({
     components;
   }, [components]);
 
-  console.log(components)
+  
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -129,7 +129,7 @@ export default function Block({
                 wall={e}
                 width={width}
                 height={height}
-                length={name === "L" || "R" ? length - size : length}
+                length={length - size}
                 angle_Top={angle_Top}
                 size={size}
                 _wallTexture={_wallTexture}

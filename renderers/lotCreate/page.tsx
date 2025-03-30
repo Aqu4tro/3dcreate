@@ -136,7 +136,7 @@ export default function Lot({
           size,
           length,
           tickLot,
-          topSize: 0.1,
+          topSize: topHeight,
           angle_Top,
         }).map((e, index) => (
           <mesh
@@ -151,7 +151,7 @@ export default function Lot({
                 wall={e}
                 width={width}
                 height={height}
-                length={name === "L" || "R" ? length - size : length}
+                length={length - size}
                 angle_Top={angle_Top}
                 size={size}
                 _wallTexture={_wallTexture}

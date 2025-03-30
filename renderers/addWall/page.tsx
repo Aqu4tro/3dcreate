@@ -20,22 +20,19 @@ export default function AddWall({
 }) {
 
   const wallGeometry = new THREE.BoxGeometry(W, H, L);
-  const wallMaterial = new THREE.MeshStandardMaterial({ map: texture });
+  const wallMaterial =  new THREE.MeshStandardMaterial({ map: texture });
   let finalMesh = new THREE.Mesh(wallGeometry, wallMaterial);
 
   let commonMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial());
-  
   components.forEach((f) => {
+    
     if (
-      (f.wall === "F" && name === "F") ||
-      (f.wall === "B" && name === "B") ||
-      (f.wall === "R" && name === "R") ||
-      (f.wall === "L" && name === "L")
+      f.wall === name
     ) {
       commonMesh.scale.set(
-        f.type ? (f.wall === "L" || f.wall === "R" ? 0.15 : 0.97) : (f.wall === "L" || f.wall === "R" ? 0.15 : 1.4),
-        f.type ? 2.05 : 1.1,
-        f.wall === "L" || f.wall === "R" ? 0.8 : 0.15
+        !f.type ? ( f.scale[0]) : (f.scale[0] * 2.2),
+        !f.type ? f.scale[1] * 20 : f.scale[1] * 10,
+        !f.type ? f.scale[2] * 8  : f.scale[2] * 13,
       );
       
       commonMesh.position.set((f.wall === "R" || f.wall === "L") ? 0 : f.position[0], f.position[1], (f.wall === "B" || f.wall === "F") ? 0 : f.position[2]);
@@ -52,6 +49,7 @@ export default function AddWall({
     <group>
       <mesh geometry={finalMesh.geometry} material={finalMesh.material}>
         {components?.map((f) => {
+          
           return (f.wall === name ? <ComponentAdd key={f.id} component={f} /> : null);
         })}
       </mesh>
