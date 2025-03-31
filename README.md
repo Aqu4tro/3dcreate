@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+---
 
-## Getting Started
+# Projeto Next.js
 
-First, run the development server:
+Este é um projeto Next.js iniciado com [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Começando
+
+Primeiro, execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# or
+# ou
 yarn dev
-# or
+# ou
 pnpm dev
-# or
+# ou
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver sua execução.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Instruções de Uso
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Inicie a aplicação** conforme as instruções acima para rodar o servidor de desenvolvimento.
 
-## Learn More
+2. **Interaja com a aplicação**:
+    - **Clique no botão localizado no canto inferior esquerdo da tela**.
+    - Você terá a **opção de fazer o upload de um diretório** com a seguinte estrutura:
+        ```
+        dir/
+        ├── data.json
+        └── images/
+        ```
+    - O diretório `data.json` deve conter os dados necessários para a aplicação.
+    - O diretório `images/` deve conter as imagens relevantes, que serão carregadas conforme o necessário.
+  
+    - Além disso, você tem a **opção de criar um novo terreno**:
+        - **Clique no botão "More"** para adicionar um novo terreno.
+        - Ao clicar, você será capaz de inserir as informações do terreno inicial, como nome, descrição e outras propriedades necessárias.
+        - Essas informações serão usadas para gerar um novo terreno dentro da aplicação.
 
-To learn more about Next.js, take a look at the following resources:
+3. **Painel de Informações do Projeto**:
+    - Ao **criar um novo projeto** ou ao **usar um projeto existente**, será aberto na parte direita da tela um **painel** com todas as informações do projeto, incluindo:
+        - **Terrenos existentes**
+        - **Blocos dentro de cada terreno**
+        - **Texturas aplicadas aos blocos**
+        - **Dimensões dos blocos** (altura, largura, profundidade)
+        - **Componentes** presentes no terreno, como:
+          - **Portas**
+          - **Janelas**
+          - **Buracos vazios** (aberturas no terreno)
+        - **Ângulo do telhado** (inclinação)
+        - **Dimensões do telhado** (largura, comprimento, altura)
+        - **Posição dos blocos** no espaço 3D (coordenadas X, Y, Z)
+        - **Rotação dos blocos** (ângulo de rotação nos eixos X, Y, Z)
+    - No painel, você pode **"abrir" ou ocultar** detalhes dos blocos e terrenos:
+        - **Clique em algum lugar fora da ocupação do objeto** ou **minimize clicando no botão com a seta** ao lado do bloco ou terreno no painel.
+    - **Download do Projeto**:
+        - Dentro do painel aberto, você tem a opção de **fazer o download do projeto** no formato ZIP.
+    - **Minimizar o Painel**:
+        - O painel também pode ser **minimizado** ao clicar no **botão lateral** para ocultá-lo e liberar espaço na tela.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
