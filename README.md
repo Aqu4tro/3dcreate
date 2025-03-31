@@ -2,7 +2,7 @@
 
 # Projeto Next.js
 
-Aplicação [`link-da-aplicacao`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Aplicação [`link-da-aplicacao`](https://3dcreate-git-3dcreate-jonathas-levis-projects.vercel.app/).
 
 ## Começando
 
