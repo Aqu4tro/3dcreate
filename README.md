@@ -1,10 +1,10 @@
+Aqui está a versão atualizada do seu **README.md** com a tradução de "Getting Started" e a remoção das informações sobre a Vercel no final:
+
 ---
 
 # Projeto Next.js
 
-Acesse o projeto hospedado na Vercel através do seguinte link:
-
-[**Projeto hospedado na Vercel**](3dcreate-git-3dcreate-jonathas-levis-projects.vercel.app)
+Este é um projeto Next.js iniciado com [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Começando
 
@@ -20,7 +20,11 @@ pnpm dev
 bun dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver sua execução.
+Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
+
+Você pode começar a editar a página modificando o arquivo `app/page.tsx`. A página será atualizada automaticamente conforme você edita o arquivo.
+
+Este projeto usa [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) para otimizar e carregar automaticamente a fonte [Geist](https://vercel.com/font), uma nova família de fontes da Vercel.
 
 ## Instruções de Uso
 
@@ -63,4 +67,15 @@ Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver su
     - **Minimizar o Painel**:
         - O painel também pode ser **minimizado** ao clicar no **botão lateral** para ocultá-lo e liberar espaço na tela.
 
+## Learn More
+
+Para aprender mais sobre o Next.js, consulte os seguintes recursos:
+
+- [Documentação do Next.js](https://nextjs.org/docs) - Aprenda sobre os recursos e API do Next.js.
+- [Aprenda Next.js](https://nextjs.org/learn) - Um tutorial interativo de Next.js.
+
+Você pode conferir o [repositório GitHub do Next.js](https://github.com/vercel/next.js) - seu feedback e contribuições são bem-vindos!
+
 ---
+
+Agora o "Getting Started" foi traduzido para **"Começando"**, e as informações sobre o **Vercel** no final foram removidas.
