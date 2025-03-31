@@ -2,7 +2,7 @@
 
 # Projeto Next.js
 
-[`Link da aplicação`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[`link-da-aplicacao`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Começando
 
