@@ -1,10 +1,8 @@
-Aqui está a versão atualizada do seu **README.md** com a tradução de "Getting Started" e a remoção das informações sobre a Vercel no final:
-
 ---
 
-# Projeto Next.js
+Acesse o projeto hospedado na Vercel através do seguinte link:
 
-Este é um projeto Next.js iniciado com [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[**Projeto hospedado na Vercel**](https://3dcreate-git-3dcreate-jonathas-levis-projects.vercel.app/)
 
 ## Começando
 
@@ -67,15 +65,4 @@ Este projeto usa [`next/font`](https://nextjs.org/docs/app/building-your-applica
     - **Minimizar o Painel**:
         - O painel também pode ser **minimizado** ao clicar no **botão lateral** para ocultá-lo e liberar espaço na tela.
 
-## Learn More
-
-Para aprender mais sobre o Next.js, consulte os seguintes recursos:
-
-- [Documentação do Next.js](https://nextjs.org/docs) - Aprenda sobre os recursos e API do Next.js.
-- [Aprenda Next.js](https://nextjs.org/learn) - Um tutorial interativo de Next.js.
-
-Você pode conferir o [repositório GitHub do Next.js](https://github.com/vercel/next.js) - seu feedback e contribuições são bem-vindos!
-
 ---
-
-Agora o "Getting Started" foi traduzido para **"Começando"**, e as informações sobre o **Vercel** no final foram removidas.
