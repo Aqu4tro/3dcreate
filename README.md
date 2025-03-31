@@ -2,7 +2,7 @@
 
 # Projeto Next.js
 
-Este é um projeto Next.js iniciado com [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[`Link da aplicação`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Começando
 
