@@ -1,9 +1,5 @@
 ---
 
-Acesse o projeto hospedado na Vercel através do seguinte link:
-
-[https://3dcreate-git-3dcreate-jonathas-levis-projects.vercel.app/]
-
 ## Começando
 
 Primeiro, execute o servidor de desenvolvimento:
