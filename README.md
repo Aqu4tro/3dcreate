@@ -2,7 +2,9 @@
 
 # Projeto Next.js
 
-Este é um projeto Next.js iniciado com [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Acesse o projeto hospedado na Vercel através do seguinte link:
+
+[**Projeto hospedado na Vercel**](URL_DO_PROJETO_AQUI)
 
 ## Começando
 
