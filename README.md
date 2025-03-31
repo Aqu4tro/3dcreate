@@ -1,5 +1,9 @@
 ---
 
+# Projeto Next.js
+
+Este é um projeto Next.js iniciado com [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
 ## Começando
 
 Primeiro, execute o servidor de desenvolvimento:
@@ -62,3 +66,5 @@ Este projeto usa [`next/font`](https://nextjs.org/docs/app/building-your-applica
         - O painel também pode ser **minimizado** ao clicar no **botão lateral** para ocultá-lo e liberar espaço na tela.
 
 ---
+
+Agora o "Getting Started" foi traduzido para **"Começando"**, e as informações sobre o **Vercel** no final foram removidas.
