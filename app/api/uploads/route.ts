@@ -13,7 +13,7 @@ export async function DELETE() {
 
     return NextResponse.json({ message: "Uploads cleared!" }, { status: 200 });
   } catch (error: unknown) {
-    if (error instanceof Error && (error as any).code === "ENOENT") {
+    if (error instanceof Error && (error as NodeJS.ErrnoException).code === "ENOENT") {
       return NextResponse.json({ error: "Directory not found." }, { status: 404 });
     }
     console.error("Error clearing uploads:", error);
