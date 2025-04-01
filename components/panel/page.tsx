@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Fade,
   List,
   ListItem,
   TextField,

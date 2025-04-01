@@ -3,7 +3,6 @@ import { Room } from "@/app/page";
 import {
   Box,
   Button,
-  styled,
 } from "@mui/material";
 import {
   Add,
@@ -123,17 +122,6 @@ export default function BlockItem({
     }
   };
 
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
   block.name = name;
   block.width = width;
   block.height = height;

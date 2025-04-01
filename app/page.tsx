@@ -2,7 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Sky } from "@react-three/drei";
-import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useState } from "react";
+import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import {
   Add,
   ArrowBack,

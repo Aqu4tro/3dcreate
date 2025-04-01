@@ -12,8 +12,8 @@ export async function DELETE() {
     await Promise.all(files.map((file) => fs.unlink(path.join(uploadDir, file))));
 
     return NextResponse.json({ message: "Uploads cleared!" }, { status: 200 });
-  } catch (error: any) {
-    if (error.code === "ENOENT") {
+  } catch (error: unknown) {
+    if (error instanceof Error && (error as any).code === "ENOENT") {
       return NextResponse.json({ error: "Directory not found." }, { status: 404 });
     }
     console.error("Error clearing uploads:", error);
