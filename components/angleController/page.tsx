@@ -55,8 +55,6 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       }}
       type={2}
       disable={angleInsertVerify("Front")}
-      maxValue={1}
-      minValue={0}
       />
       <SmallBlockController
       name="Left"
@@ -68,8 +66,6 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       }}
       type={2}
       disable={angleInsertVerify("Left")}
-      maxValue={1}
-      minValue={0}
       />
       <SmallBlockController
       name="Right"
@@ -81,8 +77,6 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       }}
       type={2}
       disable={angleInsertVerify("Right")}
-      maxValue={1}
-      minValue={0}
       />
       <SmallBlockController
       name="Back"
@@ -94,8 +88,6 @@ export default function AngleController({ angle_Top, setAngle_Top }: AngleContro
       }}
       type={2}
       disable={angleInsertVerify("Back")}
-      maxValue={1}
-      minValue={0}
       />
     </Box>
   );
