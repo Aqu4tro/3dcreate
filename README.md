@@ -20,9 +20,6 @@ bun dev
 
 Abra [http://localhost:3000](http://localhost:3000) no seu navegador para ver o resultado.
 
-Você pode começar a editar a página modificando o arquivo `app/page.tsx`. A página será atualizada automaticamente conforme você edita o arquivo.
-
-Este projeto usa [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) para otimizar e carregar automaticamente a fonte [Geist](https://vercel.com/font), uma nova família de fontes da Vercel.
 
 ## Instruções de Uso
 
@@ -66,5 +63,3 @@ Este projeto usa [`next/font`](https://nextjs.org/docs/app/building-your-applica
         - O painel também pode ser **minimizado** ao clicar no **botão lateral** para ocultá-lo e liberar espaço na tela.
 
 ---
-
-Agora o "Getting Started" foi traduzido para **"Começando"**, e as informações sobre o **Vercel** no final foram removidas.
