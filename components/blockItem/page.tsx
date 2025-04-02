@@ -1,20 +1,13 @@
-'use client';
+"use client";
 import { Room } from "@/app/page";
-import {
-  Box,
-  Button,
-} from "@mui/material";
-import {
-  Add,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@mui/icons-material";
+import { Box, Button } from "@mui/material";
+import { Add, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { SmallBlockController } from "../blockController/page";
-import  { Component } from "../componentBlock/page";
+import { Component } from "../componentBlock/page";
 import { handleUpload } from "@/utils/upload/page";
-import  { WallType } from "../componentSelect/page";
+import { WallType } from "../componentSelect/page";
 import BlockControllerPanel from "../blockControllerPanel/page";
 import TexturePanel from "../texturePanel/page";
 import BlockSmall from "../blockSmall/page";
@@ -32,6 +25,10 @@ interface BlockItemProps {
   updateLot: (updatedBlock: Room) => void;
 
   _setBlocks: Dispatch<SetStateAction<Room[]>>;
+  files: { name: string; data: ArrayBuffer }[];
+  setFiles: Dispatch<
+    SetStateAction<{ name: string; url: string; data: ArrayBuffer }[]>
+  >;
 }
 
 export default function BlockItem({
@@ -43,6 +40,8 @@ export default function BlockItem({
   setSelect,
   select,
   _setBlocks,
+  files,
+  setFiles,
 }: BlockItemProps) {
   const [width, setWidth] = useState<number>(block.width);
   const [height, setHeight] = useState<number>(block.height || 0);
@@ -65,9 +64,13 @@ export default function BlockItem({
     r: number;
     b: number;
   }>(block.angle_Top);
-  const [upperGap, setUpperGap] = useState<{ x: number; z: number; }>(block.upperGap);
+  const [upperGap, setUpperGap] = useState<{ x: number; z: number }>(
+    block.upperGap
+  );
   const [topHeight, setTopHeight] = useState<number>(block.topHeight);
-  const [topPosition, setTopPosition] = useState<{ x: number; z: number; }>(block.topPosition);
+  const [topPosition, setTopPosition] = useState<{ x: number; z: number }>(
+    block.topPosition
+  );
   const [blocks, setBlocks] = useState<Room[]>(block.objects || []);
   const [wallTexture, setWallTexture] = useState<string>(
     block.wallTexture || ""
@@ -81,46 +84,66 @@ export default function BlockItem({
   const [components, setComponents] = useState<Component[]>(block.components);
   const [panelVisible, setPanelVisible] = useState<boolean>(false);
 
-  const [name, setName] = useState<string>(block.name)
+  const [name, setName] = useState<string>(block.name);
 
   function showComponentPanel() {
     setPanelVisible(!panelVisible);
-  };
+  }
 
   function handleAddComponent(type: number, wall: WallType) {
     setComponents((prev) => [
-          ...prev,
-          {
-            id: componentId,
-            name: type === 0 ? "Door" : type === 1 ? "Window" : "Hole",
-            type: type,
-            wall: wall,
-            position: [0, 0, 0],
-            scale: [1, 1, 1],
-            disabled: false,
-          },
-        ]);
+      ...prev,
+      {
+        id: componentId,
+        name: type === 0 ? "Door" : type === 1 ? "Window" : "Hole",
+        type: type,
+        wall: wall,
+        position: [0, 0, 0],
+        scale: [1, 1, 1],
+        disabled: false,
+      },
+    ]);
     showComponentPanel();
     setComponentId(componentId + 1);
-  };
+  }
 
   function handleDeleteComponent(id: number) {
     setComponents((prev) => prev.filter((component) => component.id !== id));
-  };
+  }
 
   function handleFileChange(
     event: React.ChangeEvent<HTMLInputElement>,
     _set: Dispatch<SetStateAction<string>>,
-    newName: string
+    newName: string,
+    setFiles: Dispatch<
+      SetStateAction<{ name: string; url: string; data: ArrayBuffer }[]>
+    >
   ): void {
     if (event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      console.log(newName)
-      _set(`/assets/uploads/${newName}`);
 
-      handleUpload(file, newName);
+      const fileUrl = URL.createObjectURL(file);
+      _set(fileUrl);
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file);
+      reader.onload = () => {
+        if (reader.result) {
+          setFiles((prev) => {
+            const filteredFiles = prev.filter((f) => f.name !== newName);
+
+            return [
+              ...filteredFiles,
+              {
+                name: newName,
+                url: fileUrl,
+                data: reader.result as ArrayBuffer,
+              },
+            ];
+          });
+        }
+      };
     }
-  };
+  }
 
   block.name = name;
   block.width = width;
@@ -141,7 +164,6 @@ export default function BlockItem({
   block.topTexture = topTexture;
   block.wallTexture = wallTexture;
   block.position = position;
-
 
   function updateBlock() {
     updateLot({
@@ -164,15 +186,14 @@ export default function BlockItem({
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-            ? { ...item, selected: !item.selected }
-            : item
+          ? { ...item, selected: !item.selected }
+          : item
       );
     });
-  };
+  }
   function deleteRoom(id: number, _set: Dispatch<SetStateAction<Room[]>>) {
     _set((prev) => {
       const updatedRooms = prev.filter((c) => c.id !== id);
-
 
       if (updatedRooms.length === prev.length) {
         console.warn(`No room found with id: ${id}`);
@@ -207,7 +228,6 @@ export default function BlockItem({
     blocks,
     //updateBlock,
   ]);
-
 
   function createBlock({
     id,
@@ -342,6 +362,7 @@ export default function BlockItem({
         setFloorTexture={setFloorTexture}
         setWallTexture={setWallTexture}
         handleFileChange={handleFileChange}
+        setFiles={setFiles}
       />
       {!byLot && (
         <Box>
@@ -359,6 +380,8 @@ export default function BlockItem({
                 select={e.selected}
                 setSelect={() => toggleSelectLot(e.id, "S")}
                 _setBlocks={setBlocks}
+                files={files}
+                setFiles={setFiles}
               />
             ) : (
               <BlockSmall

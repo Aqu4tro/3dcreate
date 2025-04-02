@@ -18,8 +18,10 @@ interface TexturePanelProps {
     handleFileChange: (
         event: React.ChangeEvent<HTMLInputElement>,
         _set: Dispatch<SetStateAction<string>>,
-        newName: string
-      ) => void; 
+        newName: string,
+        setFiles: Dispatch<SetStateAction<{ name: string; url: string; data: ArrayBuffer }[]>>
+    ) => void;
+    setFiles: Dispatch<SetStateAction<{ name: string; url: string; data: ArrayBuffer }[]>>;
 }
 
 const VisuallyHiddenInput = (props: React.InputHTMLAttributes<HTMLInputElement>) => (
@@ -38,7 +40,7 @@ const VisuallyHiddenInput = (props: React.InputHTMLAttributes<HTMLInputElement>)
     />
 );
 
-export default function TexturePanel ({
+export default function TexturePanel({
     name,
     topTexture,
     floorTexture,
@@ -51,6 +53,7 @@ export default function TexturePanel ({
     setFloorTexture,
     setWallTexture,
     handleFileChange,
+    setFiles
 }: TexturePanelProps) {
     return (
         <Box display={"flex"} marginTop={2} flexDirection={"column"} justifyContent={"space-between"}>
@@ -76,7 +79,7 @@ export default function TexturePanel ({
                     type="file"
                     accept="image/*"
                     onChange={async (event) => {
-                        await handleFileChange(event, setTopTexture, `${name}-topTexture.png`);
+                        await handleFileChange(event, setTopTexture, `${name}-topTexture.png`, setFiles);
                     }}
                     multiple
                 />
@@ -111,7 +114,7 @@ export default function TexturePanel ({
                     type="file"
                     accept="image/*"
                     onChange={async (event) => {
-                        await handleFileChange(event, setFloorTexture, `${name}-floorTexture.png`);
+                        await handleFileChange(event, setFloorTexture, `${name}-floorTexture.png`, setFiles);
                     }}
                     multiple
                 />
@@ -146,7 +149,7 @@ export default function TexturePanel ({
                     type="file"
                     accept="image/*"
                     onChange={async (event) => {
-                        await handleFileChange(event, setWallTexture, `${name}-wallTexture.png`);
+                        await handleFileChange(event, setWallTexture, `${name}-wallTexture.png`, setFiles);
                     }}
                     multiple
                 />

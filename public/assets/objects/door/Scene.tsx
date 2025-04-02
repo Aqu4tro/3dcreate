@@ -20,4 +20,4 @@ export default function Door(props: JSX.IntrinsicElements['group']) {
   )
 }
 
-useGLTF.preload('/scene.gltf')
+

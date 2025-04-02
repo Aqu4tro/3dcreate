@@ -13,13 +13,7 @@ import {
   MoreVert,
   UploadFile,
 } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Fab,
-  Fade,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Fab, Fade, Typography } from "@mui/material";
 import Lot from "@/renderers/lotCreate/page";
 import Panel from "@/components/panel/page";
 import BlockItem from "@/components/blockItem/page";
@@ -27,7 +21,7 @@ import BlockSmall from "@/components/blockSmall/page";
 import { Component } from "@/components/componentBlock/page";
 import downloadRoomsAsJson from "@/utils/download/page";
 import { handleUploadAmbience } from "@/utils/upload/page";
-import clearUploads from "@/utils/clearUploads/page";
+
 export type Room = {
   id: number;
   byLot?: true;
@@ -46,7 +40,7 @@ export type Room = {
   position: { x: number; y: number; z: number };
   rotation: { x: number; y: number; z: number };
   angle_Top: { f: number; l: number; r: number; b: number };
-  upperGap: { x: number; z: number; };
+  upperGap: { x: number; z: number };
   topHeight: number;
   topPosition: { x: number; z: number };
   wallTexture?: string;
@@ -68,7 +62,9 @@ export default function Home() {
   const [countLot, setCountLot] = useState<number>(0);
   const [buttonList, setButtonList] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [files, setFiles] = useState<
+    { name: string; url: string; data: ArrayBuffer }[]
+  >([]);
   const updateLot = (updatedBlock: Room) => {
     setLot((prevLot) =>
       prevLot.map((item) => (item.id === updatedBlock.id ? updatedBlock : item))
@@ -82,12 +78,11 @@ export default function Home() {
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-            ? { ...item, selected: !item.selected }
-            : item
+          ? { ...item, selected: !item.selected }
+          : item
       )
     );
   };
-
 
   function createLot({
     id,
@@ -145,19 +140,9 @@ export default function Home() {
     setPanelVisible(false);
   }
 
-
-
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
-
-  useLayoutEffect(() => {
-    async function executeAsync() {
-      await clearUploads();
-    };
-
-    executeAsync();
-  }, []);
 
   return (
     <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
@@ -215,10 +200,10 @@ export default function Home() {
                   }
                 }}
                 onChange={async (event) => {
-                  await handleUploadAmbience(event, setLot);
+                  await handleUploadAmbience(event, setLot, setFiles);
                   toggleButton();
                 }}
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
               />
               <Fab
                 sx={{
@@ -233,7 +218,9 @@ export default function Home() {
                   zIndex: 2,
                   color: "black",
                 }}
-                onClick={() => document.getElementById("file-upload-room")?.click()}
+                onClick={() =>
+                  document.getElementById("file-upload-room")?.click()
+                }
                 color="inherit"
               >
                 <UploadFile fontSize="large" />
@@ -300,7 +287,14 @@ export default function Home() {
               size={item.size}
               name={item.name}
               height={item.height}
-              heightY={item.height + (item.length * Math.tan(item.angle_Top.f) / 2 || item.length * Math.tan(item.angle_Top.b) / 2 || item.width * Math.tan(item.angle_Top.r) / 2 || item.width * Math.tan(item.angle_Top.l) / 2) + item.tickLot}
+              heightY={
+                item.height +
+                ((item.length * Math.tan(item.angle_Top.f)) / 2 ||
+                  (item.length * Math.tan(item.angle_Top.b)) / 2 ||
+                  (item.width * Math.tan(item.angle_Top.r)) / 2 ||
+                  (item.width * Math.tan(item.angle_Top.l)) / 2) +
+                item.tickLot
+              }
               objects={item.objects}
               tickLot={item.tickLot}
               disable={item.disable}
@@ -318,12 +312,13 @@ export default function Home() {
               upperGap={item.upperGap}
               topHeight={item.topHeight}
               topPosition={item.topPosition}
+              files={files}
             />
           ))}
 
           <OrbitControls rotateSpeed={0.2} />
           <ambientLight intensity={0.5} />
-          
+
           <Sky
             distance={40000}
             sunPosition={[0, 5, 0]}
@@ -382,7 +377,7 @@ export default function Home() {
                 endIcon={<Download />}
                 variant="outlined"
                 sx={{ color: "white", borderColor: "white" }}
-                onClick={() => downloadRoomsAsJson(lot)}
+                onClick={() => downloadRoomsAsJson(lot, files)}
               >
                 <Typography>Download file</Typography>
               </Button>
@@ -390,6 +385,8 @@ export default function Home() {
                 e.selected ? (
                   <BlockItem
                     key={e.id}
+                    files={files}
+                    setFiles={setFiles}
                     updateLot={updateLot}
                     block={e}
                     disable={e.disable}

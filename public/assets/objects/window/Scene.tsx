@@ -34,4 +34,4 @@ export function Window(props : JSX.IntrinsicElements['group']) {
   )
 }
 
-useGLTF.preload('/scene.gltf')
+

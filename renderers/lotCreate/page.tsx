@@ -11,6 +11,7 @@ import AddWall from "../addWall/page";
 export interface LotProps extends Room {
   heightY?: number;
   selected: boolean | undefined;
+  files: { name: string; data: ArrayBuffer }[];
   setSelected: () => void;
 }
 
@@ -38,12 +39,9 @@ export default function Lot({
   upperGap,
   topHeight,
   topPosition,
+  files,
 }: LotProps) {
-
-
   const [_objects, _setObjects] = useState<Room[] | undefined>(objects);
-  const [countLot, setCountLot] = useState<number>(0);
-  
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
@@ -60,25 +58,23 @@ export default function Lot({
       : floorTexture
   );
   const toggleSelectLot = (id: number, t: "D" | "S") => {
-
     _setObjects((prevLot) =>
       prevLot
-        ? prevLot.map((item) =>
-          t === "D"
-            ? item.id === id
-              ? { ...item, disable: !item.disable }
-              : item
-            : item.id === id
-              ? { ...item, selected: !item.selected }
-              : item
-        )
+        ? prevLot.map((e) =>
+            t === "D"
+              ? e.id === id
+                ? { ...e, disable: !e.disable }
+                : e
+              : e.id === id
+              ? { ...e, selected: !e.selected }
+              : e
+          )
         : prevLot
     );
   };
   useEffect(() => {
-    components
+    components;
   }, [components]);
-
 
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
@@ -97,13 +93,11 @@ export default function Lot({
       position={[position.x, position.y, position.z]}
       rotation={new THREE.Euler(rotation.x, rotation.y, rotation.z)}
     >
-
       {floor && (
         <mesh
           position={[0, tickLot / 2, 0]}
           rotation={new THREE.Euler(0, 0, 0)}
           name="floor"
-          
         >
           <boxGeometry args={[width, tickLot, length]} />
           <meshStandardMaterial map={_floorTexture} />
@@ -112,11 +106,7 @@ export default function Lot({
 
       {height && top && (
         <mesh
-          position={[
-            topPosition.x,
-            (heightY ? heightY : 0) ,
-            topPosition.z,
-          ]}
+          position={[topPosition.x, heightY ? heightY : 0, topPosition.z]}
           rotation={
             new THREE.Euler(
               angle_Top.f || -angle_Top.b,
@@ -125,9 +115,18 @@ export default function Lot({
             )
           }
           name="top-surface"
-          
         >
-          <boxGeometry args={[(angle_Top.l || angle_Top.r ? width / Math.cos(angle_Top.r || angle_Top.l) : width) + upperGap.x, topHeight, ((angle_Top.f || angle_Top.b) ? length / Math.cos(angle_Top.f || angle_Top.b) : length) + upperGap.z]} />
+          <boxGeometry
+            args={[
+              (angle_Top.l || angle_Top.r
+                ? width / Math.cos(angle_Top.r || angle_Top.l)
+                : width) + upperGap.x,
+              topHeight,
+              (angle_Top.f || angle_Top.b
+                ? length / Math.cos(angle_Top.f || angle_Top.b)
+                : length) + upperGap.z,
+            ]}
+          />
           <meshStandardMaterial map={_topTexture} />
         </mesh>
       )}
@@ -150,7 +149,10 @@ export default function Lot({
             rotation={new THREE.Euler(0, 0, 0)}
             name={`wall-${index}`}
           >
-            {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L") || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
+            {((angle_Top.f && e.N !== "F" && e.N !== "B") ||
+              (angle_Top.r && e.N !== "R" && e.N !== "L") ||
+              (angle_Top.b && e.N !== "F" && e.N !== "B") ||
+              (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
               <InclinedWall
                 id={id}
                 wall={e}
@@ -161,7 +163,6 @@ export default function Lot({
                 size={size}
                 _wallTexture={_wallTexture}
                 tickLot={tickLot}
-
               />
             )}
 
@@ -184,7 +185,14 @@ export default function Lot({
           id={e.id}
           size={e.size}
           height={e.height}
-          heightY={heightY}
+          heightY={
+            e.height +
+            ((e.length * Math.tan(e.angle_Top.f)) / 2 ||
+              (e.length * Math.tan(e.angle_Top.b)) / 2 ||
+              (e.width * Math.tan(e.angle_Top.r)) / 2 ||
+              (e.width * Math.tan(e.angle_Top.l)) / 2) +
+            e.tickLot
+          }
           tickLot={e.tickLot}
           name={e.name}
           length={e.length}
@@ -204,6 +212,7 @@ export default function Lot({
           components={e.components}
           selected={false}
           setSelected={() => toggleSelectLot(e.id, "S")}
+          files={files}
         />
       ))}
     </mesh>
