@@ -6,7 +6,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BlockHeader from "../blockHeader/page";
 import { SmallBlockController } from "../blockController/page";
 import { Component } from "../componentBlock/page";
-import { handleUpload } from "@/utils/upload/page";
 import { WallType } from "../componentSelect/page";
 import BlockControllerPanel from "../blockControllerPanel/page";
 import TexturePanel from "../texturePanel/page";
