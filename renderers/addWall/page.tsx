@@ -20,30 +20,39 @@ export default function AddWall({
   texture: THREE.Texture;
   size: number;
 }) {
-
   const wallGeometry = new THREE.BoxGeometry(W, H, L);
-  const wallMaterial =  new THREE.MeshStandardMaterial({ map: texture });
+  const wallMaterial = new THREE.MeshStandardMaterial({ map: texture });
   let finalMesh = new THREE.Mesh(wallGeometry, wallMaterial);
 
-  let commonMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial());
+  let commonMesh = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial()
+  );
   components.forEach((f) => {
-    
-    if (
-      f.wall === name
-    ) {
-     
+    if (f.wall === name) {
       commonMesh.scale.set(
         f.scale[0],
         f.scale[1],
-         !f.type ? f.scale[0] : f.wall === "F" || f.wall==="B" ? f.scale[2]*size*10 : f.scale[0],
+        !f.type
+          ? f.scale[0]
+          : f.wall === "F" || f.wall === "B"
+          ? f.scale[2] * size * 10
+          : f.scale[0]
       );
-      
-      commonMesh.position.set((f.wall === "R" || f.wall === "L") ? 0 : f.position[0], f.position[1], (f.wall === "B" || f.wall === "F") ? 0 : f.position[2]);
+
+      commonMesh.position.set(
+        f.wall === "R" || f.wall === "L" ? 0 : f.position[0],
+        f.position[1],
+        f.wall === "B" || f.wall === "F" ? 0 : f.position[2]
+      );
 
       commonMesh.updateMatrix();
 
       let result = CSG.subtract(finalMesh, commonMesh);
-      finalMesh = result as THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
+      finalMesh = result as THREE.Mesh<
+        THREE.BoxGeometry,
+        THREE.MeshStandardMaterial
+      >;
     }
   });
   finalMesh.updateMatrix();
@@ -52,8 +61,9 @@ export default function AddWall({
     <group>
       <mesh geometry={finalMesh.geometry} material={finalMesh.material}>
         {components?.map((f) => {
-          
-          return (f.wall === name ? <ComponentAdd key={f.id} component={f} /> : null);
+          return f.wall === name ? (
+            <ComponentAdd key={f.id} component={f} />
+          ) : null;
         })}
       </mesh>
     </group>

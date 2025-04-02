@@ -47,7 +47,6 @@ export default function Panel({
   createLot: () => void;
 }) {
   return (
-
     <div
       style={{
         position: "absolute",
@@ -132,43 +131,40 @@ export default function Panel({
               onChange={(e) => setThick(e.target.checked ? true : false)} // Exemplo de uso
             />
           </ListItem>
-          {
-            thick && (
-              <List >
-                <ListItem>
-                  <TextField
-                    variant="outlined"
-                    type="number"
-                    label="Thick Wall"
-                    size="small"
-                    value={thickWall}
-                    onChange={(e) => {
-                      const value = Number(e.target.value);
-                      if (value >= 0) {
-                        setSize(value);
-                      }
-                    }}
-                  />
-                </ListItem>
-                <ListItem>
-                  <TextField
-                    variant="outlined"
-                    type="number"
-                    label="Height"
-                    size="small"
-                    value={height}
-                    onChange={(e) => {
-                      const value = Number(e.target.value);
-                      if (value >= 0) {
-                        setHeight(value);
-                      }
-                    }}
-                  />
-                </ListItem>
-              </List>
-            )
-          }
-
+          {thick && (
+            <List>
+              <ListItem>
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  label="Thick Wall"
+                  size="small"
+                  value={thickWall}
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    if (value >= 0) {
+                      setSize(value);
+                    }
+                  }}
+                />
+              </ListItem>
+              <ListItem>
+                <TextField
+                  variant="outlined"
+                  type="number"
+                  label="Height"
+                  size="small"
+                  value={height}
+                  onChange={(e) => {
+                    const value = Number(e.target.value);
+                    if (value >= 0) {
+                      setHeight(value);
+                    }
+                  }}
+                />
+              </ListItem>
+            </List>
+          )}
         </List>
         <Button
           variant="outlined"

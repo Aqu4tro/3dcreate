@@ -31,7 +31,6 @@ export default function Block({
   topPosition,
   topHeight,
 }: LotProps) {
-
   const _wallTexture = useTexture(
     typeof wallTexture === "string" || !wallTexture
       ? wallTexture || "/assets/images/walls.jpg"
@@ -52,7 +51,6 @@ export default function Block({
     components;
   }, [components]);
 
-
   function switchSelect(
     event: ThreeEvent<MouseEvent> | MouseEvent | TouchEvent
   ) {
@@ -70,7 +68,6 @@ export default function Block({
       position={[position.x, position.y, position.z]}
       rotation={new THREE.Euler(rotation.x, rotation.y, rotation.z)}
     >
-
       {floor && (
         <mesh
           position={[0, tickLot / 2, 0]}
@@ -82,14 +79,9 @@ export default function Block({
         </mesh>
       )}
 
-
       {height && top && (
         <mesh
-          position={[
-            topPosition.x,
-            (heightY ? heightY : 0) ,
-            topPosition.z,
-          ]}
+          position={[topPosition.x, heightY ? heightY : 0, topPosition.z]}
           rotation={
             new THREE.Euler(
               angle_Top.f || -angle_Top.b,
@@ -99,11 +91,20 @@ export default function Block({
           }
           name="top-surface"
         >
-          <boxGeometry args={[(angle_Top.l || angle_Top.r ? width / Math.cos(angle_Top.r || angle_Top.l) : width) + upperGap.x, topHeight, ((angle_Top.f || angle_Top.b) ? length / Math.cos(angle_Top.f || angle_Top.b) : length) + upperGap.z]} />
+          <boxGeometry
+            args={[
+              (angle_Top.l || angle_Top.r
+                ? width / Math.cos(angle_Top.r || angle_Top.l)
+                : width) + upperGap.x,
+              topHeight,
+              (angle_Top.f || angle_Top.b
+                ? length / Math.cos(angle_Top.f || angle_Top.b)
+                : length) + upperGap.z,
+            ]}
+          />
           <meshStandardMaterial map={_topTexture} />
         </mesh>
       )}
-
 
       {height &&
         size &&
@@ -123,7 +124,10 @@ export default function Block({
             rotation={new THREE.Euler(0, 0, 0)}
             name={`wall-${index}`}
           >
-            {((angle_Top.f && e.N !== "F" && e.N !== "B") || (angle_Top.r && e.N !== "R" && e.N !== "L") || (angle_Top.b && e.N !== "F" && e.N !== "B") || (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
+            {((angle_Top.f && e.N !== "F" && e.N !== "B") ||
+              (angle_Top.r && e.N !== "R" && e.N !== "L") ||
+              (angle_Top.b && e.N !== "F" && e.N !== "B") ||
+              (angle_Top.l && e.N !== "R" && e.N !== "L")) && (
               <InclinedWall
                 id={id}
                 wall={e}
@@ -134,7 +138,6 @@ export default function Block({
                 size={size}
                 _wallTexture={_wallTexture}
                 tickLot={tickLot}
-
               />
             )}
 

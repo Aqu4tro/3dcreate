@@ -7,7 +7,7 @@ export function BlockController({
   value,
   setValue,
   disable,
-  type
+  type,
 }: {
   name: string;
   value: number;
@@ -33,7 +33,7 @@ export function BlockController({
           onChange={(e) => {
             const inputValue = Number(e.target.value);
             if (type) {
-              if (inputValue >= 0 ) {
+              if (inputValue >= 0) {
                 setValue(inputValue);
               }
             } else {
@@ -59,7 +59,7 @@ export function SmallBlockController({
   value,
   setValue,
   disable,
-  type, 
+  type,
 }: {
   name: string;
   value: number;
@@ -69,31 +69,27 @@ export function SmallBlockController({
 }) {
   return (
     <TextField
-    value={value}
-    label={name}
-    onChange={(e) => {
-      const inputValue = Number(e.target.value);
-      if (type === 0) {
-        setValue(inputValue);
-      } else if (type === 1 && inputValue >= 0) {
-        setValue(inputValue);
-      } else if (type === 2 && inputValue >= 0 && inputValue <= 1) {
-        setValue(inputValue);
-      }
-    }}
-    sx={{
-      alignSelf: "end",
-      "& .MuiFilledInput-root": { color: "white" },
-    }}
-    type="number"
-    {
-      ...(type === 0 ? { min: -100, max: 100 } : { min: 0, max: 1 })
-    }
-    
-    size="small"
-    variant="filled"
-    disabled={disable}
-  />
-  
+      value={value}
+      label={name}
+      onChange={(e) => {
+        const inputValue = Number(e.target.value);
+        if (type === 0) {
+          setValue(inputValue);
+        } else if (type === 1 && inputValue >= 0) {
+          setValue(inputValue);
+        } else if (type === 2 && inputValue >= 0 && inputValue <= 1) {
+          setValue(inputValue);
+        }
+      }}
+      sx={{
+        alignSelf: "end",
+        "& .MuiFilledInput-root": { color: "white" },
+      }}
+      type="number"
+      {...(type === 0 ? { min: -100, max: 100 } : { min: 0, max: 1 })}
+      size="small"
+      variant="filled"
+      disabled={disable}
+    />
   );
 }
