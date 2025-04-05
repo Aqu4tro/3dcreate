@@ -112,7 +112,7 @@ export default function Panel({
           </ListItem>
           <ListItem>
             <TextField
-              label="Thick"
+              label="Thick Lot"
               type="number"
               size="small"
               value={thickLot}
@@ -128,7 +128,7 @@ export default function Panel({
           <ListItem>
             <Typography color="textPrimary">Enable Walls </Typography>
             <Checkbox
-              onChange={(e) => setThick(e.target.checked ? true : false)} // Exemplo de uso
+              onChange={(e) => setThick(e.target.checked ? true : false)} 
             />
           </ListItem>
           {thick && (

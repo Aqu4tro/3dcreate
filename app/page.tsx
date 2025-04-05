@@ -2,18 +2,19 @@
 
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Sky } from "@react-three/drei";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useLayoutEffect, useState } from "react";
 import {
   Add,
   ArrowBack,
   Close,
   Download,
+  GitHub,
   KeyboardArrowLeft,
   KeyboardArrowRight,
   MoreVert,
   UploadFile,
 } from "@mui/icons-material";
-import { Box, Button, Fab, Fade, Typography } from "@mui/material";
+import { Alert, Box, Button, Fab, Fade, Link, Typography } from "@mui/material";
 import Lot from "@/renderers/lotCreate/page";
 import Panel from "@/components/panel/page";
 import BlockItem from "@/components/blockItem/page";
@@ -65,6 +66,8 @@ export default function Home() {
   const [files, setFiles] = useState<
     { name: string; url: string; data: ArrayBuffer }[]
   >([]);
+  const [showAlert, setShowAlert] = useState(true);
+
   const updateLot = (updatedBlock: Room) => {
     setLot((prevLot) =>
       prevLot.map((item) => (item.id === updatedBlock.id ? updatedBlock : item))
@@ -78,8 +81,8 @@ export default function Home() {
             ? { ...item, disable: !item.disable }
             : item
           : item.id === id
-          ? { ...item, selected: !item.selected }
-          : item
+            ? { ...item, selected: !item.selected }
+            : item
       )
     );
   };
@@ -140,12 +143,34 @@ export default function Home() {
     setPanelVisible(false);
   }
 
-  const handleToggle = () => {
+  function handleToggle() {
     setIsOpen(!isOpen);
   };
 
+  useLayoutEffect(() => {
+    setShowAlert(true); 
+    
+  }, []);
   return (
     <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
+      {showAlert && (
+        <Alert
+        severity="info"
+        sx={{
+          position: "fixed", 
+          top: 0, 
+          left: 0, 
+          width: "100%", 
+          zIndex: 9999, 
+          cursor: "pointer",
+          justifyContent:"center"
+        }}
+        onClick={() => setShowAlert(false)}
+      >
+        Warning: If this page is refreshed, your changes will be lost. Save your
+        progress by downloading the project.
+      </Alert>
+      )}
       <div style={{ width: "100vw" }}>
         {panelVisible && (
           <Panel
@@ -252,6 +277,29 @@ export default function Home() {
               )}
             </Fab>
           </Fade>
+          <Link href="https://github.com/Aqu4tro/3dcreate#" >
+            <Fade in={buttonList}>
+              <Fab
+                sx={{
+                  borderRadius: "50%",
+                  width: "46px",
+                  height: "46px",
+                  minWidth: "0",
+                  borderWidth: 3,
+                  position: "absolute",
+                  bottom: "30vh",
+                  left: "3vh",
+                  zIndex: 2,
+                  color: "black",
+                }}
+                color="inherit"
+
+              >
+                <GitHub />
+              </Fab>
+            </Fade>
+          </Link>
+
           <Fab
             sx={{
               borderRadius: "50%",
